@@ -1,5 +1,5 @@
 // ✅ 1. .env 파일 로드 (모든 곳에서 접근 가능하도록 가장 상단에 위치)
-require('dotenv').config({ path: '../.env' }); // src/index.js에서 .env 파일은 상위 폴더에 있습니다.
+require('dotenv').config(); // src/index.js에서 .env 파일은 상위 폴더에 있습니다.
 
 // 2. 필요한 모듈 임포트
 const express = require('express');
