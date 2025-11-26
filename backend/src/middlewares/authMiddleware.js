@@ -1,6 +1,10 @@
 const jwt = require('jsonwebtoken');
 const pool = require('../config/database');
 
+/**
+ * 인증 필수 미들웨어
+ * 토큰이 없거나 유효하지 않으면 401 에러 반환
+ */
 exports.protect = async (req, res, next) => {
   let token;
 
@@ -31,4 +35,31 @@ exports.protect = async (req, res, next) => {
   } else {
     res.status(401).json({ message: '인증 토큰이 제공되지 않았습니다.' });
   }
+};
+
+/**
+ * 인증 선택 미들웨어
+ * 토큰이 있으면 인증 시도, 없어도 다음 미들웨어로 진행
+ * req.user는 인증된 경우에만 설정됨
+ */
+exports.optionalProtect = async (req, res, next) => {
+  let token;
+
+  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+    try {
+      token = req.headers.authorization.split(' ')[1];
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      
+      const [rows] = await pool.query('SELECT user_id, username FROM LM_USERS WHERE user_id = ?', [decoded.id]);
+
+      if (rows.length > 0) {
+        req.user = rows[0];
+      }
+    } catch (error) {
+      // 토큰 오류가 있어도 무시하고 진행 (선택적 인증이므로)
+      console.log('선택적 인증: 토큰 오류 무시', error.message);
+    }
+  }
+  
+  next();
 };

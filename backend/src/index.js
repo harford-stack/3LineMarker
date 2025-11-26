@@ -8,9 +8,15 @@ const path = require('path');
 
 // ✅ 라우터 임포트 (각 기능별 라우터 파일)
 const authRouter = require('./routes/authRoutes');      // 인증 (로그인/회원가입)
-const userRouter = require('./routes/userRoutes');      // 사용자 프로필, 팔로우 등
-const markerRouter = require('./routes/markerRoutes');  // 마커 CRUD, 좋아요, 댓글
+const userRouter = require('./routes/userRoutes');      // 사용자 프로필
+const markerRouter = require('./routes/markerRoutes');  // 마커 CRUD
 const searchRouter = require('./routes/searchRoutes');  // 검색 기능
+const likeRouter = require('./routes/likeRoutes');      // 좋아요 기능
+const commentRouter = require('./routes/commentRoutes'); // 댓글 기능
+const followRouter = require('./routes/followRoutes');  // 팔로우 기능
+const notificationRouter = require('./routes/notificationRoutes'); // 알림 기능
+const feedRouter = require('./routes/feedRoutes');      // 피드 기능
+const bookmarkRouter = require('./routes/bookmarkRoutes'); // 북마크 기능
 
 // 3. Express 애플리케이션 생성
 const app = express();
@@ -24,10 +30,16 @@ app.use(cors({
 app.use(express.json()); // JSON 형식의 요청 본문을 파싱
 
 // ✅ 5. 라우터 연결
-app.use("/api/auth", authRouter);      // /api/auth 로 시작하는 요청은 authRouter가 처리
+app.use("/api/auth", authRouter);       // /api/auth 로 시작하는 요청은 authRouter가 처리
 app.use("/api/users", userRouter);      // /api/users 로 시작하는 요청은 userRouter가 처리
 app.use("/api/markers", markerRouter);  // /api/markers 로 시작하는 요청은 markerRouter가 처리
 app.use("/api/search", searchRouter);   // /api/search 로 시작하는 요청은 searchRouter가 처리
+app.use("/api/likes", likeRouter);      // /api/likes 로 시작하는 요청은 likeRouter가 처리
+app.use("/api/comments", commentRouter); // /api/comments 로 시작하는 요청은 commentRouter가 처리
+app.use("/api/follows", followRouter);  // /api/follows 로 시작하는 요청은 followRouter가 처리
+app.use("/api/notifications", notificationRouter); // /api/notifications 로 시작하는 요청
+app.use("/api/feed", feedRouter);       // /api/feed 로 시작하는 요청은 feedRouter가 처리
+app.use("/api/bookmarks", bookmarkRouter); // /api/bookmarks 로 시작하는 요청
 
 // 6. 정적 파일 서비스 (업로드된 이미지 파일)
 // ✅ 주의: 이 부분은 파일 저장 방식에 따라 달라집니다!
