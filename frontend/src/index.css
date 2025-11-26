@@ -1,13 +1,324 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* ===== 레트로 픽셀 게임 스타일 ===== */
+
+/* Google Fonts - 영어 픽셀 폰트 */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Silkscreen:wght@400;700&display=swap');
+
+/* 한국어 레트로 폰트 - DungGeunMo (둥근모꼴) */
+@font-face {
+  font-family: 'DungGeunMo';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/DungGeunMo.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* 한국어 레트로 폰트 - Galmuri (게임 픽셀 폰트) */
+@font-face {
+  font-family: 'Galmuri11';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2016-12@1.0/Galmuri11.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* 기본 스타일 리셋 */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  /* 영어: VT323, 한국어: DungGeunMo */
+  font-family: 'VT323', 'DungGeunMo', 'Courier New', monospace;
+  font-size: 18px;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: auto;
+  background-color: #0a0a0f;
+  color: #00ff00;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+/* 스크롤바 레트로 스타일 */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a2e;
+  border: 2px solid #00ff00;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #00ff00;
+  border: 2px solid #1a1a2e;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #00cc00;
+}
+
+/* 글로벌 링크 스타일 */
+a {
+  color: #00ffff;
+  text-decoration: none;
+  transition: all 0.1s ease;
+}
+
+a:hover {
+  color: #ff00ff;
+  text-shadow: 0 0 10px #ff00ff;
+}
+
+/* 레트로 버튼 기본 스타일 */
+.retro-btn {
+  font-family: 'Press Start 2P', 'Galmuri11', 'DungGeunMo', cursive;
+  font-size: 10px;
+  padding: 12px 24px;
+  border: 4px solid;
+  border-color: #fff #666 #666 #fff;
+  background: linear-gradient(180deg, #444 0%, #222 100%);
+  color: #fff;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.1s;
+  box-shadow: 4px 4px 0 #000;
+}
+
+.retro-btn:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 #000;
+}
+
+.retro-btn:active {
+  transform: translate(4px, 4px);
+  box-shadow: none;
+  border-color: #666 #fff #fff #666;
+}
+
+/* 네온 글로우 효과 */
+.neon-text {
+  text-shadow: 
+    0 0 5px currentColor,
+    0 0 10px currentColor,
+    0 0 20px currentColor,
+    0 0 40px currentColor;
+}
+
+/* 스캔라인 효과 (오버레이용) */
+.scanlines::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.15),
+    rgba(0, 0, 0, 0.15) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  pointer-events: none;
+  z-index: 1000;
+}
+
+/* CRT 곡면 효과 */
+.crt-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.crt-effect::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.3) 100%);
+  pointer-events: none;
+}
+
+/* 픽셀 아트 박스 스타일 */
+.pixel-box {
+  border: 4px solid;
+  border-color: #fff #333 #333 #fff;
+  background: #1a1a2e;
+  box-shadow: 
+    inset -4px -4px 0 #111,
+    inset 4px 4px 0 #2a2a4e,
+    8px 8px 0 rgba(0, 0, 0, 0.5);
+}
+
+/* 깜빡이는 커서 효과 */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.blink {
+  animation: blink 1s step-end infinite;
+}
+
+/* 글리치 효과 */
+@keyframes glitch {
+  0% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+  100% { transform: translate(0); }
+}
+
+.glitch:hover {
+  animation: glitch 0.3s ease infinite;
+}
+
+/* 페이드인 애니메이션 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.3s ease-out;
+}
+
+/* 스타 배경 */
+.star-bg {
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, #fff, transparent),
+    radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
+    radial-gradient(1px 1px at 90px 40px, #fff, transparent),
+    radial-gradient(2px 2px at 160px 120px, rgba(255,255,255,0.6), transparent),
+    radial-gradient(1px 1px at 230px 80px, #fff, transparent),
+    radial-gradient(2px 2px at 300px 150px, rgba(255,255,255,0.7), transparent);
+  background-repeat: repeat;
+  background-size: 350px 200px;
+}
+
+/* 커스텀 마커 아이콘 스타일 */
+.custom-marker-icon {
+  background: transparent !important;
+  border: none !important;
+}
+
+/* 픽셀 마커 스타일 */
+.pixel-marker {
+  filter: drop-shadow(2px 2px 0 #000);
+  transition: transform 0.1s ease, filter 0.1s ease;
+}
+
+.pixel-marker:hover {
+  transform: scale(1.3) translateY(-5px);
+  filter: drop-shadow(3px 3px 0 #000) brightness(1.3);
+  z-index: 1000 !important;
+}
+
+/* 사각형 핀 마커 스타일 */
+.square-pin-marker {
+  filter: drop-shadow(2px 2px 0 rgba(0,0,0,0.5));
+  transition: all 0.15s ease;
+}
+
+.square-pin-marker:hover {
+  transform: scale(1.15) translateY(-3px);
+  filter: drop-shadow(3px 3px 0 rgba(0,0,0,0.6)) brightness(1.15);
+  z-index: 1000 !important;
+}
+
+/* 픽셀 마커 바운스 애니메이션 */
+@keyframes pixel-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.pixel-marker-bounce {
+  animation: pixel-bounce 0.5s ease infinite;
+}
+
+/* 현재 위치 마커 */
+.current-location-icon {
+  background: transparent !important;
+  border: none !important;
+}
+
+/* 현재 위치 펄스 애니메이션 */
+.pixel-location {
+  animation: pixel-pulse 2s ease-in-out infinite;
+}
+
+@keyframes pixel-pulse {
+  0%, 100% { 
+    transform: scale(1); 
+    filter: drop-shadow(0 0 5px #00ff00);
+  }
+  50% { 
+    transform: scale(1.1); 
+    filter: drop-shadow(0 0 15px #00ff00);
+  }
+}
+
+.marker-cluster-custom {
+  background: transparent !important;
+  border: none !important;
+}
+
+/* Leaflet 팝업 레트로 스타일 */
+.leaflet-popup-content-wrapper {
+  background: #1a1a2e !important;
+  border: 3px solid #00ff00 !important;
+  border-radius: 0 !important;
+  box-shadow: 4px 4px 0 #000 !important;
+}
+
+.leaflet-popup-tip {
+  background: #1a1a2e !important;
+  border: 2px solid #00ff00 !important;
+}
+
+.leaflet-popup-content {
+  color: #e0e0e0 !important;
+  font-family: 'VT323', 'DungGeunMo', monospace !important;
+}
+
+/* Leaflet 줌 컨트롤 레트로 스타일 */
+.leaflet-control-zoom {
+  border: none !important;
+  box-shadow: 4px 4px 0 #000 !important;
+}
+
+.leaflet-control-zoom a {
+  background: #1a1a2e !important;
+  color: #00ff00 !important;
+  border: 2px solid #00ff00 !important;
+  width: 36px !important;
+  height: 36px !important;
+  line-height: 32px !important;
+  font-family: 'Press Start 2P', 'Galmuri11', cursive !important;
+  font-size: 14px !important;
+}
+
+.leaflet-control-zoom a:hover {
+  background: #00ff00 !important;
+  color: #000 !important;
+}
+
+.leaflet-control-zoom-in {
+  border-bottom: none !important;
+}
+
+/* 줌 컨트롤 위치 조정 (현재위치 버튼 위) */
+.leaflet-bottom.leaflet-right .leaflet-control-zoom {
+  margin-bottom: 70px !important;
+  margin-right: 22px !important;
 }

@@ -1,19 +1,17 @@
+// backend/src/routes/markerRoutes.js
 const express = require('express');
 const router = express.Router();
 const markerController = require('../controllers/markerController');
+const { protect } = require('../middlewares/authMiddleware');
+const { upload } = require('../utils/uploadUtils');
 
-// ✅ authMiddleware 모듈에서 'protect' 함수만 구조 분해 할당하여 가져오기!
-const { protect } = require('../middlewares/authMiddleware'); 
-// OR
-// const authMiddleware = require('../middlewares/authMiddleware');
-// const protect = authMiddleware.protect;
+// 마커 CRUD (모든 라우트는 인증 필요)
+router.post('/', protect, markerController.createMarker);       // 생성
+router.get('/', protect, markerController.getAllMarkers);       // 전체 조회
+router.put('/:markerId', protect, markerController.updateMarker);    // 수정
+router.delete('/:markerId', protect, markerController.deleteMarker); // 삭제
 
-
-// ✅ 새 마커 생성 (인증된 사용자만 가능)
-// 이제 'protect' 변수는 직접 함수를 가리킵니다.
-router.post('/', protect, markerController.createMarker); // ✅ protect 변수 사용!
-
-// ✅ 필요하다면 모든 마커 조회 라우트도 여기에 추가
-router.get('/', protect, markerController.getAllMarkers);
+// 이미지 업로드 (마커용)
+router.post('/upload-image', protect, upload.single('image'), markerController.uploadMarkerImage);
 
 module.exports = router;
