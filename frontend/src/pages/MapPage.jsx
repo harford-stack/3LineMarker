@@ -37,6 +37,24 @@ import MarkerDetailPanel from '../components/markers/MarkerDetailPanel';
 import MapSearchInput from '../components/ui/MapSearchInput';
 import { CATEGORY_LIST, getCategoryInfo } from '../utils/categories';
 
+// 공통 스타일 임포트
+import {
+  COLORS,
+  retroBoxGreen,
+  retroBoxPink,
+  retroPaperSmall,
+  filterPanelStyle,
+  neonTitleGreen,
+  pixelCaption,
+  monoText,
+  retroToggleButton,
+  getToggleSelectedStyle,
+  filterIconButtonStyle,
+  alertSuccess,
+  alertError,
+  locationFabStyle,
+} from '../styles/commonStyles';
+
 // 지도 이동 컴포넌트
 function MapController({ targetPosition }) {
   const map = useMap();
@@ -70,11 +88,18 @@ function MarkerClickHandler({ marker, index, onMarkerClick }) {
       icon={createCategoryIcon(marker.category)}
       eventHandlers={{
         click: () => {
-          onMarkerClick(marker, index);
           // 줌 레벨에 따라 오프셋 조정 (줌인 할수록 작은 오프셋)
           const zoom = map.getZoom();
           const offset = 0.1 / Math.pow(2, zoom - 10); // 줌 레벨에 반비례
-          map.flyTo([marker.position[0], marker.position[1] - offset], zoom, { duration: 0.5 });
+          const targetPos = [marker.position[0], marker.position[1] - offset];
+          
+          // setView로 즉시 이동 후 마커 선택 (부드러운 전환)
+          map.setView(targetPos, zoom, { animate: true, duration: 0.25 });
+          
+          // 지도 이동 후 마커 선택 (약간의 딜레이)
+          setTimeout(() => {
+            onMarkerClick(marker, index);
+          }, 50);
         },
       }}
     />
@@ -329,8 +354,7 @@ function MapPage() {
         <Typography 
           variant="h2" 
           sx={{ 
-            color: '#00ff00',
-            textShadow: '0 0 20px #00ff00, 0 0 40px #00ff00',
+            ...neonTitleGreen,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -360,16 +384,7 @@ function MapPage() {
         <Tooltip title="CATEGORY FILTER">
           <IconButton 
             onClick={() => setShowFilters(!showFilters)}
-            sx={{
-              color: showFilters ? '#00ff00' : '#666',
-              border: '2px solid',
-              borderColor: showFilters ? '#00ff00' : '#333',
-              transition: 'all 0.2s ease',
-              '&:hover': {
-                bgcolor: 'rgba(0, 255, 0, 0.1)',
-                borderColor: '#00ff00',
-              },
-            }}
+            sx={filterIconButtonStyle(showFilters)}
           >
             <FilterListIcon />
           </IconButton>
@@ -379,22 +394,18 @@ function MapPage() {
       {/* 필터 패널 */}
       {showFilters && (
         <Paper sx={{ 
-          p: 2, 
+          ...filterPanelStyle,
           mb: 2, 
           mx: 'auto',
           maxWidth: 900,
-          bgcolor: 'rgba(26, 26, 46, 0.9)',
-          border: '2px solid #00ff00',
-          boxShadow: '4px 4px 0 #000, 0 0 20px rgba(0, 255, 0, 0.2)',
         }}>
           {/* 소유자 필터 */}
           <Box sx={{ mb: 2 }}>
             <Typography 
               variant="caption" 
               sx={{ 
-                color: '#00ff00', 
-                fontFamily: '"Press Start 2P", "Galmuri11", cursive',
-                fontSize: '0.6rem',
+                ...pixelCaption,
+                color: COLORS.neonGreen, 
                 display: 'block',
                 mb: 1,
                 textAlign: 'center',
@@ -419,24 +430,11 @@ function MapPage() {
                   key={filter.value}
                   value={filter.value}
                   sx={{
-                    px: 1.5,
-                    py: 0.5,
-                    border: '2px solid #333 !important',
-                    color: '#888',
-                    fontFamily: '"VT323", "DungGeunMo", monospace',
-                    fontSize: '0.85rem',
+                    ...retroToggleButton,
                     display: 'flex',
                     alignItems: 'center',
                     gap: 0.5,
-                    '&.Mui-selected': {
-                      bgcolor: filter.color,
-                      color: filter.value === 'bookmarked' ? '#000' : '#fff',
-                      borderColor: `${filter.color} !important`,
-                      boxShadow: `0 0 10px ${filter.color}`,
-                      '&:hover': { 
-                        bgcolor: filter.color,
-                      },
-                    },
+                    ...getToggleSelectedStyle(filter.color, filter.value === 'bookmarked' ? '#000' : '#fff'),
                   }}
                 >
                   {filter.icon}
@@ -458,9 +456,8 @@ function MapPage() {
             <Typography 
               variant="caption" 
               sx={{ 
-                color: '#00ffff', 
-                fontFamily: '"Press Start 2P", "Galmuri11", cursive',
-                fontSize: '0.6rem',
+                ...pixelCaption,
+                color: COLORS.neonCyan, 
                 display: 'block',
                 mb: 1,
                 textAlign: 'center',
@@ -485,21 +482,11 @@ function MapPage() {
                   key={cat.value}
                   value={cat.value}
                   sx={{
-                    px: 1.5,
-                    py: 0.5,
-                    border: '2px solid #333 !important',
-                    color: '#888',
-                    fontFamily: '"VT323", "DungGeunMo", monospace',
-                    fontSize: '0.85rem',
-                    '&.Mui-selected': {
-                      bgcolor: cat.value === 'ALL' ? '#00ff00' : cat.color,
-                      color: cat.value === 'ALL' ? '#000' : '#fff',
-                      borderColor: `${cat.value === 'ALL' ? '#00ff00' : cat.color} !important`,
-                      boxShadow: `0 0 10px ${cat.value === 'ALL' ? '#00ff00' : cat.color}`,
-                      '&:hover': { 
-                        bgcolor: cat.value === 'ALL' ? '#00cc00' : cat.color 
-                      },
-                    },
+                    ...retroToggleButton,
+                    ...getToggleSelectedStyle(
+                      cat.value === 'ALL' ? COLORS.neonGreen : cat.color,
+                      cat.value === 'ALL' ? '#000' : '#fff'
+                    ),
                   }}
                 >
                   <span style={{ marginRight: 4 }}>{cat.icon}</span>
@@ -522,14 +509,12 @@ function MapPage() {
       }}>
         {/* 지도 컨테이너 */}
         <Box sx={{
+          ...retroBoxGreen,
           flex: selectedMarker ? '1 1 65%' : '1 1 100%',
           minHeight: '500px',
           height: 'calc(100vh - 320px)',
           maxHeight: '700px',
-          border: '4px solid #00ff00',
-          boxShadow: '8px 8px 0 #000, 0 0 30px rgba(0, 255, 0, 0.3)',
           overflow: 'hidden',
-          backgroundColor: '#1a1a2e',
           position: 'relative',
           transition: 'flex 0.3s ease',
         }}>
@@ -603,18 +588,11 @@ function MapPage() {
             onClick={handleGetCurrentLocation}
             disabled={locatingUser}
             sx={{
+              ...locationFabStyle,
               position: 'absolute',
               bottom: 20,
               right: 20,
               zIndex: 1000,
-              bgcolor: '#1a1a2e',
-              border: '3px solid #00ffff',
-              color: '#00ffff',
-              boxShadow: '4px 4px 0 #000',
-              '&:hover': {
-                bgcolor: '#1a1a2e',
-                boxShadow: '4px 4px 0 #000, 0 0 15px rgba(0, 255, 255, 0.5)',
-              },
             }}
           >
             {locatingUser ? <CircularProgress size={24} sx={{ color: '#00ffff' }} /> : <MyLocationIcon />}
@@ -622,21 +600,20 @@ function MapPage() {
 
           {/* 마커 개수 표시 (오른쪽 상단) */}
           <Paper sx={{
+            ...retroPaperSmall,
+            borderColor: COLORS.neonPink,
             position: 'absolute',
             top: 16,
             right: 16,
             zIndex: 1000,
             px: 2,
             py: 1,
-            bgcolor: 'rgba(26, 26, 46, 0.95)',
-            border: '2px solid #ff00ff',
-            boxShadow: '3px 3px 0 #000',
           }}>
             <Typography 
               variant="body2" 
               sx={{ 
-                color: '#ff00ff',
-                fontFamily: '"VT323", "DungGeunMo", monospace',
+                ...monoText,
+                color: COLORS.neonPink,
                 fontSize: '1rem',
                 display: 'flex',
                 alignItems: 'center',
@@ -653,21 +630,19 @@ function MapPage() {
           {/* 클릭 안내 (왼쪽 상단) */}
           {!selectedMarker && isAuthenticated && (
             <Paper sx={{
+              ...retroPaperSmall,
               position: 'absolute',
               top: 16,
               left: 16,
               zIndex: 1000,
               px: 2,
               py: 1,
-              bgcolor: 'rgba(26, 26, 46, 0.95)',
-              border: '2px solid #00ff00',
-              boxShadow: '3px 3px 0 #000',
             }}>
               <Typography 
                 variant="caption" 
                 sx={{ 
-                  color: '#00ff00',
-                  fontFamily: '"VT323", "DungGeunMo", monospace',
+                  ...monoText,
+                  color: COLORS.neonGreen,
                 }}
               >
                 🎮 지도 클릭으로 마커 추가
@@ -679,13 +654,11 @@ function MapPage() {
         {/* 사이드 패널 */}
         <Slide direction="left" in={!!selectedMarker} mountOnEnter unmountOnExit>
           <Paper sx={{
+            ...retroBoxPink,
             flex: '0 0 380px',
             maxWidth: 400,
             height: 'calc(100vh - 320px)',
             maxHeight: '700px',
-            bgcolor: '#1a1a2e',
-            border: '4px solid #ff00ff',
-            boxShadow: '8px 8px 0 #000, 0 0 30px rgba(255, 0, 255, 0.3)',
             overflow: 'hidden',
             display: 'flex',
             flexDirection: 'column',
@@ -696,14 +669,14 @@ function MapPage() {
               alignItems: 'center',
               justifyContent: 'space-between',
               p: 2,
-              borderBottom: '2px solid #ff00ff',
+              borderBottom: `2px solid ${COLORS.neonPink}`,
               bgcolor: 'rgba(255, 0, 255, 0.1)',
             }}>
               <Typography 
                 variant="h6" 
                 sx={{ 
-                  color: '#ff00ff',
-                  fontFamily: '"Press Start 2P", "Galmuri11", cursive',
+                  ...pixelCaption,
+                  color: COLORS.neonPink,
                   fontSize: '0.7rem',
                   display: 'flex',
                   alignItems: 'center',
@@ -717,8 +690,8 @@ function MapPage() {
                 onClick={handleClosePanel}
                 size="small"
                 sx={{
-                  color: '#ff00ff',
-                  border: '2px solid #ff00ff',
+                  color: COLORS.neonPink,
+                  border: `2px solid ${COLORS.neonPink}`,
                   '&:hover': {
                     bgcolor: 'rgba(255, 0, 255, 0.2)',
                   },
@@ -759,18 +732,9 @@ function MapPage() {
           severity={snackbar.severity} 
           onClose={() => setSnackbar({ ...snackbar, open: false })}
           sx={{
-            bgcolor: snackbar.severity === 'success' ? '#1a1a2e' : '#2e1a1a',
-            border: `3px solid ${snackbar.severity === 'success' ? '#00ff00' : '#ff0040'}`,
-            color: snackbar.severity === 'success' ? '#00ff00' : '#ff0040',
-            fontFamily: '"VT323", "DungGeunMo", monospace',
-            fontSize: '1.2rem',
-            boxShadow: `8px 8px 0 #000, 0 0 30px ${snackbar.severity === 'success' ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,64,0.3)'}`,
+            ...(snackbar.severity === 'success' ? alertSuccess : alertError),
             px: 4,
             py: 2,
-            '& .MuiAlert-icon': {
-              color: snackbar.severity === 'success' ? '#00ff00' : '#ff0040',
-              fontSize: '1.5rem',
-            },
           }}
         >
           {snackbar.message}

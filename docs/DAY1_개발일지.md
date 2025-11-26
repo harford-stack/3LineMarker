@@ -1,219 +1,365 @@
 # 📋 3-LINE MARKER 개발일지 - DAY 1
 
-## 📅 작업일: 2025년 11월 23일 (토)
+## 📅 작업일: 2025년 11월 24일 (일)
 
-## 🎯 주제: SNS 핵심 기능 구현 (좋아요, 댓글, 팔로우, 프로필)
+## 🎯 주제: 프로젝트 기획 및 백엔드 인증 시스템 구축
 
 ---
 
 ## 🏆 핵심 성과
 
-| 구분           | 내용                                         |
-| -------------- | -------------------------------------------- |
-| 신규 기능      | 좋아요, 댓글, 팔로우, 프로필 페이지          |
-| 신규 테이블    | `LM_LIKES`, `LM_COMMENTS` (기존 테이블 활용) |
-| API 엔드포인트 | 12개 신규 생성                               |
-| React 컴포넌트 | 8개 신규 생성                                |
+| 구분            | 내용                                          |
+| --------------- | --------------------------------------------- |
+| 프로젝트 기획   | 3-Line Marker SNS 컨셉 및 MVP 기능 정의       |
+| DB 설계         | MySQL 5개 테이블 스키마 설계 (외래 키 미사용) |
+| 백엔드 세팅     | Node.js + Express 프로젝트 초기화             |
+| 인증 시스템     | bcrypt 비밀번호 해싱, JWT 토큰 발급           |
+| 프론트엔드 세팅 | React + Redux Toolkit 프로젝트 초기화         |
 
 ---
 
-## 🎨 프론트엔드 구현 내용
+## 📍 프로젝트 개요
 
-### 1. 좋아요 기능 (`LikeButton.jsx`)
+### 3-Line Marker란?
+
+- 지도 위에 나만의 **3줄 코멘트**를 남기는 위치 기반 SNS
+- 특정 장소에 발자취를 찍고, 다른 사용자들과 소통
+- 좋아요, 댓글, 팔로우를 통한 커뮤니티 형성
+
+### MVP 핵심 기능
+
+1. 🚪 로그인/회원가입
+2. 📌 좌표 마커 생성 (3줄 코멘트 + 사진)
+3. 🗺️ 지도에서 마커 조회
+4. 💬 댓글 기능
+5. 🤝 팔로우/팔로워
+6. ❤️ 좋아요 기능
+7. 🔍 검색 기능
+
+---
+
+## 📊 데이터베이스 설계
+
+### LM_USERS (사용자 테이블)
+
+```sql
+CREATE TABLE LM_USERS (
+    USER_ID VARCHAR(50) PRIMARY KEY COMMENT '사용자 고유 아이디',
+    PASSWORD VARCHAR(255) NOT NULL COMMENT '비밀번호 (암호화)',
+    USERNAME VARCHAR(100) NOT NULL COMMENT '닉네임',
+    PROFILE_IMAGE_URL VARCHAR(2048) DEFAULT 'default_profile.png',
+    STATUS_MESSAGE VARCHAR(200) DEFAULT '',
+    CREATED_AT DATETIME DEFAULT CURRENT_TIMESTAMP,
+    UPDATED_AT DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
+
+### LM_MARKERS (마커 테이블)
+
+```sql
+CREATE TABLE LM_MARKERS (
+    MARKER_ID INT AUTO_INCREMENT PRIMARY KEY,
+    USER_ID VARCHAR(50) NOT NULL,
+    LATITUDE DECIMAL(10, 8) NOT NULL,
+    LONGITUDE DECIMAL(11, 8) NOT NULL,
+    LINE1 TEXT NOT NULL COMMENT '3줄 글 첫째 줄',
+    LINE2 TEXT COMMENT '3줄 글 둘째 줄',
+    LINE3 TEXT COMMENT '3줄 글 셋째 줄',
+    IMAGE_URL VARCHAR(2048) DEFAULT NULL,
+    LIKE_COUNT INT DEFAULT 0,
+    COMMENT_COUNT INT DEFAULT 0,
+    IS_PUBLIC BOOLEAN DEFAULT TRUE,
+    CREATED_AT DATETIME DEFAULT CURRENT_TIMESTAMP,
+    UPDATED_AT DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
+
+### LM_FOLLOWS, LM_COMMENTS, LM_LIKES
+
+- 팔로우 관계, 댓글, 좋아요를 저장하는 테이블 설계 완료
+- 외래 키 제약 조건 미사용 (백업/복원 유연성 확보)
+
+---
+
+## 💻 백엔드 구현 내용
+
+### 1. 프로젝트 구조
+
+```
+backend/
+├── src/
+│   ├── config/
+│   │   ├── database.js     # MySQL 연결 설정
+│   │   └── jwt.js          # JWT 설정
+│   ├── controllers/
+│   │   └── authController.js
+│   ├── middlewares/
+│   │   └── authMiddleware.js
+│   ├── routes/
+│   │   └── authRoutes.js
+│   ├── utils/
+│   │   └── passwordUtils.js
+│   └── index.js
+├── .env
+└── package.json
+```
+
+### 2. 비밀번호 해싱 (`passwordUtils.js`)
 
 ```javascript
-// Optimistic Update 패턴 적용
-const handleToggleLike = async () => {
-  const prevIsLiked = isLiked;
-  const prevLikeCount = likeCount;
+const bcrypt = require("bcrypt");
 
-  // 즉시 UI 업데이트 (낙관적 업데이트)
-  setIsLiked(!isLiked);
-  setLikeCount(isLiked ? likeCount - 1 : likeCount + 1);
+exports.hashPassword = async (plainPassword) => {
+  const saltRounds = 10;
+  return await bcrypt.hash(plainPassword, saltRounds);
+};
 
-  try {
-    const data = await toggleLike(token, markerId);
-    setIsLiked(data.isLiked);
-    setLikeCount(data.likeCount);
-  } catch (error) {
-    // 실패 시 롤백
-    setIsLiked(prevIsLiked);
-    setLikeCount(prevLikeCount);
-  }
+exports.comparePassword = async (plainPassword, hashedPassword) => {
+  return await bcrypt.compare(plainPassword, hashedPassword);
 };
 ```
 
-**학습 포인트:**
-
-- **Optimistic Update**: 서버 응답 전에 UI를 먼저 업데이트하여 사용자 경험 향상
-- **롤백 패턴**: API 실패 시 이전 상태로 복원
-
-### 2. 댓글 기능
-
-- `CommentList.jsx`: 댓글 목록 표시 + 무한 스크롤
-- `CommentInput.jsx`: 댓글 입력 폼
-- 작성자만 삭제 가능한 권한 체크 로직
-
-### 3. 팔로우 기능 (`FollowButton.jsx`)
+### 3. 인증 컨트롤러 (`authController.js`)
 
 ```javascript
-// 팔로우 상태에 따른 버튼 스타일 변경
-<Button
-  variant={isFollowing ? "outlined" : "contained"}
-  onClick={handleToggleFollow}
->
-  {isFollowing ? "FOLLOWING" : "FOLLOW"}
-</Button>
-```
+// 회원가입
+exports.register = async (req, res) => {
+  const { userId, password, username } = req.body;
 
-### 4. 프로필 페이지
-
-- `MyProfilePage.jsx`: 본인 프로필 (수정 가능)
-- `UserProfilePage.jsx`: 타인 프로필 (조회 전용)
-- 팔로워/팔로잉 수 실시간 표시
-- 사용자별 마커 목록 표시
-
----
-
-## ⚙️ 백엔드 구현 내용
-
-### 1. 좋아요 API (`likeController.js`)
-
-```javascript
-// POST /api/likes/:markerId - 좋아요 토글
-exports.toggleLike = async (req, res) => {
-  const { markerId } = req.params;
-  const userId = req.user.userId;
-
-  // 기존 좋아요 확인
+  // 중복 체크
   const [existing] = await pool.query(
-    "SELECT * FROM LM_LIKES WHERE MARKER_ID = ? AND USER_ID = ?",
-    [markerId, userId]
+    "SELECT USER_ID FROM LM_USERS WHERE USER_ID = ?",
+    [userId]
+  );
+  if (existing.length > 0) {
+    return res.status(409).json({ message: "이미 존재하는 아이디입니다." });
+  }
+
+  // 비밀번호 해싱 후 저장
+  const hashedPassword = await hashPassword(password);
+  await pool.query(
+    "INSERT INTO LM_USERS (USER_ID, PASSWORD, USERNAME) VALUES (?, ?, ?)",
+    [userId, hashedPassword, username]
   );
 
-  if (existing.length > 0) {
-    // 좋아요 취소
-    await pool.query("DELETE FROM LM_LIKES WHERE LIKE_ID = ?", [
-      existing[0].LIKE_ID,
-    ]);
-    await pool.query(
-      "UPDATE LM_MARKERS SET LIKE_COUNT = LIKE_COUNT - 1 WHERE MARKER_ID = ?",
-      [markerId]
-    );
-  } else {
-    // 좋아요 추가
-    await pool.query(
-      "INSERT INTO LM_LIKES (MARKER_ID, USER_ID) VALUES (?, ?)",
-      [markerId, userId]
-    );
-    await pool.query(
-      "UPDATE LM_MARKERS SET LIKE_COUNT = LIKE_COUNT + 1 WHERE MARKER_ID = ?",
-      [markerId]
-    );
+  res.status(201).json({ message: "회원가입 성공!" });
+};
+
+// 로그인
+exports.login = async (req, res) => {
+  const { userId, password } = req.body;
+
+  const [users] = await pool.query("SELECT * FROM LM_USERS WHERE USER_ID = ?", [
+    userId,
+  ]);
+
+  if (
+    users.length === 0 ||
+    !(await comparePassword(password, users[0].PASSWORD))
+  ) {
+    return res
+      .status(401)
+      .json({ message: "아이디 또는 비밀번호가 올바르지 않습니다." });
   }
+
+  // JWT 토큰 발급
+  const token = jwt.sign({ id: users[0].USER_ID }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRES_IN,
+  });
+
+  res.json({
+    message: "로그인 성공!",
+    token,
+    user: { userId: users[0].USER_ID, username: users[0].USERNAME },
+  });
 };
 ```
 
-### 2. 댓글 API (`commentController.js`)
+### 4. 환경 변수 설정 (`.env`)
 
-| 메서드 | 경로                       | 설명             |
-| ------ | -------------------------- | ---------------- |
-| GET    | `/api/comments/:markerId`  | 마커별 댓글 조회 |
-| POST   | `/api/comments/:markerId`  | 댓글 작성        |
-| DELETE | `/api/comments/:commentId` | 댓글 삭제        |
+```
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=****
+DB_DATABASE=3linemarker
 
-### 3. 팔로우 API (`followController.js`)
+JWT_SECRET=your-super-secret-key
+JWT_EXPIRES_IN=7d
 
-- 팔로우/언팔로우 토글
-- 팔로워/팔로잉 목록 조회
-- 팔로우 상태 확인
+FRONTEND_ORIGIN=http://localhost:3000
+PORT=3010
+```
+
+---
+
+## ⚛️ 프론트엔드 구현 내용
+
+### 1. Redux Toolkit 설정
+
+#### Store 구성 (`app/store.js`)
+
+```javascript
+import { configureStore } from "@reduxjs/toolkit";
+import authReducer from "../features/auth/authSlice";
+
+export const store = configureStore({
+  reducer: {
+    auth: authReducer,
+  },
+});
+```
+
+#### Auth Slice (`features/auth/authSlice.js`)
+
+```javascript
+import { createSlice } from "@reduxjs/toolkit";
+
+const initialState = {
+  user: null,
+  token: null,
+  isAuthenticated: false,
+  loading: false,
+  error: null,
+};
+
+const authSlice = createSlice({
+  name: "auth",
+  initialState,
+  reducers: {
+    loginStart: (state) => {
+      state.loading = true;
+    },
+    loginSuccess: (state, action) => {
+      state.loading = false;
+      state.isAuthenticated = true;
+      state.user = action.payload.user;
+      state.token = action.payload.token;
+      localStorage.setItem("authToken", action.payload.token);
+      localStorage.setItem("user", JSON.stringify(action.payload.user));
+    },
+    loginFailure: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    logout: (state) => {
+      state.user = null;
+      state.token = null;
+      state.isAuthenticated = false;
+      localStorage.removeItem("authToken");
+      localStorage.removeItem("user");
+    },
+    loadUserFromLocalStorage: (state, action) => {
+      state.token = action.payload.token;
+      state.user = action.payload.user;
+      state.isAuthenticated = true;
+    },
+  },
+});
+
+export const {
+  loginStart,
+  loginSuccess,
+  loginFailure,
+  logout,
+  loadUserFromLocalStorage,
+} = authSlice.actions;
+export default authSlice.reducer;
+```
 
 ---
 
 ## 🐛 해결한 주요 에러
 
-### 에러 1: `useAuth is not a function`
+### 에러 1: `Module not found: Can't resolve 'react-redux'`
 
+**원인:** 필요한 라이브러리 미설치  
+**해결:**
+
+```bash
+npm install @reduxjs/toolkit react-redux react-router-dom
 ```
-TypeError: (0 , _hooks_useAuth__WEBPACK_IMPORTED_MODULE_21__.useAuth) is not a function
+
+### 에러 2: `Cannot find module 'bcrypt'`
+
+**원인:** 백엔드에 bcrypt 미설치  
+**해결:**
+
+```bash
+cd backend
+npm install bcrypt jsonwebtoken mysql2
 ```
 
-**원인:** `useAuth.js` 파일이 비어있었음 (Redux 사용 중)
+### 에러 3: `.env` 파일 로드 실패
 
+**원인:** `dotenv.config()` 경로 문제  
 **해결:**
 
 ```javascript
-// frontend/src/hooks/useAuth.js
-import { useSelector } from "react-redux";
-
-export const useAuth = () => {
-  const { user, token, isAuthenticated } = useSelector((state) => state.auth);
-  return { user, token, isAuthenticated };
-};
+// backend/src/config/database.js
+require("dotenv").config({ path: "../../.env" });
 ```
 
-**학습 포인트:**
+### 에러 4: JSON 파싱 에러 (Thunder Client)
 
-- Redux와 Custom Hook의 조합
-- useSelector를 활용한 전역 상태 접근
-
-### 에러 2: 좋아요 수 불일치
-
-**원인:** `LIKE_COUNT` 컬럼과 실제 `LM_LIKES` 테이블 데이터 불일치
-
-**해결:** 데이터 동기화 스크립트 작성
-
-```sql
-UPDATE LM_MARKERS m
-SET LIKE_COUNT = (SELECT COUNT(*) FROM LM_LIKES WHERE MARKER_ID = m.MARKER_ID);
 ```
+SyntaxError: Unexpected token '"', ""userId" :"... is not valid JSON
+```
+
+**원인:** API 테스트 시 잘못된 JSON 형식  
+**해결:** Thunder Client에서 Body 탭 → JSON 선택 후 정확한 문법 사용
 
 ---
 
 ## 📁 생성된 파일 목록
 
-### Frontend
-
-```
-frontend/src/
-├── components/
-│   ├── LikeButton.jsx
-│   ├── FollowButton.jsx
-│   └── comments/
-│       ├── CommentList.jsx
-│       └── CommentInput.jsx
-├── pages/
-│   ├── MyProfilePage.jsx
-│   └── UserProfilePage.jsx
-└── hooks/
-    └── useAuth.js
-```
-
 ### Backend
 
 ```
-backend/src/
-├── controllers/
-│   ├── likeController.js
-│   ├── commentController.js
-│   └── followController.js
-└── routes/
-    ├── likeRoutes.js
-    ├── commentRoutes.js
-    └── followRoutes.js
+backend/
+├── src/
+│   ├── config/
+│   │   ├── database.js
+│   │   └── jwt.js
+│   ├── controllers/
+│   │   └── authController.js
+│   ├── middlewares/
+│   │   └── authMiddleware.js
+│   ├── routes/
+│   │   └── authRoutes.js
+│   ├── utils/
+│   │   └── passwordUtils.js
+│   └── index.js
+├── .env
+└── package.json
+```
+
+### Frontend
+
+```
+frontend/
+├── src/
+│   ├── app/
+│   │   └── store.js
+│   ├── features/auth/
+│   │   └── authSlice.js
+│   ├── pages/
+│   │   ├── LoginPage.jsx
+│   │   └── RegisterPage.jsx
+│   └── App.js
+└── package.json
 ```
 
 ---
 
 ## 📝 내일 할 일
 
-- [ ] 피드 기능 구현
-- [ ] 북마크 기능 구현
-- [ ] 알림 시스템 구현
-- [ ] 지도 특화 기능 기획
+- [ ] 로그인/회원가입 UI 완성
+- [ ] 프론트엔드-백엔드 완벽 연동
+- [ ] 로그아웃 기능 구현
+- [ ] Material-UI 도입
 
 ---
 
 ## 💡 오늘의 회고
 
-SNS의 핵심 기능인 좋아요, 댓글, 팔로우를 구현했다. Optimistic Update 패턴을 처음 적용해봤는데, 사용자 경험이 확실히 좋아졌다. Redux와 Custom Hook을 조합하는 방법도 익혔다.
+프로젝트의 기반이 되는 인증 시스템을 구축했다. bcrypt와 JWT를 활용한 보안 인증 플로우를 이해하게 되었고, Redux Toolkit의 slice 패턴으로 상태 관리를 체계적으로 구성했다. 환경 변수 관리와 dotenv 경로 설정의 중요성도 배웠다.
