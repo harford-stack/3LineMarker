@@ -68,13 +68,17 @@ export const authSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    // ✅ 에러 초기화 액션
+    clearError: (state) => {
+      state.error = null;
+    },
   },
 });
 
 // ✅ 액션 크리에이터들 내보내기
 export const {
   loginStart, loginSuccess, loginFailure, logout, loadUserFromLocalStorage,
-  registerStart, registerSuccess, registerFailure
+  registerStart, registerSuccess, registerFailure, clearError
 } = authSlice.actions;
 
 export default authSlice.reducer;

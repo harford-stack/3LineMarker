@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
-import { loginStart, loginSuccess, loginFailure } from '../features/auth/authSlice';
+import { loginStart, loginSuccess, loginFailure, clearError } from '../features/auth/authSlice';
 import {
   Paper, Typography, TextField, Button, Box, CircularProgress
 } from '@mui/material';
@@ -17,6 +17,11 @@ function LoginPage() {
   const { loading, error, isAuthenticated } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const { showWarning } = useRetroDialog();
+
+  // 페이지 마운트 시 에러 초기화
+  useEffect(() => {
+    dispatch(clearError());
+  }, [dispatch]);
 
   useEffect(() => {
     if (isAuthenticated) {

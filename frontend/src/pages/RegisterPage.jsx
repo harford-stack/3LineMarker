@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
-import { registerStart, registerSuccess, registerFailure } from '../features/auth/authSlice';
+import { registerStart, registerSuccess, registerFailure, clearError } from '../features/auth/authSlice';
 import {
   Paper, Typography, TextField, Button, Box, CircularProgress,
   FormControl, InputLabel, Select, MenuItem
@@ -25,6 +25,11 @@ function RegisterPage() {
   const { loading, error } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const { showSuccess } = useRetroDialog();
+
+  // 페이지 마운트 시 에러 초기화
+  useEffect(() => {
+    dispatch(clearError());
+  }, [dispatch]);
 
   const handleRegister = async (e) => {
     e.preventDefault();
