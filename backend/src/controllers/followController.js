@@ -129,17 +129,22 @@ exports.getFollowers = async (req, res) => {
   const { userId } = req.params;
   const { page = 1, limit = 20 } = req.query;
   const offset = (page - 1) * limit;
+  const currentUserId = req.user?.user_id;
 
   try {
-    // 팔로워 목록 조회
+    // 팔로워 목록 조회 (현재 사용자의 팔로우 상태 포함)
     const [followers] = await pool.query(
-      `SELECT u.USER_ID, u.USERNAME, u.PROFILE_IMAGE_URL, u.STATUS_MESSAGE, f.CREATED_AT as FOLLOWED_AT
+      `SELECT u.USER_ID, u.USERNAME, u.PROFILE_IMAGE_URL, u.STATUS_MESSAGE, 
+              f.CREATED_AT as FOLLOWED_AT,
+              ${currentUserId ? `(SELECT COUNT(*) FROM LM_FOLLOWS WHERE FOLLOWER_ID = ? AND FOLLOWING_ID = u.USER_ID) > 0` : 'FALSE'} as IS_FOLLOWING
        FROM LM_FOLLOWS f
        JOIN LM_USERS u ON f.FOLLOWER_ID = u.USER_ID
        WHERE f.FOLLOWING_ID = ?
        ORDER BY f.CREATED_AT DESC
        LIMIT ? OFFSET ?`,
-      [userId, parseInt(limit), parseInt(offset)]
+      currentUserId 
+        ? [currentUserId, userId, parseInt(limit), parseInt(offset)]
+        : [userId, parseInt(limit), parseInt(offset)]
     );
 
     // 전체 팔로워 수 조회
@@ -152,6 +157,7 @@ exports.getFollowers = async (req, res) => {
       followers: followers.map((f) => ({
         ...convertUserToCamelCase(f),
         followedAt: f.FOLLOWED_AT,
+        isFollowing: f.IS_FOLLOWING === 1,
       })),
       totalCount: totalCount[0].count,
       page: parseInt(page),
@@ -170,17 +176,22 @@ exports.getFollowing = async (req, res) => {
   const { userId } = req.params;
   const { page = 1, limit = 20 } = req.query;
   const offset = (page - 1) * limit;
+  const currentUserId = req.user?.user_id;
 
   try {
-    // 팔로잉 목록 조회
+    // 팔로잉 목록 조회 (현재 사용자의 팔로우 상태 포함)
     const [following] = await pool.query(
-      `SELECT u.USER_ID, u.USERNAME, u.PROFILE_IMAGE_URL, u.STATUS_MESSAGE, f.CREATED_AT as FOLLOWED_AT
+      `SELECT u.USER_ID, u.USERNAME, u.PROFILE_IMAGE_URL, u.STATUS_MESSAGE, 
+              f.CREATED_AT as FOLLOWED_AT,
+              ${currentUserId ? `(SELECT COUNT(*) FROM LM_FOLLOWS WHERE FOLLOWER_ID = ? AND FOLLOWING_ID = u.USER_ID) > 0` : 'FALSE'} as IS_FOLLOWING
        FROM LM_FOLLOWS f
        JOIN LM_USERS u ON f.FOLLOWING_ID = u.USER_ID
        WHERE f.FOLLOWER_ID = ?
        ORDER BY f.CREATED_AT DESC
        LIMIT ? OFFSET ?`,
-      [userId, parseInt(limit), parseInt(offset)]
+      currentUserId 
+        ? [currentUserId, userId, parseInt(limit), parseInt(offset)]
+        : [userId, parseInt(limit), parseInt(offset)]
     );
 
     // 전체 팔로잉 수 조회
@@ -193,6 +204,7 @@ exports.getFollowing = async (req, res) => {
       following: following.map((f) => ({
         ...convertUserToCamelCase(f),
         followedAt: f.FOLLOWED_AT,
+        isFollowing: f.IS_FOLLOWING === 1,
       })),
       totalCount: totalCount[0].count,
       page: parseInt(page),

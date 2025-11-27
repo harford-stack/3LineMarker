@@ -119,7 +119,7 @@ function FollowListModal({ open, onClose, userId, type = 'followers' }) {
                 secondaryAction={
                   <FollowButton
                     userId={user.userId}
-                    initialIsFollowing={false}
+                    initialIsFollowing={user.isFollowing}
                     size="small"
                   />
                 }
