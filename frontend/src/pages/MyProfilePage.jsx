@@ -50,7 +50,7 @@ function StatItem({ label, value, onClick, color = '#00ffff' }) {
         border: '2px solid',
         borderColor: color,
         bgcolor: 'rgba(0, 0, 0, 0.3)',
-        minWidth: 80,
+        width: 110,
         transition: 'all 0.2s ease',
         '&:hover': onClick ? { 
           bgcolor: `${color}20`,

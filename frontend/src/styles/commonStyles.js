@@ -160,9 +160,9 @@ export const retroButtonOutlineCyan = {
 
 /** 필터 토글 아이콘 버튼 */
 export const filterIconButtonStyle = (isActive) => ({
-  color: isActive ? COLORS.neonGreen : '#666',
+  color: isActive ? COLORS.neonGreen : '#fff',
   border: '2px solid',
-  borderColor: isActive ? COLORS.neonGreen : '#333',
+  borderColor: isActive ? COLORS.neonGreen : '#fff',
   transition: 'all 0.2s ease',
   '&:hover': {
     bgcolor: 'rgba(0, 255, 0, 0.1)',

@@ -30,6 +30,7 @@ function StatItem({ label, value, onClick }) {
         cursor: onClick ? 'pointer' : 'default',
         '&:hover': onClick ? { opacity: 0.7 } : {},
         transition: 'opacity 0.2s',
+        minWidth: 70,
       }}
     >
       <Typography variant="h6" fontWeight="bold">

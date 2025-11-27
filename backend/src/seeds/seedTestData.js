@@ -94,6 +94,32 @@ const testUsers = [
   { userId: 'fitness_guru', username: '헬스왕', email: 'fitness@test.com', gender: 'M', bio: '오운완! 💪' },
   { userId: 'pet_lover', username: '반려동물천국', email: 'pet@test.com', gender: 'F', bio: '강아지 산책 스팟 공유해요 🐕' },
   { userId: 'vintage_hunter', username: '빈티지헌터', email: 'vintage@test.com', gender: 'O', bio: '빈티지샵 탐방 전문가 🏺' },
+  // 추가 사용자
+  { userId: 'soju_lover', username: '소주매니아', email: 'soju@test.com', gender: 'M', bio: '오늘도 한잔! 🍶' },
+  { userId: 'yoga_master', username: '요가마스터', email: 'yoga@test.com', gender: 'F', bio: '마음의 평화를 찾아서 🧘' },
+  { userId: 'surfing_dude', username: '서핑보이', email: 'surf@test.com', gender: 'M', bio: '송정 서핑 매니아 🏄' },
+  { userId: 'bbq_king', username: '바베큐왕', email: 'bbq@test.com', gender: 'M', bio: '고기는 구워야 제맛 🔥' },
+  { userId: 'pizza_lover', username: '피자덕후', email: 'pizza@test.com', gender: 'F', bio: '치즈가 쭉쭉 늘어나야 해 🍕' },
+  { userId: 'sushi_master', username: '스시장인', email: 'sushi@test.com', gender: 'M', bio: '오마카세 탐방 중 🍣' },
+  { userId: 'chicken_fan', username: '치킨마니아', email: 'chicken@test.com', gender: 'M', bio: '치킨은 사랑입니다 🍗' },
+  { userId: 'tteokbokki', username: '떡볶이홀릭', email: 'tteok@test.com', gender: 'F', bio: '매운맛 마스터 🌶️' },
+  { userId: 'kimbap_queen', username: '김밥천국', email: 'kimbap@test.com', gender: 'F', bio: '분식은 내 영역 🍙' },
+  { userId: 'burger_hunter', username: '버거헌터', email: 'burger@test.com', gender: 'M', bio: '수제버거 탐방가 🍔' },
+  { userId: 'wine_lover', username: '와인애호가', email: 'wine@test.com', gender: 'F', bio: '오늘의 와인 추천 🍷' },
+  { userId: 'cocktail_bar', username: '칵테일바텐더', email: 'cocktail@test.com', gender: 'M', bio: '분위기 좋은 바 탐방 🍸' },
+  { userId: 'ice_cream', username: '아이스크림덕후', email: 'icecream@test.com', gender: 'F', bio: '달달한 행복 🍦' },
+  { userId: 'bread_lover', username: '빵순이', email: 'bread@test.com', gender: 'F', bio: '갓 구운 빵 냄새 최고 🥐' },
+  { userId: 'tea_master', username: '차마스터', email: 'tea@test.com', gender: 'O', bio: '차 한잔의 여유 🍵' },
+  { userId: 'camping_fan', username: '캠핑매니아', email: 'camping@test.com', gender: 'M', bio: '불멍이 최고 ⛺' },
+  { userId: 'fishing_pro', username: '낚시왕', email: 'fishing@test.com', gender: 'M', bio: '바다낚시 전문가 🎣' },
+  { userId: 'bike_rider', username: '자전거라이더', email: 'bike@test.com', gender: 'M', bio: '부산 해안도로 달리기 🚴' },
+  { userId: 'runner_girl', username: '러닝걸', email: 'runner@test.com', gender: 'F', bio: '새벽 러닝 중독자 🏃' },
+  { userId: 'drama_fan', username: '드라마덕후', email: 'drama@test.com', gender: 'F', bio: '촬영지 탐방 마니아 📺' },
+  { userId: 'movie_buff', username: '영화광', email: 'movie@test.com', gender: 'M', bio: '영화관 순례 중 🎬' },
+  { userId: 'plant_mom', username: '식물맘', email: 'plant@test.com', gender: 'F', bio: '플랜테리어 좋아요 🌿' },
+  { userId: 'diy_maker', username: '공예작가', email: 'diy@test.com', gender: 'F', bio: '손으로 만드는 행복 ✂️' },
+  { userId: 'game_streamer', username: '게임스트리머', email: 'stream@test.com', gender: 'M', bio: 'PC방 탐방 전문가 🎮' },
+  { userId: 'idol_fan', username: '아이돌팬', email: 'idol@test.com', gender: 'F', bio: '덕질은 삶의 원동력 ⭐' },
 ];
 
 // 마커 카테고리별 샘플 데이터 (line1, line2, line3 형식)
@@ -223,7 +249,7 @@ async function seedTestData() {
     const markerIds = [];
     const categories = Object.keys(markerTemplates);
 
-    for (let i = 0; i < 60; i++) {
+    for (let i = 0; i < 200; i++) {
       const category = randomItem(categories);
       const template = randomItem(markerTemplates[category]);
       const userId = randomItem(userIds);
@@ -252,8 +278,8 @@ async function seedTestData() {
     let followCount = 0;
 
     for (const follower of userIds) {
-      // 각 유저가 3~8명 랜덤 팔로우
-      const followNum = randomInt(3, 8);
+      // 각 유저가 5~15명 랜덤 팔로우
+      const followNum = randomInt(5, 15);
       const shuffled = userIds.filter(u => u !== follower).sort(() => 0.5 - Math.random());
       const toFollow = shuffled.slice(0, followNum);
 
@@ -274,8 +300,8 @@ async function seedTestData() {
     let likeCount = 0;
 
     for (const markerId of markerIds) {
-      // 각 마커에 0~10개의 좋아요
-      const likeNum = randomInt(0, 10);
+      // 각 마커에 0~15개의 좋아요
+      const likeNum = randomInt(0, 15);
       const shuffled = userIds.sort(() => 0.5 - Math.random());
       const likers = shuffled.slice(0, likeNum);
       let markerLikeCount = 0;
@@ -308,8 +334,8 @@ async function seedTestData() {
     let bookmarkCount = 0;
 
     for (const userId of userIds) {
-      // 각 유저가 2~8개의 마커 북마크
-      const bookmarkNum = randomInt(2, 8);
+      // 각 유저가 5~15개의 마커 북마크
+      const bookmarkNum = randomInt(5, 15);
       const shuffled = markerIds.sort(() => 0.5 - Math.random());
       const toBookmark = shuffled.slice(0, bookmarkNum);
 
@@ -330,8 +356,8 @@ async function seedTestData() {
     let commentCount = 0;
 
     for (const markerId of markerIds) {
-      // 각 마커에 0~8개의 댓글
-      const commentNum = randomInt(0, 8);
+      // 각 마커에 0~12개의 댓글
+      const commentNum = randomInt(0, 12);
       let markerCommentCount = 0;
 
       for (let i = 0; i < commentNum; i++) {

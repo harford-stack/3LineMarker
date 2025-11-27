@@ -331,16 +331,17 @@ function MarkerDetailPanel({ marker, isOwner, onSave, onDelete, onImageUpload })
             exclusive
             onChange={handleCategoryChange}
             size="small"
-            sx={{ flexWrap: 'wrap', gap: 0.5 }}
+            sx={{ flexWrap: 'nowrap', gap: 0.5, display: 'flex' }}
           >
             {MARKER_CATEGORIES.map((cat) => (
               <Tooltip key={cat.value} title={cat.label}>
                 <ToggleButton
                   value={cat.value}
                   sx={{
-                    px: 1.5,
+                    px: 1.4,
                     py: 0.5,
                     fontSize: '1.2rem',
+                    minWidth: 'auto',
                     border: '2px solid #333 !important',
                     '&.Mui-selected': {
                       bgcolor: cat.color,

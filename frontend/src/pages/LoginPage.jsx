@@ -312,8 +312,33 @@ function LoginPage() {
                 />
               </Box>
 
+              <Button
+                type="submit"
+                variant="contained"
+                fullWidth
+                disabled={loading}
+                startIcon={loading ? <CircularProgress size={16} sx={{ color: '#000' }} /> : <LoginIcon />}
+                sx={{ 
+                  mt: 2,
+                  py: 1.5,
+                  bgcolor: '#00ff00',
+                  color: '#000',
+                  fontSize: '0.75rem',
+                  '&:hover': {
+                    bgcolor: '#00cc00',
+                    boxShadow: '0 0 25px #00ff00',
+                  },
+                  '&:disabled': {
+                    bgcolor: '#004400',
+                    color: '#006600',
+                  },
+                }}
+              >
+                {loading ? 'CONNECTING...' : 'START GAME'}
+              </Button>
+
               {/* 아이디/비밀번호 찾기 링크 */}
-              <Box sx={{ textAlign: 'right', mt: 1 }}>
+              <Box sx={{ textAlign: 'center', mt: 1 }}>
                 <Button 
                   type="button"
                   size="small"
@@ -332,31 +357,6 @@ function LoginPage() {
                   아이디 / 비밀번호 찾기
                 </Button>
               </Box>
-
-              <Button
-                type="submit"
-                variant="contained"
-                fullWidth
-                disabled={loading}
-                startIcon={loading ? <CircularProgress size={16} sx={{ color: '#000' }} /> : <LoginIcon />}
-                sx={{ 
-                  mt: 1,
-                  py: 1.5,
-                  bgcolor: '#00ff00',
-                  color: '#000',
-                  fontSize: '0.75rem',
-                  '&:hover': {
-                    bgcolor: '#00cc00',
-                    boxShadow: '0 0 25px #00ff00',
-                  },
-                  '&:disabled': {
-                    bgcolor: '#004400',
-                    color: '#006600',
-                  },
-                }}
-              >
-                {loading ? 'CONNECTING...' : 'START GAME'}
-              </Button>
 
               {error && (
                 <Box sx={{ 
