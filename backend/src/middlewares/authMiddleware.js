@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken');
+const { verifyToken } = require('../config/jwt');
 const pool = require('../config/database');
 
 /**
@@ -11,7 +11,7 @@ exports.protect = async (req, res, next) => {
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
     try {
       token = req.headers.authorization.split(' ')[1];
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const decoded = verifyToken(token);
       console.log('토큰에서 디코드된 ID:', decoded.id);
       
       // ✅ 디코드된 토큰의 ID(로그인 시 user_id로 저장했음)를 사용하여 사용자 정보를 조회
@@ -48,7 +48,7 @@ exports.optionalProtect = async (req, res, next) => {
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
     try {
       token = req.headers.authorization.split(' ')[1];
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const decoded = verifyToken(token);
       
       const [rows] = await pool.query('SELECT user_id, username FROM LM_USERS WHERE user_id = ?', [decoded.id]);
 

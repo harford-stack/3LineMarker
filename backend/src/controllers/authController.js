@@ -1,6 +1,6 @@
 const db = require('../config/database');
 const { hashPassword, comparePassword } = require('../utils/passwordUtils');
-const jwt = require('jsonwebtoken');
+const { generateToken } = require('../config/jwt');
 const crypto = require('crypto');
 
 // ✅ 회원가입 처리 함수
@@ -80,11 +80,7 @@ exports.login = async (req, res) => {
             return res.status(401).json({ message: '아이디 또는 비밀번호가 올바르지 않습니다.' });
         }
 
-        const token = jwt.sign(
-            { id: user.USER_ID },
-            process.env.JWT_SECRET,
-            { expiresIn: process.env.JWT_EXPIRES_IN || '1h' }
-        );
+        const token = generateToken({ id: user.USER_ID });
 
         res.status(200).json({
             message: '로그인 성공!',
