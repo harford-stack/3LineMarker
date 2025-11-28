@@ -147,10 +147,23 @@ export const useMarkers = () => {
     setOwnerFilter(filter);
   }, []);
 
-  // 필터링된 마커 (카테고리 필터는 프론트엔드에서 적용)
-  const filteredMarkers = categoryFilter === 'ALL' 
-    ? markers 
-    : markers.filter(m => m.category === categoryFilter);
+  // 필터가 변경될 때마다 서버에서 새로 불러오기
+  useEffect(() => {
+    if (!isAuthenticated || !token) return;
+    
+    const options = {};
+    if (categoryFilter !== 'ALL') {
+      options.category = categoryFilter;
+    }
+    if (ownerFilter !== 'all') {
+      options.filter = ownerFilter;
+    }
+    
+    loadMarkers(options);
+  }, [categoryFilter, ownerFilter, isAuthenticated, token, loadMarkers]);
+
+  // 필터링된 마커 (서버에서 이미 필터링된 결과를 사용)
+  const filteredMarkers = markers;
 
   return {
     markers,

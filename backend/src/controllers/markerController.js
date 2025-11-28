@@ -15,7 +15,13 @@ const sendError = (res, statusCode, message, error = null) => {
 
 // 마커 ID로 조회 후 변환된 객체 반환
 const getMarkerById = async (markerId) => {
-  const [rows] = await pool.query('SELECT * FROM LM_MARKERS WHERE MARKER_ID = ?', [markerId]);
+  const [rows] = await pool.query(
+    `SELECT m.*, u.USERNAME, u.PROFILE_IMAGE_URL
+     FROM LM_MARKERS m
+     JOIN LM_USERS u ON m.USER_ID = u.USER_ID
+     WHERE m.MARKER_ID = ?`,
+    [markerId]
+  );
   return rows.length > 0 ? convertMarkerToCamelCase(rows[0]) : null;
 };
 
@@ -75,14 +81,21 @@ exports.getAllMarkers = async (req, res) => {
     switch (filter) {
       case 'mine':
         // 내 마커만
-        query = 'SELECT * FROM LM_MARKERS WHERE USER_ID = ?';
+        query = `
+          SELECT m.*, u.USERNAME, u.PROFILE_IMAGE_URL
+          FROM LM_MARKERS m
+          JOIN LM_USERS u ON m.USER_ID = u.USER_ID
+          WHERE m.USER_ID = ?
+        `;
         params.push(userId);
         break;
 
       case 'following':
         // 팔로우한 사용자의 마커만
         query = `
-          SELECT m.* FROM LM_MARKERS m
+          SELECT m.*, u.USERNAME, u.PROFILE_IMAGE_URL
+          FROM LM_MARKERS m
+          JOIN LM_USERS u ON m.USER_ID = u.USER_ID
           INNER JOIN LM_FOLLOWS f ON m.USER_ID = f.FOLLOWING_ID
           WHERE f.FOLLOWER_ID = ? AND m.IS_PUBLIC = TRUE
         `;
@@ -92,7 +105,9 @@ exports.getAllMarkers = async (req, res) => {
       case 'bookmarked':
         // 북마크한 마커만
         query = `
-          SELECT m.* FROM LM_MARKERS m
+          SELECT m.*, u.USERNAME, u.PROFILE_IMAGE_URL
+          FROM LM_MARKERS m
+          JOIN LM_USERS u ON m.USER_ID = u.USER_ID
           INNER JOIN LM_BOOKMARKS b ON m.MARKER_ID = b.MARKER_ID
           WHERE b.USER_ID = ?
         `;
@@ -101,12 +116,22 @@ exports.getAllMarkers = async (req, res) => {
 
       case 'popular':
         // 인기 마커 (좋아요 5개 이상)
-        query = 'SELECT * FROM LM_MARKERS WHERE LIKE_COUNT >= 5';
+        query = `
+          SELECT m.*, u.USERNAME, u.PROFILE_IMAGE_URL
+          FROM LM_MARKERS m
+          JOIN LM_USERS u ON m.USER_ID = u.USER_ID
+          WHERE m.LIKE_COUNT >= 5
+        `;
         break;
 
       default:
         // 전체 마커 (공개 + 내 비공개)
-        query = 'SELECT * FROM LM_MARKERS WHERE (IS_PUBLIC = TRUE OR USER_ID = ?)';
+        query = `
+          SELECT m.*, u.USERNAME, u.PROFILE_IMAGE_URL
+          FROM LM_MARKERS m
+          JOIN LM_USERS u ON m.USER_ID = u.USER_ID
+          WHERE (m.IS_PUBLIC = TRUE OR m.USER_ID = ?)
+        `;
         params.push(userId);
         break;
     }

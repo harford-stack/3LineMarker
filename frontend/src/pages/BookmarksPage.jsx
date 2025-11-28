@@ -58,7 +58,10 @@ function BookmarkCard({ marker, onMarkerClick, onRemove, index }) {
 
   return (
     <Card sx={{ 
-      height: '100%', 
+      width: '100%',
+      height: '100%',
+      minWidth: 0,
+      maxWidth: '100%',
       position: 'relative',
       bgcolor: '#1a1a2e',
       border: '2px solid #ff00ff',
@@ -67,6 +70,8 @@ function BookmarkCard({ marker, onMarkerClick, onRemove, index }) {
       animationDelay: `${index * 0.05}s`,
       animationFillMode: 'both',
       transition: 'all 0.2s ease',
+      display: 'flex',
+      flexDirection: 'column',
       '&:hover': {
         transform: 'translate(-2px, -2px)',
         boxShadow: '6px 6px 0 #000, 0 0 20px rgba(255, 0, 255, 0.3)',
@@ -101,14 +106,31 @@ function BookmarkCard({ marker, onMarkerClick, onRemove, index }) {
         <BookmarkRemoveIcon fontSize="small" />
       </IconButton>
 
-      <CardActionArea onClick={() => onMarkerClick(marker)} sx={{ height: '100%' }}>
+      <CardActionArea 
+        onClick={() => onMarkerClick(marker)} 
+        sx={{ 
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'stretch',
+        }}
+      >
         {imageUrl ? (
-          <Box sx={{ position: 'relative' }}>
+          <Box sx={{ 
+            position: 'relative',
+            width: '100%',
+            height: 160,
+            overflow: 'hidden',
+          }}>
             <CardMedia
               component="img"
-              height="160"
               image={imageUrl}
               alt={marker.line1}
+              sx={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+              }}
             />
             {/* 스캔라인 효과 */}
             <Box sx={{
@@ -135,18 +157,35 @@ function BookmarkCard({ marker, onMarkerClick, onRemove, index }) {
             <PlaceIcon sx={{ fontSize: 48, color: '#ff00ff40' }} />
           </Box>
         )}
-        <CardContent sx={{ bgcolor: 'transparent' }}>
-          <Typography 
-            variant="body1" 
-            noWrap 
-            sx={{ 
-              color: '#fff',
-              mb: 1,
-              '&::before': { content: '"▸ "', color: '#ff00ff' },
-            }}
-          >
-            {marker.line1}
-          </Typography>
+        <CardContent sx={{ 
+          bgcolor: 'transparent',
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          width: '100%',
+          minWidth: 0,
+        }}>
+          <Box sx={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: 1, 
+            mb: 1,
+            minWidth: 0,
+            width: '100%',
+          }}>
+            <Typography 
+              variant="body1" 
+              noWrap 
+              sx={{ 
+                flex: 1,
+                minWidth: 0,
+                color: '#fff',
+                '&::before': { content: '"▸ "', color: '#ff00ff' },
+              }}
+            >
+              {marker.line1}
+            </Typography>
+          </Box>
           {marker.line2 && (
             <Typography variant="body2" noWrap sx={{ color: '#888' }}>
               {marker.line2}
@@ -341,13 +380,29 @@ function BookmarksPage() {
 
         {/* 북마크 목록 */}
         {loading && bookmarks.length === 0 ? (
-          <Grid container spacing={2}>
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: {
+                xs: '1fr',
+                sm: 'repeat(2, 1fr)',
+                md: 'repeat(4, 1fr)',
+              },
+              gap: 2,
+            }}
+          >
             {[...Array(8)].map((_, i) => (
-              <Grid item xs={12} sm={6} md={4} lg={3} key={i}>
+              <Box
+                key={i}
+                sx={{
+                  width: '100%',
+                  minWidth: 0,
+                }}
+              >
                 <SkeletonCard />
-              </Grid>
+              </Box>
             ))}
-          </Grid>
+          </Box>
         ) : bookmarks.length === 0 ? (
           <Box sx={{ 
             textAlign: 'center', 
@@ -381,18 +436,34 @@ function BookmarksPage() {
           </Box>
         ) : (
           <>
-            <Grid container spacing={2}>
+            <Box
+              sx={{
+                display: 'grid',
+                gridTemplateColumns: {
+                  xs: '1fr',
+                  sm: 'repeat(2, 1fr)',
+                  md: 'repeat(4, 1fr)',
+                },
+                gap: 2,
+              }}
+            >
               {bookmarks.map((marker, index) => (
-                <Grid item xs={12} sm={6} md={4} lg={3} key={marker.markerId}>
+                <Box
+                  key={marker.markerId}
+                  sx={{
+                    width: '100%',
+                    minWidth: 0,
+                  }}
+                >
                   <BookmarkCard
                     marker={marker}
                     onMarkerClick={handleMarkerClick}
                     onRemove={handleRemoveBookmark}
                     index={index}
                   />
-                </Grid>
+                </Box>
               ))}
-            </Grid>
+            </Box>
 
             {/* 무한 스크롤 트리거 */}
             <Box 
