@@ -331,3 +331,21 @@ export const getBatchBookmarkStatus = async (token, markerIds) => {
     body: { markerIds },
   });
 };
+
+// ===== 날씨 API =====
+
+/** 날씨 정보 조회 */
+export const fetchWeather = async (latitude, longitude) => {
+  const params = new URLSearchParams({
+    lat: latitude,
+    lng: longitude,
+  });
+  const data = await apiRequest(`/api/weather?${params.toString()}`);
+  
+  // API 응답이 실패한 경우 에러 던지기
+  if (!data.success) {
+    throw new Error(data.message || '날씨 정보를 가져올 수 없습니다.');
+  }
+  
+  return data;
+};
