@@ -1,5 +1,5 @@
 // frontend/src/components/markers/MarkerDetailPanel.jsx
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
@@ -81,6 +81,14 @@ function MarkerDetailPanel({ marker, isOwner, onSave, onDelete, onImageUpload })
 
   const isNewMarker = String(marker.markerId).startsWith('temp-');
   const categoryInfo = getCategoryInfo(marker.category);
+
+  // marker prop이 변경될 때 상태 업데이트
+  useEffect(() => {
+    setImageUrl(marker.imageUrl);
+    setCategory(marker.category || 'GENERAL');
+    setPreviewUrl(null); // 다른 마커로 변경 시 preview 초기화
+    isPublicRef.current = marker.isPublic;
+  }, [marker.markerId, marker.imageUrl, marker.category, marker.isPublic]);
 
   // 이미지 전체 URL 생성
   const getFullImageUrl = (url) => {
@@ -184,6 +192,7 @@ function MarkerDetailPanel({ marker, isOwner, onSave, onDelete, onImageUpload })
           <Box sx={{ position: 'relative' }}>
             <Box
               component="img"
+              key={`${marker.markerId}-${imageUrl}`}
               src={displayImageUrl}
               alt="마커 이미지"
               sx={{
