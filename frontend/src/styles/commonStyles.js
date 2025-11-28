@@ -181,7 +181,7 @@ export const retroToggleButton = {
   border: '2px solid #333 !important',
   color: '#888',
   fontFamily: '"VT323", "DungGeunMo", monospace',
-  fontSize: '0.85rem',
+  fontSize: '0.95rem', // 0.85rem에서 0.95rem으로 증가
   borderRadius: '0 !important',
 };
 

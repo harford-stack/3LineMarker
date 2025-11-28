@@ -17,6 +17,7 @@ const followRouter = require('./routes/followRoutes');  // 팔로우 기능
 const notificationRouter = require('./routes/notificationRoutes'); // 알림 기능
 const feedRouter = require('./routes/feedRoutes');      // 피드 기능
 const bookmarkRouter = require('./routes/bookmarkRoutes'); // 북마크 기능
+const weatherRouter = require('./routes/weatherRoutes'); // 날씨 기능
 
 // 3. Express 애플리케이션 생성
 const app = express();
@@ -40,6 +41,7 @@ app.use("/api/follows", followRouter);  // /api/follows 로 시작하는 요청�
 app.use("/api/notifications", notificationRouter); // /api/notifications 로 시작하는 요청
 app.use("/api/feed", feedRouter);       // /api/feed 로 시작하는 요청은 feedRouter가 처리
 app.use("/api/bookmarks", bookmarkRouter); // /api/bookmarks 로 시작하는 요청
+app.use("/api/weather", weatherRouter); // /api/weather 로 시작하는 요청
 
 // 6. 정적 파일 서비스 (업로드된 이미지 파일)
 // ✅ 주의: 이 부분은 파일 저장 방식에 따라 달라집니다!

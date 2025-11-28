@@ -195,29 +195,68 @@ exports.updateMarker = async (req, res) => {
 /**
  * 마커 삭제
  * DELETE /api/markers/:markerId
+ * 
+ * 마커 삭제 시 연관된 데이터도 함께 삭제됩니다:
+ * - 좋아요 (LM_LIKES)
+ * - 북마크 (LM_BOOKMARKS)
+ * - 댓글 (LM_COMMENTS)
+ * - 알림 (LM_NOTIFICATIONS - 마커 관련 알림)
  */
 exports.deleteMarker = async (req, res) => {
   const { markerId } = req.params;
   const userId = req.user.user_id;
 
+  // 트랜잭션 시작을 위한 connection 가져오기
+  const connection = await pool.getConnection();
+
   try {
+    // 트랜잭션 시작
+    await connection.beginTransaction();
+
     // 마커 조회 (이미지 삭제를 위해)
     const marker = await getMarkerById(markerId);
     
     const ownership = await verifyMarkerOwnership(markerId, userId);
     if (ownership.error) {
+      await connection.rollback();
       return res.status(ownership.error.status).json({ message: ownership.error.message });
     }
 
-    // 마커에 연결된 이미지 파일 삭제
+    // 1. 연관된 좋아요 삭제
+    await connection.query('DELETE FROM LM_LIKES WHERE MARKER_ID = ?', [markerId]);
+
+    // 2. 연관된 북마크 삭제
+    await connection.query('DELETE FROM LM_BOOKMARKS WHERE MARKER_ID = ?', [markerId]);
+
+    // 3. 연관된 댓글 삭제
+    await connection.query('DELETE FROM LM_COMMENTS WHERE MARKER_ID = ?', [markerId]);
+
+    // 4. 연관된 알림 삭제 (마커 관련 알림만)
+    // LIKE, COMMENT 타입의 알림 중 해당 마커와 관련된 것 삭제
+    await connection.query(
+      'DELETE FROM LM_NOTIFICATIONS WHERE MARKER_ID = ?',
+      [markerId]
+    );
+
+    // 5. 마커에 연결된 이미지 파일 삭제
     if (marker?.imageUrl) {
       deleteImage(marker.imageUrl);
     }
 
-    await pool.query('DELETE FROM LM_MARKERS WHERE MARKER_ID = ?', [markerId]);
+    // 6. 마커 삭제
+    await connection.query('DELETE FROM LM_MARKERS WHERE MARKER_ID = ?', [markerId]);
+
+    // 모든 작업이 성공하면 커밋
+    await connection.commit();
+
     res.status(200).json({ message: '마커가 성공적으로 삭제되었습니다.', markerId });
   } catch (error) {
+    // 에러 발생 시 롤백
+    await connection.rollback();
     sendError(res, 500, '마커 삭제에 실패했습니다.', error);
+  } finally {
+    // connection 반환
+    connection.release();
   }
 };
 
