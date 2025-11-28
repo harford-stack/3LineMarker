@@ -11,6 +11,8 @@ const VALID_CATEGORIES = ['RESTAURANT', 'CAFE', 'TRAVEL', 'DAILY', 'PHOTO', 'GEN
 const convertMarkerToCamelCase = (row) => ({
   markerId: row.MARKER_ID,
   userId: row.USER_ID,
+  username: row.USERNAME || null,
+  profileImageUrl: row.PROFILE_IMAGE_URL || null,
   latitude: row.LATITUDE,
   longitude: row.LONGITUDE,
   line1: row.LINE1,

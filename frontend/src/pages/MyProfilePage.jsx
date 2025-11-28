@@ -92,7 +92,10 @@ function MarkerCard({ marker, onClick, index }) {
 
   return (
     <Card sx={{ 
+      width: '100%',
       height: '100%',
+      minWidth: 0,
+      maxWidth: '100%',
       bgcolor: '#1a1a2e',
       border: '2px solid #00ff00',
       boxShadow: '4px 4px 0 #000',
@@ -100,6 +103,8 @@ function MarkerCard({ marker, onClick, index }) {
       animationDelay: `${index * 0.05}s`,
       animationFillMode: 'both',
       transition: 'all 0.2s ease',
+      display: 'flex',
+      flexDirection: 'column',
       '&:hover': {
         transform: 'translate(-2px, -2px)',
         boxShadow: '6px 6px 0 #000, 0 0 20px rgba(0, 255, 0, 0.3)',
@@ -109,14 +114,31 @@ function MarkerCard({ marker, onClick, index }) {
         to: { opacity: 1, transform: 'translateY(0)' },
       },
     }}>
-      <CardActionArea onClick={onClick} sx={{ height: '100%' }}>
+      <CardActionArea 
+        onClick={onClick} 
+        sx={{ 
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'stretch',
+        }}
+      >
         {imageUrl ? (
-          <Box sx={{ position: 'relative' }}>
+          <Box sx={{ 
+            position: 'relative',
+            width: '100%',
+            height: 140,
+            overflow: 'hidden',
+          }}>
             <CardMedia
               component="img"
-              height="140"
               image={imageUrl}
               alt={marker.line1}
+              sx={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+              }}
             />
             <Box sx={{
               position: 'absolute',
@@ -141,13 +163,27 @@ function MarkerCard({ marker, onClick, index }) {
             <PlaceIcon sx={{ fontSize: 48, color: '#00ff0040' }} />
           </Box>
         )}
-        <CardContent>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5 }}>
+        <CardContent sx={{ 
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          width: '100%',
+          minWidth: 0,
+        }}>
+          <Box sx={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: 1, 
+            mb: 0.5,
+            minWidth: 0,
+            width: '100%',
+          }}>
             <Typography 
               variant="body1" 
               noWrap 
               sx={{ 
                 flex: 1,
+                minWidth: 0,
                 color: '#fff',
                 '&::before': { content: '"▸ "', color: '#00ff00' },
               }}
@@ -619,17 +655,33 @@ function MyProfilePage() {
           </Box>
         ) : (
           <>
-            <Grid container spacing={2}>
+            <Box
+              sx={{
+                display: 'grid',
+                gridTemplateColumns: {
+                  xs: '1fr',
+                  sm: 'repeat(2, 1fr)',
+                  md: 'repeat(4, 1fr)',
+                },
+                gap: 2,
+              }}
+            >
               {markers.map((marker, index) => (
-                <Grid item xs={12} sm={6} md={4} key={marker.markerId}>
+                <Box
+                  key={marker.markerId}
+                  sx={{
+                    width: '100%',
+                    minWidth: 0,
+                  }}
+                >
                   <MarkerCard 
                     marker={marker} 
                     onClick={() => handleMarkerClick(marker)}
                     index={index}
                   />
-                </Grid>
+                </Box>
               ))}
-            </Grid>
+            </Box>
 
             {hasMore && (
               <Box sx={{ textAlign: 'center', mt: 4 }}>

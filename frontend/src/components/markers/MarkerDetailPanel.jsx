@@ -1,5 +1,6 @@
 // frontend/src/components/markers/MarkerDetailPanel.jsx
 import React, { useRef, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
@@ -65,6 +66,7 @@ const LINE_FIELDS = [
 ];
 
 function MarkerDetailPanel({ marker, isOwner, onSave, onDelete, onImageUpload }) {
+  const navigate = useNavigate();
   const refs = {
     line1: useRef(null),
     line2: useRef(null),
@@ -160,15 +162,33 @@ function MarkerDetailPanel({ marker, isOwner, onSave, onDelete, onImageUpload })
           borderBottom: '1px dashed #333',
         }}>
           <PersonIcon sx={{ color: '#00ffff', fontSize: 18 }} />
-          <Typography 
-            variant="body2" 
-            sx={{ 
-              color: '#00ffff',
-              fontFamily: '"VT323", "DungGeunMo", monospace',
-            }}
-          >
-            @{marker.username}
-          </Typography>
+          {!isOwner ? (
+            <Typography 
+              variant="body2" 
+              onClick={() => navigate(`/users/${marker.userId}`)}
+              sx={{ 
+                color: '#00ffff',
+                fontFamily: '"VT323", "DungGeunMo", monospace',
+                cursor: 'pointer',
+                '&:hover': {
+                  color: '#00ccff',
+                  textDecoration: 'underline',
+                },
+              }}
+            >
+              @{marker.username}
+            </Typography>
+          ) : (
+            <Typography 
+              variant="body2" 
+              sx={{ 
+                color: '#00ffff',
+                fontFamily: '"VT323", "DungGeunMo", monospace',
+              }}
+            >
+              @{marker.username}
+            </Typography>
+          )}
           {isOwner && (
             <Chip 
               label="YOU" 

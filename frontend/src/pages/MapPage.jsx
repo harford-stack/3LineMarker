@@ -79,7 +79,7 @@ function LocationMarker({ onAddMarker, onMapClick }) {
 }
 
 // 마커 클릭 이벤트 핸들러
-function MarkerClickHandler({ marker, index, onMarkerClick }) {
+function MarkerClickHandler({ marker, index, onMarkerClick, hasSidePanel }) {
   const map = useMap();
   
   return (
@@ -88,13 +88,25 @@ function MarkerClickHandler({ marker, index, onMarkerClick }) {
       icon={createCategoryIcon(marker.category)}
       eventHandlers={{
         click: () => {
-          // 줌 레벨에 따라 오프셋 조정 (줌인 할수록 작은 오프셋)
           const zoom = map.getZoom();
-          const offset = 0.1 / Math.pow(2, zoom - 10); // 줌 레벨에 반비례
-          const targetPos = [marker.position[0], marker.position[1] - offset];
           
-          // setView로 즉시 이동 후 마커 선택 (부드러운 전환)
-          map.setView(targetPos, zoom, { animate: true, duration: 0.25 });
+          // 사이드 패널이 있을 때 마커를 왼쪽으로 이동시켜 시각적 중심에 위치시키기
+          let targetPos = marker.position;
+          if (hasSidePanel) {
+            // 사이드 패널이 지도의 약 35%를 차지하므로, 마커를 왼쪽으로 이동
+            // 경도를 증가시키면 지도가 왼쪽으로 이동 (마커는 오른쪽에 보임)
+            // 경도를 감소시키면 지도가 오른쪽으로 이동 (마커는 왼쪽에 보임)
+            // 사이드 패널이 오른쪽에 있으므로, 마커를 왼쪽에 보이게 하려면 경도를 증가시켜야 함
+            const baseOffset = 0.3 / Math.pow(2, zoom - 10); // 줌 레벨에 반비례
+            targetPos = [marker.position[0], marker.position[1] + baseOffset];
+          } else {
+            // 사이드 패널이 없을 때는 약간만 조정
+            const smallOffset = 0.05 / Math.pow(2, zoom - 10);
+            targetPos = [marker.position[0], marker.position[1] + smallOffset];
+          }
+          
+          // 한 번에 올바른 위치로 이동
+          map.setView(targetPos, zoom, { animate: true, duration: 0.3 });
           
           // 지도 이동 후 마커 선택 (약간의 딜레이)
           setTimeout(() => {
@@ -262,6 +274,7 @@ function MapPage() {
   const handleCategoryChange = (event, newCategory) => {
     if (newCategory !== null) {
       filterByCategory(newCategory);
+      // 필터 변경은 useMarkers 훅에서 자동으로 서버에서 새로 불러옴
     }
   };
 
@@ -269,8 +282,7 @@ function MapPage() {
   const handleOwnerFilterChange = (event, newFilter) => {
     if (newFilter !== null) {
       filterByOwner(newFilter);
-      // 필터 변경 시 서버에서 새로 불러오기
-      refreshMarkers({ filter: newFilter, category: categoryFilter !== 'ALL' ? categoryFilter : undefined });
+      // 필터 변경은 useMarkers 훅에서 자동으로 서버에서 새로 불러옴
     }
   };
 
@@ -576,6 +588,7 @@ function MapPage() {
                     marker={marker}
                     index={index}
                     onMarkerClick={handleMarkerClick}
+                    hasSidePanel={!!selectedMarker}
                   />
                 )
               )}
