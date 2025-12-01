@@ -81,6 +81,8 @@ import MarkerDetailPanel from '../components/markers/MarkerDetailPanel'; // 마�
 import MapSearchInput from '../components/ui/MapSearchInput';    // 검색 입력창
 import ClockWidget from '../components/ui/ClockWidget';          // 시계 위젯
 import WeatherWidget from '../components/ui/WeatherWidget';      // 날씨 위젯
+import CompassWidget from '../components/ui/CompassWidget';      // 나침반 위젯
+import RadarWidget from '../components/ui/RadarWidget';          // 레이더 위젯
 import { CATEGORY_LIST, getCategoryInfo } from '../utils/categories'; // 카테고리 목록
 
 // 공통 스타일 임포트
@@ -431,7 +433,6 @@ function MapPage() {
     updateMarkerImage,    // 마커 이미지 업데이트 함수
     filterByCategory,     // 카테고리 필터 변경 함수
     filterByOwner,        // 소유자 필터 변경 함수
-    refreshMarkers,       // 마커 목록 새로고침 함수
   } = useMarkers();
 
   // ===== 상태 관리 (useState) =====
@@ -1209,7 +1210,7 @@ function MapPage() {
             )}
           </Fab>
 
-          {/* 시계 및 날씨 위젯 (왼쪽 상단) */}
+          {/* 시계, 날씨, 나침반 위젯 (왼쪽 상단) */}
           <Box sx={{
             position: 'absolute',
             top: 16,
@@ -1226,63 +1227,75 @@ function MapPage() {
               latitude={mapCenter[0]}   // 위도
               longitude={mapCenter[1]}   // 경도
             />
+            {/* 나침반 위젯: 지도 방향 표시 */}
+            <CompassWidget />
+            {/* 레이더 위젯: 주변 마커 레이더 스캔 */}
+            <RadarWidget
+              markers={markers}                     // 모든 마커
+              centerLat={currentLocation ? currentLocation[0] : mapCenter[0]}  // 현재 위치 또는 지도 중심 위도
+              centerLng={currentLocation ? currentLocation[1] : mapCenter[1]}  // 현재 위치 또는 지도 중심 경도
+              maxDistance={5000}                    // 최대 5km 범위
+            />
           </Box>
 
-          {/* 마커 개수 표시 (오른쪽 상단) */}
-          <Paper sx={{
-            ...retroPaperSmall,
-            borderColor: COLORS.neonPink,
+          {/* 클릭 안내 및 마커 개수 표시 (오른쪽 상단) */}
+          <Box sx={{
             position: 'absolute',
             top: 16,
             right: 16,
             zIndex: 1000,
-            px: 2,
-            py: 1,
+            display: 'flex',
+            flexDirection: 'row',                    // 가로로 배치
+            gap: 1.5,                               // 간격
+            alignItems: 'flex-start',                // 위쪽 정렬
           }}>
-            <Typography 
-              variant="body2" 
-              sx={{ 
-                ...monoText,
-                color: COLORS.neonPink,
-                fontSize: '1rem',
-                display: 'flex',
-                alignItems: 'center',
-                gap: 1,
-              }}
-            >
-              <PlaceIcon sx={{ fontSize: 16 }} />
-              {/* 표시된 마커 개수 */}
-              {displayMarkers.length}
-              {/* 소유자 필터가 'all'이 아니면 필터 이름 표시 */}
-              {ownerFilter !== 'all' && ` [${OWNER_FILTERS.find(f => f.value === ownerFilter)?.label}]`}
-              {/* 카테고리 필터가 'ALL'이 아니면 카테고리 이름 표시 */}
-              {categoryFilter !== 'ALL' && ` [${getCategoryInfo(categoryFilter).label}]`}
-            </Typography>
-          </Paper>
-
-          {/* 클릭 안내 (왼쪽 아래) */}
-          {/* 로그인했고 마커가 선택되지 않았을 때만 표시 */}
-          {!selectedMarker && isAuthenticated && (
+            {/* 클릭 안내 (마커 개수 표시 왼쪽) */}
+            {/* 로그인했고 마커가 선택되지 않았을 때만 표시 */}
+            {!selectedMarker && isAuthenticated && (
+              <Paper sx={{
+                ...retroPaperSmall,
+                px: 2,
+                py: 1,
+              }}>
+                <Typography 
+                  variant="caption" 
+                  sx={{ 
+                    ...monoText,
+                    color: COLORS.neonGreen,
+                  }}
+                >
+                  🎮 지도 클릭으로 마커 추가
+                </Typography>
+              </Paper>
+            )}
+            {/* 마커 개수 표시 */}
             <Paper sx={{
               ...retroPaperSmall,
-              position: 'absolute',
-              bottom: 20,
-              left: 16,
-              zIndex: 1000,
+              borderColor: COLORS.neonPink,
               px: 2,
               py: 1,
             }}>
               <Typography 
-                variant="caption" 
+                variant="body2" 
                 sx={{ 
                   ...monoText,
-                  color: COLORS.neonGreen,
+                  color: COLORS.neonPink,
+                  fontSize: '1.2rem',            // 폰트 크기 증가
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 1,
                 }}
               >
-                🎮 지도 클릭으로 마커 추가
+                <PlaceIcon sx={{ fontSize: 18 }} />  {/* 아이콘 크기도 약간 증가 */}
+                {/* 표시된 마커 개수 */}
+                {displayMarkers.length}
+                {/* 소유자 필터가 'all'이 아니면 필터 이름 표시 */}
+                {ownerFilter !== 'all' && ` [${OWNER_FILTERS.find(f => f.value === ownerFilter)?.label}]`}
+                {/* 카테고리 필터가 'ALL'이 아니면 카테고리 이름 표시 */}
+                {categoryFilter !== 'ALL' && ` [${getCategoryInfo(categoryFilter).label}]`}
               </Typography>
             </Paper>
-          )}
+          </Box>
         </Box>
 
         {/* ===== 사이드 패널 ===== */}
@@ -1378,6 +1391,8 @@ function MapPage() {
             ...(snackbar.severity === 'success' ? alertSuccess : alertError),
             px: 4,
             py: 2,
+            minWidth: '400px',
+            maxWidth: '600px',
           }}
         >
           {snackbar.message}                       {/* 알림 메시지 */}

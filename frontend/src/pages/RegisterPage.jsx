@@ -55,6 +55,9 @@ import LoginIcon from '@mui/icons-material/Login';                 // 로그인 
 // 레트로 다이얼로그
 import { useRetroDialog } from '../components/ui/RetroDialog';
 
+// API 함수
+import { checkUserId } from '../utils/api';
+
 // ===== 2단계: RegisterPage 컴포넌트 정의 =====
 /**
  * RegisterPage 함수 컴포넌트
@@ -89,6 +92,16 @@ function RegisterPage() {
   // bio: 자기소개 (선택 사항)
   const [bio, setBio] = useState('');
   
+  // ===== 아이디 중복 체크 관련 상태 =====
+  // userIdChecked: 아이디 중복 체크를 완료했는지 여부
+  const [userIdChecked, setUserIdChecked] = useState(false);
+  
+  // checkingUserId: 아이디 중복 체크 중인지 여부 (로딩 상태)
+  const [checkingUserId, setCheckingUserId] = useState(false);
+  
+  // userIdCheckMessage: 아이디 중복 체크 결과 메시지
+  const [userIdCheckMessage, setUserIdCheckMessage] = useState('');
+  
   // ===== Redux 훅 =====
   // dispatch: Redux 상태를 변경할 때 사용하는 함수
   const dispatch = useDispatch();
@@ -113,7 +126,77 @@ function RegisterPage() {
     dispatch(clearError()); // 에러 메시지 지우기
   }, [dispatch]); // dispatch가 변경될 때마다 실행 (실제로는 한 번만 실행)
 
+  /**
+   * 아이디가 변경되면 중복 체크 상태를 초기화합니다.
+   * 사용자가 아이디를 다시 입력하면 이전 중복 체크 결과가 무효화되기 때문입니다.
+   */
+  useEffect(() => {
+    setUserIdChecked(false);      // 중복 체크 완료 상태 초기화
+    setUserIdCheckMessage('');    // 중복 체크 메시지 초기화
+  }, [userId]); // userId가 변경될 때마다 실행
+
   // ===== 함수 정의 =====
+  /**
+   * handleCheckUserId 함수
+   * 
+   * 아이디 중복 체크 버튼을 클릭했을 때 실행되는 함수입니다.
+   * 
+   * 작동 순서:
+   * 1. 아이디가 입력되었는지 확인
+   * 2. 서버에 아이디 중복 체크 요청 보내기
+   * 3. 결과에 따라 메시지 표시
+   * 
+   * async/await 설명:
+   * - async: 이 함수가 비동기 작업을 한다는 뜻
+   * - await: 서버 응답을 기다린다는 뜻
+   */
+  const handleCheckUserId = async () => {
+    // 아이디가 비어있으면 에러 메시지 표시
+    if (!userId || userId.trim() === '') {
+      setUserIdCheckMessage('아이디를 입력해주세요.');
+      setUserIdChecked(false);
+      return; // 함수 종료
+    }
+
+    // 아이디 길이 체크 (최소 2자 이상 권장)
+    if (userId.length < 2) {
+      setUserIdCheckMessage('아이디는 최소 2자 이상이어야 합니다.');
+      setUserIdChecked(false);
+      return; // 함수 종료
+    }
+
+    // 로딩 상태로 변경
+    setCheckingUserId(true);
+    setUserIdCheckMessage(''); // 이전 메시지 지우기
+
+    try {
+      // 서버에 아이디 중복 체크 요청 보내기
+      // checkUserId: api.js에서 가져온 함수
+      const result = await checkUserId(userId);
+
+      // result.available: true면 사용 가능, false면 이미 사용 중
+      if (result.available) {
+        // 사용 가능한 아이디
+        setUserIdCheckMessage('✓ 사용 가능한 아이디입니다.');
+        setUserIdChecked(true); // 중복 체크 완료 표시
+      } else {
+        // 이미 사용 중인 아이디
+        setUserIdCheckMessage('✗ 이미 사용 중인 아이디입니다.');
+        setUserIdChecked(false); // 중복 체크 완료했지만 사용 불가
+      }
+
+    } catch (err) {
+      // 네트워크 오류나 기타 예상치 못한 오류 발생 시
+      console.error('아이디 중복 체크 중 오류:', err);
+      setUserIdCheckMessage(`✗ 오류: ${err.message || '서버 오류가 발생했습니다.'}`);
+      setUserIdChecked(false);
+    } finally {
+      // try-catch가 끝나면 항상 실행되는 부분
+      // 로딩 상태 해제
+      setCheckingUserId(false);
+    }
+  };
+
   /**
    * handleRegister 함수
    * 
@@ -149,6 +232,24 @@ function RegisterPage() {
       // registerFailure: Redux에 에러 상태로 변경하라고 알림
       dispatch(registerFailure('아이디, 비밀번호, 닉네임, 이메일은 필수입니다.'));
       return; // 함수 종료 (더 이상 진행하지 않음)
+    }
+
+    /**
+     * 1-1단계: 아이디 중복 체크 확인
+     * 
+     * 아이디 중복 체크를 완료했는지, 그리고 사용 가능한 아이디인지 확인합니다.
+     * 
+     * !userIdChecked: 중복 체크를 완료하지 않았으면 true
+     * userIdCheckMessage.includes('이미 사용 중'): 메시지에 "이미 사용 중"이 포함되어 있으면 true
+     */
+    if (!userIdChecked) {
+      dispatch(registerFailure('아이디 중복 체크를 완료해주세요.'));
+      return; // 함수 종료
+    }
+
+    if (userIdCheckMessage.includes('이미 사용 중')) {
+      dispatch(registerFailure('사용할 수 없는 아이디입니다. 다른 아이디를 입력해주세요.'));
+      return; // 함수 종료
     }
 
     /**
@@ -490,18 +591,68 @@ function RegisterPage() {
                 [ REQUIRED ]
               </Typography>
               
-              {/* 아이디 입력창 */}
-              <TextField
-                placeholder="아이디 (필수)"        // 입력 전에 보이는 안내 텍스트
-                variant="outlined"                 // 테두리가 있는 입력창
-                fullWidth                          // 전체 너비
-                value={userId}                     // 입력창의 값 (userId 상태와 연결)
-                onChange={(e) => setUserId(e.target.value)} // 값이 변경될 때마다 실행
-                // e.target.value = 사용자가 입력한 값
-                // setUserId = userId 상태를 업데이트
-                disabled={loading}                 // 로딩 중이면 입력 불가
-                sx={textFieldSx}                    // 공통 스타일 적용
-              />
+              {/* 아이디 입력창과 중복 체크 버튼 */}
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                {/* 아이디 입력창과 버튼을 가로로 배치 */}
+                <Box sx={{ display: 'flex', gap: 1, alignItems: 'flex-start' }}>
+                  {/* 아이디 입력창 */}
+                  <TextField
+                    placeholder="아이디 (필수)"        // 입력 전에 보이는 안내 텍스트
+                    variant="outlined"                 // 테두리가 있는 입력창
+                    fullWidth                          // 전체 너비
+                    value={userId}                     // 입력창의 값 (userId 상태와 연결)
+                    onChange={(e) => setUserId(e.target.value)} // 값이 변경될 때마다 실행
+                    // e.target.value = 사용자가 입력한 값
+                    // setUserId = userId 상태를 업데이트
+                    disabled={loading || checkingUserId} // 로딩 중이거나 중복 체크 중이면 입력 불가
+                    sx={textFieldSx}                    // 공통 스타일 적용
+                  />
+                  {/* 중복 체크 버튼 */}
+                  <Button
+                    type="button"                      // 폼 제출 방지 (type="button")
+                    variant="outlined"                 // 테두리가 있는 버튼
+                    onClick={handleCheckUserId}        // 클릭 시 중복 체크 함수 실행
+                    disabled={loading || checkingUserId || !userId || userId.trim() === ''} // 로딩 중이거나 아이디가 비어있으면 클릭 불가
+                    sx={{
+                      minWidth: 130,                   // 최소 너비 (줄바꿈 방지를 위해 늘림)
+                      width: 130,                        // 고정 너비
+                      height: '56px',                  // 입력창과 같은 높이
+                      borderColor: '#00ffff',         // 청록색 테두리
+                      color: '#00ffff',                // 청록색 글자
+                      fontFamily: '"VT323", "DungGeunMo", monospace',
+                      fontSize: '0.9rem',
+                      whiteSpace: 'nowrap',            // 줄바꿈 방지
+                      '&:hover': {                     // 마우스 올렸을 때
+                        borderColor: '#00ff00',        // 녹색 테두리
+                        bgcolor: 'rgba(0, 255, 0, 0.1)', // 반투명 녹색 배경
+                        boxShadow: '0 0 15px #00ff00',  // 녹색 그림자
+                      },
+                      '&:disabled': {                   // 비활성화 상태
+                        borderColor: '#444',
+                        color: '#666',
+                      },
+                    }}
+                  >
+                    {/* 버튼 텍스트: 중복 체크 중이면 "CHECKING...", 아니면 "중복 체크" */}
+                    {checkingUserId ? 'CHECKING...' : '중복 체크'}
+                  </Button>
+                </Box>
+                {/* 중복 체크 결과 메시지 표시 */}
+                {/* userIdCheckMessage가 있을 때만 표시 (조건부 렌더링) */}
+                {userIdCheckMessage && (
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      color: userIdChecked ? '#00ff00' : '#ff0040', // 사용 가능하면 녹색, 불가능하면 빨간색
+                      fontFamily: '"VT323", "DungGeunMo", monospace',
+                      fontSize: '0.9rem',
+                      ml: 1,                           // 왼쪽 여백
+                    }}
+                  >
+                    {userIdCheckMessage}
+                  </Typography>
+                )}
+              </Box>
               
               {/* 비밀번호 입력창 */}
               <TextField

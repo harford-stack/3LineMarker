@@ -1,5 +1,5 @@
 // frontend/src/components/notifications/NotificationList.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
@@ -56,6 +56,8 @@ const getNotificationIcon = (type) => {
       return <ChatBubbleIcon sx={{ color: 'primary.main', fontSize: 20 }} />;
     case 'FOLLOW':
       return <PersonAddIcon sx={{ color: 'success.main', fontSize: 20 }} />;
+    case 'CHAT':
+      return <ChatBubbleIcon sx={{ color: '#ff00ff', fontSize: 20 }} />;
     default:
       return <NotificationsIcon sx={{ fontSize: 20 }} />;
   }
@@ -70,6 +72,8 @@ const getNotificationMessage = (notification) => {
       return `님이 회원님의 마커에 댓글을 남겼습니다.`;
     case 'FOLLOW':
       return `님이 회원님을 팔로우했습니다.`;
+    case 'CHAT':
+      return `님이 회원님에게 채팅을 보냈습니다.`;
     default:
       return '';
   }
@@ -85,6 +89,16 @@ function NotificationList() {
 
   const open = Boolean(anchorEl);
 
+  // 읽지 않은 알림 수 조회 함수 (useCallback으로 메모이제이션)
+  const fetchUnreadCount = useCallback(async () => {
+    try {
+      const data = await getUnreadNotificationCount(token);
+      setUnreadCount(data.unreadCount);
+    } catch (error) {
+      console.error('알림 수 조회 실패:', error);
+    }
+  }, [token]);
+
   // 읽지 않은 알림 수 주기적 업데이트
   useEffect(() => {
     if (isAuthenticated) {
@@ -92,16 +106,7 @@ function NotificationList() {
       const interval = setInterval(fetchUnreadCount, 30000); // 30초마다
       return () => clearInterval(interval);
     }
-  }, [isAuthenticated]);
-
-  const fetchUnreadCount = async () => {
-    try {
-      const data = await getUnreadNotificationCount(token);
-      setUnreadCount(data.unreadCount);
-    } catch (error) {
-      console.error('알림 수 조회 실패:', error);
-    }
-  };
+  }, [isAuthenticated, fetchUnreadCount]);
 
   const fetchNotifications = async () => {
     setLoading(true);
@@ -146,7 +151,10 @@ function NotificationList() {
     handleClose();
 
     // 해당 페이지로 이동
-    if (notification.type === 'FOLLOW') {
+    if (notification.type === 'CHAT') {
+      // 채팅 알림인 경우 채팅 페이지로 이동
+      navigate('/chat');
+    } else if (notification.type === 'FOLLOW') {
       navigate(`/users/${notification.actorId}`);
     } else if (notification.markerId) {
       // 지도 페이지로 이동 (해당 마커로 포커스)

@@ -174,7 +174,8 @@ function WeatherWidget({ latitude, longitude }) {
           borderColor: COLORS.neonGreen,
           px: 2,
           py: 1.5,
-          minWidth: 200,
+          minWidth: 180,                   // 나침반/레이더와 맞춤
+          width: 180,                      // 고정 너비
         }}
       >
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
@@ -213,7 +214,8 @@ function WeatherWidget({ latitude, longitude }) {
           borderColor: COLORS.neonGreen,
           px: 2,
           py: 1.5,
-          minWidth: 200,
+          minWidth: 180,                   // 나침반/레이더와 맞춤
+          width: 180,                      // 고정 너비
         }}
       >
         <Box>
@@ -257,7 +259,8 @@ function WeatherWidget({ latitude, longitude }) {
         borderColor: COLORS.neonGreen,
         px: 2,
         py: 1.5,
-        minWidth: 200,
+        minWidth: 180,                   // 나침반/레이더와 맞춤
+        width: 180,                      // 고정 너비
       }}
     >
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
@@ -288,7 +291,7 @@ function WeatherWidget({ latitude, longitude }) {
             sx={{
               ...monoText,
               color: '#888',
-              fontSize: '0.9rem',
+              fontSize: '1.1rem',            // 글씨 크기 증가
               fontFamily: '"VT323", "DungGeunMo", monospace',
             }}
           >

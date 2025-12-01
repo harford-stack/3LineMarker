@@ -1,15 +1,15 @@
 // frontend/src/components/users/UserProfileCard.jsx
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
+import Button from '@mui/material/Button';
 
 import FollowButton from '../FollowButton';
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
@@ -20,23 +20,46 @@ const getProfileImageUrl = (url) => {
   return `${API_BASE_URL}${url}`;
 };
 
-// 통계 아이템 컴포넌트
-function StatItem({ label, value, onClick }) {
+// 통계 아이템 컴포넌트 (MyProfilePage와 동일한 스타일)
+function StatItem({ label, value, onClick, color = '#00ffff' }) {
   return (
     <Box
       onClick={onClick}
       sx={{
         textAlign: 'center',
         cursor: onClick ? 'pointer' : 'default',
-        '&:hover': onClick ? { opacity: 0.7 } : {},
-        transition: 'opacity 0.2s',
-        minWidth: 70,
+        p: 2,
+        border: '2px solid',
+        borderColor: color,
+        bgcolor: 'rgba(0, 0, 0, 0.3)',
+        width: 110,
+        transition: 'all 0.2s ease',
+        '&:hover': onClick ? { 
+          bgcolor: `${color}20`,
+          boxShadow: `0 0 15px ${color}`,
+          transform: 'scale(1.05)',
+        } : {},
       }}
     >
-      <Typography variant="h6" fontWeight="bold">
+      <Typography 
+        variant="h5" 
+        sx={{ 
+          color: color,
+          fontFamily: '"Press Start 2P", "Galmuri11", cursive',
+          fontSize: '1rem',
+          textShadow: `0 0 10px ${color}`,
+        }}
+      >
         {value}
       </Typography>
-      <Typography variant="body2" color="text.secondary">
+      <Typography 
+        variant="caption" 
+        sx={{ 
+          color: '#888',
+          fontFamily: '"VT323", "DungGeunMo", monospace',
+          fontSize: '1rem',
+        }}
+      >
         {label}
       </Typography>
     </Box>
@@ -49,14 +72,9 @@ function UserProfileCard({
   onFollowChange,
   onFollowersClick,
   onFollowingClick,
+  onChatClick,
 }) {
-  const navigate = useNavigate();
-
   const profileImageUrl = getProfileImageUrl(user.profileImageUrl);
-
-  const handleEdit = () => {
-    navigate('/profile/edit');
-  };
 
   return (
     <Card sx={{ mb: 3, borderRadius: 3 }}>
@@ -92,8 +110,32 @@ function UserProfileCard({
             )}
           </Box>
 
-          {/* 팔로우/수정 버튼 */}
-          <Box sx={{ alignSelf: 'flex-start' }}>
+          {/* 팔로우/채팅 버튼 */}
+          <Box sx={{ alignSelf: 'flex-start', display: 'flex', gap: 1 }}>
+            {!isOwner && onChatClick && (
+              <Button
+                variant="outlined"
+                startIcon={<ChatBubbleIcon />}
+                onClick={onChatClick}
+                sx={{
+                  borderColor: '#ff00ff',
+                  color: '#ff00ff',
+                  borderRadius: 0,
+                  fontFamily: '"VT323", "DungGeunMo", monospace',
+                  fontSize: '1.1rem',
+                  fontWeight: 'normal',
+                  px: 2,
+                  py: 1,
+                  '&:hover': {
+                    borderColor: '#ff00ff',
+                    bgcolor: 'rgba(255, 0, 255, 0.1)',
+                    boxShadow: '0 0 10px #ff00ff',
+                  },
+                }}
+              >
+                채팅
+              </Button>
+            )}
             {isOwner ? (
               <FollowButton
                 userId={user.userId}
@@ -113,28 +155,31 @@ function UserProfileCard({
 
         <Divider sx={{ my: 2 }} />
 
-        {/* 통계 영역 */}
-        <Stack 
-          direction="row" 
-          spacing={4} 
-          justifyContent="center"
-          divider={<Divider orientation="vertical" flexItem />}
-        >
+        {/* 통계 영역 (MyProfilePage와 동일한 스타일) */}
+        <Box sx={{ 
+          display: 'flex', 
+          justifyContent: 'center',
+          gap: 2,
+          flexWrap: 'wrap',
+        }}>
           <StatItem 
-            label="마커" 
+            label="MARKERS" 
             value={user.markerCount || 0} 
+            color="#00ff00"
           />
           <StatItem 
-            label="팔로워" 
+            label="FOLLOWERS" 
             value={user.followerCount || 0}
             onClick={onFollowersClick}
+            color="#ff00ff"
           />
           <StatItem 
-            label="팔로잉" 
+            label="FOLLOWING" 
             value={user.followingCount || 0}
             onClick={onFollowingClick}
+            color="#00ffff"
           />
-        </Stack>
+        </Box>
       </CardContent>
     </Card>
   );

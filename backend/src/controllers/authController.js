@@ -273,6 +273,28 @@ exports.resetPassword = async (req, res) => {
     }
 };
 
+// ✅ 아이디 중복 확인
+exports.checkUserId = async (req, res) => {
+    const { userId } = req.query;
+
+    if (!userId) {
+        return res.status(400).json({ message: '아이디를 입력해주세요.' });
+    }
+
+    try {
+        const [users] = await db.query('SELECT USER_ID FROM LM_USERS WHERE USER_ID = ?', [userId]);
+        
+        res.status(200).json({
+            available: users.length === 0,
+            message: users.length === 0 ? '사용 가능한 아이디입니다.' : '이미 사용 중인 아이디입니다.'
+        });
+
+    } catch (error) {
+        console.error('아이디 확인 중 오류:', error);
+        res.status(500).json({ message: '서버 오류가 발생했습니다.' });
+    }
+};
+
 // ✅ 이메일 중복 확인
 exports.checkEmail = async (req, res) => {
     const { email } = req.query;

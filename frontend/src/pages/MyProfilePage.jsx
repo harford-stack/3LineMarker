@@ -1,10 +1,9 @@
 // frontend/src/pages/MyProfilePage.jsx
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -266,32 +265,14 @@ function MyProfilePage() {
     }
   }, [isAuthenticated, navigate]);
 
-  // 프로필 로드
-  useEffect(() => {
-    if (isAuthenticated) {
-      loadProfile();
-    }
-  }, [isAuthenticated]);
-
-  const loadProfile = async () => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const data = await getMyProfile(token);
-      setUser(data.user);
-      setEditUsername(data.user.username);
-      setEditStatusMessage(data.user.statusMessage || '');
-      loadMarkers(1, true);
-    } catch (err) {
-      setError(err.message || '프로필을 불러올 수 없습니다.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const loadMarkers = async (pageNum = page, reset = false) => {
-    if (!user && !reset) return;
+  // 마커 로드 함수 (useCallback으로 메모이제이션)
+  // 주의: user와 page는 의존성 배열에서 제외
+  // - user: reset이 true일 때는 user가 없어도 실행되므로 제외
+  // - page: 항상 명시적으로 pageNum을 전달하므로 제외
+  const loadMarkers = useCallback(async (pageNum, reset = false) => {
+    // user 체크는 reset이 false일 때만 필요
+    // reset이 true면 loadProfile에서 호출되므로 user가 곧 설정됨
+    if (!reset && !authUser?.userId) return;
     
     setMarkersLoading(true);
     try {
@@ -310,7 +291,32 @@ function MyProfilePage() {
     } finally {
       setMarkersLoading(false);
     }
-  };
+  }, [token, authUser?.userId]);
+
+  // 프로필 로드 함수 (useCallback으로 메모이제이션)
+  const loadProfile = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const data = await getMyProfile(token);
+      setUser(data.user);
+      setEditUsername(data.user.username);
+      setEditStatusMessage(data.user.statusMessage || '');
+      loadMarkers(1, true);
+    } catch (err) {
+      setError(err.message || '프로필을 불러올 수 없습니다.');
+    } finally {
+      setLoading(false);
+    }
+  }, [token, loadMarkers]);
+
+  // 프로필 로드
+  useEffect(() => {
+    if (isAuthenticated) {
+      loadProfile();
+    }
+  }, [isAuthenticated, loadProfile]);
 
   const handleSaveProfile = async () => {
     if (!editUsername.trim()) {

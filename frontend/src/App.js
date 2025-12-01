@@ -36,6 +36,7 @@ import MyProfilePage from './pages/MyProfilePage';    // 내 프로필 페이지
 import UserProfilePage from './pages/UserProfilePage'; // 다른 사람 프로필 페이지
 import FeedPage from './pages/FeedPage';              // 피드 페이지 (게시물 목록)
 import BookmarksPage from './pages/BookmarksPage';    // 북마크 페이지
+import ChatPage from './pages/ChatPage';              // 채팅 페이지
 
 // Redux: 전역 상태 관리 도구
 // - useDispatch: 상태를 변경하는 함수를 실행할 때 사용
@@ -70,9 +71,15 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';      // 회원가입 
 import MenuIcon from '@mui/icons-material/Menu';                 // 메뉴 아이콘
 import RocketLaunchIcon from '@mui/icons-material/RocketLaunch'; // 로켓 아이콘
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports'; // 게임 아이콘
+import ChatIcon from '@mui/icons-material/Chat';                 // 채팅 아이콘
+import Badge from '@mui/material/Badge';                         // 배지 (알림 수 표시용)
 
 // 알림 목록 컴포넌트 (다른 파일에서 만든 것)
 import NotificationList from './components/notifications/NotificationList';
+
+// API 함수 가져오기
+import { getUnreadNotificationCount } from './utils/api';
+import { useAuth } from './hooks/useAuth';
 
 // ===== 2단계: 별 배경 컴포넌트 만들기 =====
 /**
@@ -166,6 +173,39 @@ function App() {
   // useState(false) = 처음에는 닫혀있음
   const [drawerOpen, setDrawerOpen] = useState(false);
 
+  // 채팅 알림 수 상태 관리
+  // useState(0) = 처음에는 알림이 0개
+  const [chatNotificationCount, setChatNotificationCount] = useState(0);
+  
+  // useAuth 훅에서 토큰 가져오기
+  const { token } = useAuth();
+
+  // ===== 채팅 알림 수 가져오기 =====
+  // useEffect: 컴포넌트가 화면에 나타날 때 자동으로 실행되는 함수
+  useEffect(() => {
+    // 로그인했고 토큰이 있을 때만 실행
+    if (isAuthenticated && token) {
+      // 채팅 알림 수 가져오기
+      const fetchChatNotificationCount = async () => {
+        try {
+          const data = await getUnreadNotificationCount(token, 'CHAT');
+          setChatNotificationCount(data.unreadCount);
+        } catch (error) {
+          console.error('채팅 알림 수 조회 실패:', error);
+        }
+      };
+
+      // 처음 한 번 실행
+      fetchChatNotificationCount();
+
+      // 30초마다 자동으로 업데이트 (새 알림이 오면 바로 반영)
+      const interval = setInterval(fetchChatNotificationCount, 30000);
+      
+      // 컴포넌트가 사라질 때 interval 정리 (메모리 누수 방지)
+      return () => clearInterval(interval);
+    }
+  }, [isAuthenticated, token]);
+
   // ===== 함수 정의 =====
   /**
    * handleLogout 함수
@@ -221,6 +261,7 @@ function App() {
     // 로그인했을 때 보이는 메뉴
     { text: 'MAP', icon: <MapIcon />, path: '/map', color: '#00ff00' },
     { text: 'FEED', icon: <DynamicFeedIcon />, path: '/feed', color: '#00ffff' },
+    { text: 'CHAT', icon: <ChatIcon />, path: '/chat', color: '#ff00ff' },
     { text: 'BOOKMARKS', icon: <BookmarkIcon />, path: '/bookmarks', color: '#ff00ff' },
     { text: 'PROFILE', icon: <PersonIcon />, path: '/profile', color: '#ffff00' },
   ] : [
@@ -396,6 +437,37 @@ function App() {
                 
                 {/* 알림 아이콘 (다른 컴포넌트에서 만든 것) */}
                 <NotificationList />
+
+                {/* 채팅 아이콘 버튼 (읽지 않은 채팅 알림 수 표시) */}
+                <Tooltip title="CHAT">
+                  <IconButton 
+                    component={RouterLink} 
+                    to="/chat"
+                    sx={{ 
+                      color: location.pathname === '/chat' ? '#ff00ff' : '#ff00ff80',
+                      transition: 'all 0.2s ease',
+                      '&:hover': {
+                        color: '#ff00ff',
+                        transform: 'scale(1.1)',
+                        filter: 'drop-shadow(0 0 8px #ff00ff)',
+                      },
+                    }}
+                  >
+                    <Badge 
+                      badgeContent={chatNotificationCount} 
+                      color="error"
+                      sx={{
+                        '& .MuiBadge-badge': {
+                          backgroundColor: '#ff00ff',
+                          color: '#fff',
+                          boxShadow: '0 0 10px #ff00ff',
+                        },
+                      }}
+                    >
+                      <ChatIcon />
+                    </Badge>
+                  </IconButton>
+                </Tooltip>
 
                 {/* 북마크 아이콘 버튼 */}
                 <Tooltip title="BOOKMARKS">  {/* 마우스 올리면 "BOOKMARKS" 표시 */}
@@ -622,6 +694,7 @@ function App() {
           <Route path="/profile" element={<MyProfilePage />} />
           <Route path="/users/:userId" element={<UserProfilePage />} />  {/* :userId = 동적 경로 */}
           <Route path="/feed" element={<FeedPage />} />
+          <Route path="/chat" element={<ChatPage />} />
           <Route path="/bookmarks" element={<BookmarksPage />} />
           
           {/* 홈 페이지 (/) */}

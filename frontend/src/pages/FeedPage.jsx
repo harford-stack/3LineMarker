@@ -287,18 +287,21 @@ function FeedPage() {
   // 무한 스크롤용 Intersection Observer
   const observerRef = useRef();
   const loadMoreRef = useRef();
+  // page의 최신 값을 참조하기 위한 ref
+  const pageRef = useRef(page);
 
-  // 탭 또는 정렬 변경 시 새로 로드
+  // page가 변경될 때마다 ref 업데이트
   useEffect(() => {
-    setMarkers([]);
-    setPage(1);
-    setHasMore(true);
-    setInitialLoading(true);
-    loadFeed(1, true);
-  }, [tab, sort, isAuthenticated]);
+    pageRef.current = page;
+  }, [page]);
 
-  const loadFeed = async (pageNum = page, reset = false) => {
-    if (loading) return;
+  // 피드 로드 함수 (useCallback으로 메모이제이션)
+  // 주의: loading과 page는 의존성 배열에서 제외
+  // - loading: 함수 내부에서 체크만 하므로 포함 불필요 (무한 루프 방지)
+  // - page: 항상 명시적으로 pageNum을 전달하므로 포함 불필요
+  const loadFeed = useCallback(async (pageNum, reset = false) => {
+    // loading 상태는 함수 내부에서 체크하되, 의존성 배열에는 포함하지 않음
+    // (loading이 변경될 때마다 함수가 재생성되는 것을 방지)
     
     // 팔로잉 탭은 로그인 필요
     if (tab === 0 && !isAuthenticated) {
@@ -328,15 +331,26 @@ function FeedPage() {
       setLoading(false);
       setInitialLoading(false);
     }
-  };
+  }, [token, tab, sort, isAuthenticated]);
+
+  // 탭 또는 정렬 변경 시 새로 로드
+  useEffect(() => {
+    setMarkers([]);
+    setPage(1);
+    setHasMore(true);
+    setInitialLoading(true);
+    loadFeed(1, true);
+  }, [tab, sort, isAuthenticated, loadFeed]);
 
   // 무한 스크롤 콜백
+  // pageRef를 사용해서 최신 page 값을 참조 (의존성 배열에서 page 제외)
   const handleObserver = useCallback((entries) => {
     const target = entries[0];
     if (target.isIntersecting && hasMore && !loading && markers.length > 0) {
-      loadFeed(page + 1);
+      // ref를 사용해서 최신 page 값을 가져옴
+      loadFeed(pageRef.current + 1);
     }
-  }, [hasMore, loading, page, markers.length]);
+  }, [hasMore, loading, markers.length, loadFeed]);
 
   // Intersection Observer 설정
   useEffect(() => {

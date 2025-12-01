@@ -1,5 +1,5 @@
 // frontend/src/components/ui/MapSearchInput.jsx
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -51,17 +51,8 @@ function MapSearchInput({ onMarkerSelect, onUserSelect }) {
 
   const debouncedQuery = useDebounce(query, 300);
 
-  // 검색 실행
-  useEffect(() => {
-    if (debouncedQuery.trim().length >= 2) {
-      performSearch(debouncedQuery);
-    } else {
-      setResults({ markers: [], users: [] });
-      setIsOpen(false);
-    }
-  }, [debouncedQuery]);
-
-  const performSearch = async (searchQuery) => {
+  // 검색 실행 함수 (useCallback으로 메모이제이션)
+  const performSearch = useCallback(async (searchQuery) => {
     setLoading(true);
     try {
       const data = await searchAll(token, searchQuery);
@@ -73,7 +64,17 @@ function MapSearchInput({ onMarkerSelect, onUserSelect }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
+
+  // 검색 실행
+  useEffect(() => {
+    if (debouncedQuery.trim().length >= 2) {
+      performSearch(debouncedQuery);
+    } else {
+      setResults({ markers: [], users: [] });
+      setIsOpen(false);
+    }
+  }, [debouncedQuery, performSearch]);
 
   const handleClear = () => {
     setQuery('');

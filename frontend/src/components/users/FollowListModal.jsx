@@ -1,5 +1,5 @@
 // frontend/src/components/users/FollowListModal.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -33,16 +33,8 @@ function FollowListModal({ open, onClose, userId, type = 'followers' }) {
 
   const title = type === 'followers' ? '팔로워' : '팔로잉';
 
-  useEffect(() => {
-    if (open) {
-      setUsers([]);
-      setPage(1);
-      setHasMore(true);
-      loadUsers(1, true);
-    }
-  }, [open, userId, type]);
-
-  const loadUsers = async (pageNum = page, reset = false) => {
+  // 사용자 목록 로드 함수 (useCallback으로 메모이제이션)
+  const loadUsers = useCallback(async (pageNum = page, reset = false) => {
     if (loading) return;
 
     setLoading(true);
@@ -66,7 +58,16 @@ function FollowListModal({ open, onClose, userId, type = 'followers' }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token, userId, type, loading, page]);
+
+  useEffect(() => {
+    if (open) {
+      setUsers([]);
+      setPage(1);
+      setHasMore(true);
+      loadUsers(1, true);
+    }
+  }, [open, userId, type, loadUsers]);
 
   const handleUserClick = (clickedUserId) => {
     onClose();

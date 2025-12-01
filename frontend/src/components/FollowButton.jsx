@@ -89,6 +89,9 @@ function FollowButton({
       sx={{
         minWidth: 100,
         transition: 'all 0.2s ease',
+        fontFamily: '"VT323", "DungGeunMo", monospace',
+        fontSize: '1.1rem',
+        fontWeight: 'normal',
         ...(isFollowing && isHovered && {
           borderColor: 'error.main',
           color: 'error.main',

@@ -26,15 +26,21 @@ const convertNotificationToCamelCase = (notification) => ({
  */
 const createNotification = async (userId, type, actorId, markerId = null) => {
   // 자기 자신에게는 알림을 보내지 않음
-  if (userId === actorId) return;
+  if (userId === actorId) {
+    console.log(`[createNotification] 자기 자신에게는 알림을 보내지 않음: ${userId}`);
+    return;
+  }
 
   try {
-    await pool.query(
+    console.log(`[createNotification] 알림 생성 시도: userId=${userId}, type=${type}, actorId=${actorId}, markerId=${markerId}`);
+    const [result] = await pool.query(
       'INSERT INTO LM_NOTIFICATIONS (USER_ID, TYPE, ACTOR_ID, MARKER_ID) VALUES (?, ?, ?, ?)',
       [userId, type, actorId, markerId]
     );
+    console.log(`[createNotification] 알림 생성 성공: notificationId=${result.insertId}`);
   } catch (error) {
-    console.error('알림 생성 실패:', error.message);
+    console.error('[createNotification] 알림 생성 실패:', error.message);
+    console.error('[createNotification] 알림 생성 실패 상세:', error);
   }
 };
 
@@ -93,16 +99,23 @@ exports.getNotifications = async (req, res) => {
 
 /**
  * 읽지 않은 알림 수 조회
- * GET /api/notifications/unread-count
+ * GET /api/notifications/unread-count?type=CHAT (선택적)
  */
 exports.getUnreadCount = async (req, res) => {
   const userId = req.user.user_id;
+  const { type } = req.query; // type 파라미터 (예: 'CHAT')
 
   try {
-    const [result] = await pool.query(
-      'SELECT COUNT(*) as count FROM LM_NOTIFICATIONS WHERE USER_ID = ? AND IS_READ = FALSE',
-      [userId]
-    );
+    let query = 'SELECT COUNT(*) as count FROM LM_NOTIFICATIONS WHERE USER_ID = ? AND IS_READ = FALSE';
+    const params = [userId];
+
+    // 특정 타입의 알림만 조회하는 경우
+    if (type) {
+      query += ' AND TYPE = ?';
+      params.push(type);
+    }
+
+    const [result] = await pool.query(query, params);
 
     res.status(200).json({
       unreadCount: result[0].count,
