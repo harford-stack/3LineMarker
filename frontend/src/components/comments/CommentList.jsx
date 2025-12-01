@@ -1,5 +1,5 @@
 // frontend/src/components/comments/CommentList.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
@@ -109,17 +109,8 @@ function CommentList({ markerId, initialCommentCount = 0 }) {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
 
-  // 마커 ID가 변경되면 댓글 목록 초기화 및 재조회
-  useEffect(() => {
-    if (markerId && !String(markerId).startsWith('temp-')) {
-      setComments([]);
-      setPage(1);
-      setHasMore(true);
-      loadComments(1, true);
-    }
-  }, [markerId]);
-
-  const loadComments = async (pageNum = page, reset = false) => {
+  // 댓글 로드 함수 (useCallback으로 메모이제이션)
+  const loadComments = useCallback(async (pageNum = page, reset = false) => {
     if (loading || String(markerId).startsWith('temp-')) return;
 
     setLoading(true);
@@ -140,7 +131,17 @@ function CommentList({ markerId, initialCommentCount = 0 }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token, markerId, loading, page]);
+
+  // 마커 ID가 변경되면 댓글 목록 초기화 및 재조회
+  useEffect(() => {
+    if (markerId && !String(markerId).startsWith('temp-')) {
+      setComments([]);
+      setPage(1);
+      setHasMore(true);
+      loadComments(1, true);
+    }
+  }, [markerId, loadComments]);
 
   const handleCommentAdded = (newComment) => {
     setComments((prev) => [newComment, ...prev]);

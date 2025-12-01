@@ -1,10 +1,9 @@
 // frontend/src/pages/UserProfilePage.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -22,7 +21,7 @@ import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 
 import UserProfileCard from '../components/users/UserProfileCard';
 import FollowListModal from '../components/users/FollowListModal';
-import { getUserProfile, getUserMarkers } from '../utils/api';
+import { getUserProfile, getUserMarkers, getOrCreateChatRoom } from '../utils/api';
 import { useAuth } from '../hooks/useAuth';
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
@@ -35,7 +34,10 @@ function MarkerCard({ marker, onClick, index }) {
 
   return (
     <Card sx={{ 
+      width: '100%',
       height: '100%',
+      minWidth: 0,
+      maxWidth: '100%',
       bgcolor: '#1a1a2e',
       border: '2px solid #00ffff',
       boxShadow: '4px 4px 0 #000',
@@ -43,6 +45,9 @@ function MarkerCard({ marker, onClick, index }) {
       animationDelay: `${index * 0.05}s`,
       animationFillMode: 'both',
       transition: 'all 0.2s ease',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'stretch',
       '&:hover': {
         transform: 'translate(-2px, -2px)',
         boxShadow: '6px 6px 0 #000, 0 0 20px rgba(0, 255, 255, 0.3)',
@@ -52,14 +57,31 @@ function MarkerCard({ marker, onClick, index }) {
         to: { opacity: 1, transform: 'translateY(0)' },
       },
     }}>
-      <CardActionArea onClick={onClick} sx={{ height: '100%' }}>
+      <CardActionArea 
+        onClick={onClick} 
+        sx={{ 
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'stretch',
+        }}
+      >
         {imageUrl ? (
-          <Box sx={{ position: 'relative' }}>
+          <Box sx={{ 
+            position: 'relative',
+            width: '100%',
+            height: 140,
+            overflow: 'hidden',
+          }}>
             <CardMedia
               component="img"
-              height="140"
               image={imageUrl}
               alt={marker.line1}
+              sx={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+              }}
             />
             <Box sx={{
               position: 'absolute',
@@ -84,17 +106,45 @@ function MarkerCard({ marker, onClick, index }) {
             <PlaceIcon sx={{ fontSize: 48, color: '#00ffff40' }} />
           </Box>
         )}
-        <CardContent>
-          <Typography 
-            variant="body1" 
-            noWrap
-            sx={{ 
-              color: '#fff',
-              '&::before': { content: '"▸ "', color: '#00ffff' },
-            }}
-          >
-            {marker.line1}
-          </Typography>
+        <CardContent sx={{ 
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          width: '100%',
+          minWidth: 0,
+        }}>
+          <Box sx={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: 1, 
+            mb: 0.5,
+            minWidth: 0,
+            width: '100%',
+          }}>
+            <Typography 
+              variant="body1" 
+              noWrap 
+              sx={{ 
+                flex: 1,
+                minWidth: 0,
+                color: '#fff',
+                '&::before': { content: '"▸ "', color: '#00ffff' },
+              }}
+            >
+              {marker.line1}
+            </Typography>
+            {!marker.isPublic && (
+              <Chip 
+                label="🔒" 
+                size="small" 
+                sx={{
+                  bgcolor: '#333',
+                  color: '#888',
+                  fontSize: '0.7rem',
+                }}
+              />
+            )}
+          </Box>
           {marker.line2 && (
             <Typography variant="body2" noWrap sx={{ color: '#888' }}>
               {marker.line2}
@@ -113,13 +163,13 @@ function MarkerCard({ marker, onClick, index }) {
               }}
             />
             <Chip
-              icon={<ChatBubbleIcon sx={{ fontSize: 14, color: '#00ff00 !important' }} />}
+              icon={<ChatBubbleIcon sx={{ fontSize: 14, color: '#00ffff !important' }} />}
               label={marker.commentCount || 0}
               size="small"
               sx={{
                 bgcolor: 'transparent',
-                border: '1px solid #00ff00',
-                color: '#00ff00',
+                border: '1px solid #00ffff',
+                color: '#00ffff',
                 fontFamily: '"VT323", "DungGeunMo", monospace',
               }}
             />
@@ -151,27 +201,9 @@ function UserProfilePage() {
     }
   }, [currentUser, userId, navigate]);
 
-  // 프로필 로드
-  useEffect(() => {
-    loadProfile();
-  }, [userId]);
-
-  const loadProfile = async () => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const data = await getUserProfile(token, userId);
-      setUser(data.user);
-      loadMarkers(1, true);
-    } catch (err) {
-      setError(err.message || '프로필을 불러올 수 없습니다.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const loadMarkers = async (pageNum = page, reset = false) => {
+  // 마커 로드 함수 (useCallback으로 메모이제이션)
+  // 주의: page는 의존성 배열에서 제외 (항상 명시적으로 pageNum을 전달)
+  const loadMarkers = useCallback(async (pageNum, reset = false) => {
     setMarkersLoading(true);
     try {
       const data = await getUserMarkers(token, userId, pageNum);
@@ -189,7 +221,28 @@ function UserProfilePage() {
     } finally {
       setMarkersLoading(false);
     }
-  };
+  }, [token, userId]);
+
+  // 프로필 로드 함수 (useCallback으로 메모이제이션)
+  const loadProfile = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const data = await getUserProfile(token, userId);
+      setUser(data.user);
+      loadMarkers(1, true);
+    } catch (err) {
+      setError(err.message || '프로필을 불러올 수 없습니다.');
+    } finally {
+      setLoading(false);
+    }
+  }, [token, userId, loadMarkers]);
+
+  // 프로필 로드
+  useEffect(() => {
+    loadProfile();
+  }, [userId, loadProfile]);
 
   const handleFollowChange = (isFollowing, followerCount) => {
     setUser((prev) => ({
@@ -205,6 +258,32 @@ function UserProfilePage() {
 
   const handleLoadMore = () => {
     loadMarkers(page + 1);
+  };
+
+  /**
+   * handleStartChat 함수
+   * 
+   * 프로필 페이지에서 채팅을 시작하는 함수입니다.
+   * 채팅 페이지로 이동하면서 해당 사용자와 채팅을 시작합니다.
+   */
+  const handleStartChat = async () => {
+    if (!token || !userId) return;
+
+    try {
+      // 채팅방 조회 또는 생성
+      const data = await getOrCreateChatRoom(token, userId);
+      
+      // 채팅 페이지로 이동 (채팅방 ID를 state로 전달)
+      navigate('/chat', { 
+        state: { 
+          roomId: data.room.roomId,
+          otherUser: data.otherUser,
+        } 
+      });
+    } catch (error) {
+      console.error('채팅 시작 실패:', error);
+      alert('채팅을 시작할 수 없습니다: ' + (error.message || '알 수 없는 오류'));
+    }
   };
 
   if (loading) {
@@ -312,6 +391,7 @@ function UserProfilePage() {
             onFollowChange={handleFollowChange}
             onFollowersClick={() => setFollowModalType('followers')}
             onFollowingClick={() => setFollowModalType('following')}
+            onChatClick={handleStartChat}
           />
         )}
 
@@ -360,17 +440,33 @@ function UserProfilePage() {
           </Box>
         ) : (
           <>
-            <Grid container spacing={2}>
+            <Box
+              sx={{
+                display: 'grid',
+                gridTemplateColumns: {
+                  xs: '1fr',
+                  sm: 'repeat(2, 1fr)',
+                  md: 'repeat(4, 1fr)',
+                },
+                gap: 2,
+              }}
+            >
               {markers.map((marker, index) => (
-                <Grid item xs={12} sm={6} md={4} key={marker.markerId}>
+                <Box
+                  key={marker.markerId}
+                  sx={{
+                    width: '100%',
+                    minWidth: 0,
+                  }}
+                >
                   <MarkerCard 
                     marker={marker} 
                     onClick={() => handleMarkerClick(marker)}
                     index={index}
                   />
-                </Grid>
+                </Box>
               ))}
-            </Grid>
+            </Box>
 
             {hasMore && (
               <Box sx={{ textAlign: 'center', mt: 4 }}>

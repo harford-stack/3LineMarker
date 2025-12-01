@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -252,14 +251,8 @@ function BookmarksPage() {
     }
   }, [isAuthenticated, navigate]);
 
-  // 북마크 로드
-  useEffect(() => {
-    if (isAuthenticated) {
-      loadBookmarks(1, true);
-    }
-  }, [isAuthenticated]);
-
-  const loadBookmarks = async (pageNum = page, reset = false) => {
+  // 북마크 로드 함수 (useCallback으로 메모이제이션)
+  const loadBookmarks = useCallback(async (pageNum = page, reset = false) => {
     setLoading(true);
     try {
       const data = await getMyBookmarks(token, pageNum, 12);
@@ -278,7 +271,14 @@ function BookmarksPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token, page]);
+
+  // 북마크 로드
+  useEffect(() => {
+    if (isAuthenticated) {
+      loadBookmarks(1, true);
+    }
+  }, [isAuthenticated, loadBookmarks]);
 
   // 무한 스크롤 콜백
   const handleObserver = useCallback((entries) => {
@@ -286,7 +286,7 @@ function BookmarksPage() {
     if (target.isIntersecting && hasMore && !loading && bookmarks.length > 0) {
       loadBookmarks(page + 1);
     }
-  }, [hasMore, loading, page, bookmarks.length]);
+  }, [hasMore, loading, page, bookmarks.length, loadBookmarks]);
 
   // Intersection Observer 설정
   useEffect(() => {

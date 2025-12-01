@@ -151,7 +151,8 @@ function ClockWidget() {
         borderColor: COLORS.neonCyan,    // 청록색 테두리
         px: 2,                           // 가로 패딩
         py: 1.5,                         // 세로 패딩
-        minWidth: 200,                   // 최소 너비
+        minWidth: 225,                   // 최소 너비 (나침반/레이더와 맞춤)
+        width: 225,                      // 고정 너비
       }}
     >
       <Box sx={{ textAlign: 'center' }}>

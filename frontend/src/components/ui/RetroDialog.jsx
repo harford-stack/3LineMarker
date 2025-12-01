@@ -147,8 +147,8 @@ export function RetroDialogProvider({ children }) {
             bgcolor: '#1a1a2e',
             border: `4px solid ${typeStyle.color}`,
             boxShadow: `8px 8px 0 #000, 0 0 30px ${typeStyle.color}40`,
-            minWidth: 320,
-            maxWidth: 400,
+            minWidth: 500,
+            maxWidth: 600,
           },
         }}
       >
@@ -175,8 +175,9 @@ export function RetroDialogProvider({ children }) {
             variant="h6" 
             sx={{ 
               color: typeStyle.color,
-              fontFamily: '"Press Start 2P", "Galmuri11", cursive',
-              fontSize: '0.8rem',
+              fontFamily: '"VT323", "DungGeunMo", monospace',
+              fontSize: '1.3rem',
+              fontWeight: 'normal',
               textShadow: `0 0 10px ${typeStyle.color}`,
             }}
           >
@@ -184,11 +185,12 @@ export function RetroDialogProvider({ children }) {
           </Typography>
         </DialogTitle>
 
-        <DialogContent sx={{ pt: 3, pb: 2, position: 'relative', zIndex: 2 }}>
+        <DialogContent sx={{ pt: 4, pb: 2, position: 'relative', zIndex: 2 }}>
           {/* 아이콘 */}
           <Box sx={{ 
             textAlign: 'center', 
             mb: 2,
+            mt: 1,
             color: typeStyle.color,
             filter: `drop-shadow(0 0 10px ${typeStyle.color})`,
           }}>
@@ -203,6 +205,7 @@ export function RetroDialogProvider({ children }) {
               textAlign: 'center',
               fontFamily: '"VT323", "DungGeunMo", monospace',
               fontSize: '1.3rem',
+              fontWeight: 'normal',
               lineHeight: 1.6,
               whiteSpace: 'pre-line',
             }}

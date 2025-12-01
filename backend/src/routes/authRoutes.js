@@ -8,6 +8,9 @@ router.post('/register', authController.register);
 // ✅ 로그인 라우트
 router.post('/login', authController.login);
 
+// ✅ 아이디 중복 확인
+router.get('/check-userid', authController.checkUserId);
+
 // ✅ 이메일 중복 확인
 router.get('/check-email', authController.checkEmail);
 
