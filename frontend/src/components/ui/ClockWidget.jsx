@@ -175,7 +175,7 @@ function ClockWidget() {
           variant="caption"
           sx={{
             ...monoText,
-            color: '#888',               // 회색 글자
+            color: '#fff',               // 흰색 글자
             fontSize: '0.9rem',
             fontFamily: '"VT323", "DungGeunMo", monospace',
           }}

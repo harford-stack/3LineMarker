@@ -94,7 +94,7 @@ const textFieldStyle = {
     },
   },
   '& .MuiInputLabel-root': {             // 라벨 스타일
-    color: '#888',
+    color: '#fff',
     fontFamily: '"VT323", "DungGeunMo", monospace',
     '&.Mui-focused': { color: '#ff00ff' }, // 포커스된 라벨
   },
@@ -572,7 +572,7 @@ function MarkerDetailPanel({ marker, isOwner, onSave, onDelete, onImageUpload })
         <Typography 
           variant="caption" 
           sx={{ 
-            color: '#888',
+            color: '#fff',
             display: 'block',
             mb: 1,
             fontFamily: '"VT323", "DungGeunMo", monospace',
@@ -646,7 +646,7 @@ function MarkerDetailPanel({ marker, isOwner, onSave, onDelete, onImageUpload })
             />
           }
           label={
-            <Typography sx={{ color: '#888', fontFamily: '"VT323", "DungGeunMo", monospace' }}>
+            <Typography sx={{ color: '#fff', fontFamily: '"VT323", "DungGeunMo", monospace' }}>
               PUBLIC (다른 사용자에게 공개)
             </Typography>
           }

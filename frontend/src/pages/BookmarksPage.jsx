@@ -186,7 +186,7 @@ function BookmarkCard({ marker, onMarkerClick, onRemove, index }) {
             </Typography>
           </Box>
           {marker.line2 && (
-            <Typography variant="body2" noWrap sx={{ color: '#888' }}>
+            <Typography variant="body2" noWrap sx={{ color: '#fff' }}>
               {marker.line2}
             </Typography>
           )}
@@ -218,7 +218,7 @@ function BookmarkCard({ marker, onMarkerClick, onRemove, index }) {
             sx={{ 
               mt: 1.5, 
               display: 'block',
-              color: '#666',
+              color: '#fff',
               fontFamily: '"VT323", "DungGeunMo", monospace',
             }}
           >
@@ -353,7 +353,7 @@ function BookmarksPage() {
             startIcon={<ArrowBackIcon />} 
             onClick={() => navigate(-1)}
             sx={{
-              color: '#888',
+              color: '#fff',
               border: '2px solid #333',
               '&:hover': {
                 borderColor: '#00ff00',
@@ -427,7 +427,7 @@ function BookmarksPage() {
             >
               📭 NO BOOKMARKS YET
             </Typography>
-            <Typography variant="body2" sx={{ color: '#888', mb: 3 }}>
+            <Typography variant="body2" sx={{ color: '#fff', mb: 3 }}>
               마커의 북마크 아이콘을 클릭하여 저장해보세요!
             </Typography>
             <Button 
@@ -497,7 +497,7 @@ function BookmarksPage() {
                 <Typography 
                   variant="body2" 
                   sx={{ 
-                    color: '#666',
+                    color: '#fff',
                     fontFamily: '"Press Start 2P", "Galmuri11", cursive',
                     fontSize: '0.5rem',
                   }}

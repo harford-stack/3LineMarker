@@ -310,7 +310,7 @@ function LoginPage() {
           >
             [ MISSION BRIEFING ]
           </Typography>
-          <Typography variant="body2" sx={{ color: '#aaa', lineHeight: 1.8 }}>
+          <Typography variant="body2" sx={{ color: '#fff', lineHeight: 1.8 }}>
             ▸ 지도 위에 마커를 남기세요<br />
             ▸ 세 줄로 당신의 이야기를 적으세요<br />
             ▸ 친구들과 공유하고 소통하세요<br />
@@ -323,7 +323,7 @@ function LoginPage() {
           variant="caption" 
           sx={{ 
             mt: 4,
-            color: '#888',
+            color: '#fff',
             fontFamily: '"Press Start 2P", "Galmuri11", cursive',
             fontSize: '0.75rem',
             animation: 'blink 1s step-end infinite', // 깜빡이는 애니메이션
@@ -393,7 +393,7 @@ function LoginPage() {
             <Typography 
               variant="caption" 
               sx={{ 
-                color: '#666',
+                color: '#fff',
                 display: 'block',
                 textAlign: 'center',
                 mb: 4,
@@ -512,7 +512,7 @@ function LoginPage() {
                     navigate('/find-account');     // 아이디 찾기 페이지로 이동
                   }}
                   sx={{ 
-                    color: '#888',
+                    color: '#fff',
                     fontFamily: '"VT323", "DungGeunMo", monospace',
                     fontSize: '0.9rem',
                     '&:hover': { color: '#00ffff' },
@@ -551,7 +551,7 @@ function LoginPage() {
                 borderTop: '2px dashed #333',  // 점선 테두리
                 textAlign: 'center',
               }}>
-                <Typography variant="body2" sx={{ color: '#888', mb: 2 }}>
+                <Typography variant="body2" sx={{ color: '#fff', mb: 2 }}>
                   NEW PLAYER?
                 </Typography>
                 {/* 회원가입 버튼 */}

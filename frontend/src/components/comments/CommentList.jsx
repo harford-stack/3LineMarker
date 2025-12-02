@@ -66,7 +66,7 @@ function CommentItem({ comment, onDelete, isOwner, onConfirmDelete }) {
           <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
             {comment.username}
           </Typography>
-          <Typography variant="caption" color="text.secondary">
+          <Typography variant="caption" sx={{ color: '#fff' }}>
             {formatTime(comment.createdAt)}
           </Typography>
           {isOwner && (
@@ -74,7 +74,7 @@ function CommentItem({ comment, onDelete, isOwner, onConfirmDelete }) {
               size="small"
               onClick={handleDelete}
               disabled={deleting}
-              sx={{ ml: 'auto', color: 'text.secondary' }}
+              sx={{ ml: 'auto', color: '#fff' }}
             >
               {deleting ? (
                 <CircularProgress size={14} />
@@ -186,7 +186,7 @@ function CommentList({ markerId, initialCommentCount = 0 }) {
   if (String(markerId).startsWith('temp-')) {
     return (
       <Box sx={{ mt: 2 }}>
-        <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center', py: 2 }}>
+        <Typography variant="body2" sx={{ color: '#fff', textAlign: 'center', py: 2 }}>
           마커를 저장한 후 댓글을 작성할 수 있습니다.
         </Typography>
       </Box>
@@ -203,7 +203,7 @@ function CommentList({ markerId, initialCommentCount = 0 }) {
         <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
           댓글
         </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ ml: 1 }}>
+        <Typography variant="body2" sx={{ color: '#fff', ml: 1 }}>
           {totalCount}개
         </Typography>
       </Box>
@@ -214,8 +214,7 @@ function CommentList({ markerId, initialCommentCount = 0 }) {
       {comments.length === 0 && !loading ? (
         <Typography
           variant="body2"
-          color="text.secondary"
-          sx={{ textAlign: 'center', py: 3 }}
+          sx={{ color: '#fff', textAlign: 'center', py: 3 }}
         >
           아직 댓글이 없습니다. 첫 댓글을 작성해보세요!
         </Typography>

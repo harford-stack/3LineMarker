@@ -398,7 +398,7 @@ function RegisterPage() {
       },
     },
     '& .MuiInputLabel-root': {                    // 라벨 스타일
-      color: '#888',
+      color: '#fff',
       fontFamily: '"VT323", "DungGeunMo", monospace',
     },
     '& .MuiInputLabel-root.Mui-focused': {        // 포커스된 라벨
@@ -507,7 +507,7 @@ function RegisterPage() {
           >
             [ PLAYER BENEFITS ]
           </Typography>
-          <Typography variant="body2" sx={{ color: '#aaa', lineHeight: 1.8 }}>
+          <Typography variant="body2" sx={{ color: '#fff', lineHeight: 1.8 }}>
             ★ 무제한 마커 생성<br />
             ★ 다른 플레이어와 소통<br />
             ★ 피드로 새로운 장소 발견<br />
@@ -572,7 +572,7 @@ function RegisterPage() {
             <Typography 
               variant="caption" 
               sx={{ 
-                color: '#666',
+                color: '#fff',
                 display: 'block',
                 textAlign: 'center',
                 mb: 3,
@@ -629,7 +629,7 @@ function RegisterPage() {
                       },
                       '&:disabled': {                   // 비활성화 상태
                         borderColor: '#444',
-                        color: '#666',
+                        color: '#fff',
                       },
                     }}
                   >
@@ -731,7 +731,7 @@ function RegisterPage() {
 
               {/* 성별 선택 박스 */}
               <FormControl fullWidth sx={textFieldSx}>
-                <InputLabel sx={{ color: '#888', fontFamily: '"VT323", "DungGeunMo", monospace' }}>
+                <InputLabel sx={{ color: '#fff', fontFamily: '"VT323", "DungGeunMo", monospace' }}>
                   성별
                 </InputLabel>
                 <Select
@@ -835,7 +835,7 @@ function RegisterPage() {
                 borderTop: '2px dashed #333',  // 점선 테두리
                 textAlign: 'center',
               }}>
-                <Typography variant="body2" sx={{ color: '#888', mb: 2 }}>
+                <Typography variant="body2" sx={{ color: '#fff', mb: 2 }}>
                   ALREADY A PLAYER?
                 </Typography>
                 {/* 로그인 버튼 */}

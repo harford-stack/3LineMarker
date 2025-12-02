@@ -360,7 +360,7 @@ function RadarWidget({ markers = [], centerLat, centerLng, maxDistance = 5000 })
         variant="caption"
         sx={{
           ...monoText,
-          color: '#888',
+          color: '#fff',
           fontSize: '1.1rem',            // 글씨 크기 더 증가
           fontFamily: '"VT323", "DungGeunMo", monospace',
           mt: 0.5,

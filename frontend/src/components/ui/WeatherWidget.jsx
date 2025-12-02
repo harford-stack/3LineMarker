@@ -223,7 +223,7 @@ function WeatherWidget({ latitude, longitude }) {
             variant="caption"
             sx={{
               ...monoText,
-              color: '#888',
+              color: '#fff',
               fontSize: '0.7rem',
               display: 'block',
               mb: 0.5,
@@ -290,7 +290,7 @@ function WeatherWidget({ latitude, longitude }) {
             variant="caption"
             sx={{
               ...monoText,
-              color: '#888',
+              color: '#fff',
               fontSize: '1.1rem',            // 글씨 크기 증가
               fontFamily: '"VT323", "DungGeunMo", monospace',
             }}

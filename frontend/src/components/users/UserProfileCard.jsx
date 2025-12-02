@@ -55,7 +55,7 @@ function StatItem({ label, value, onClick, color = '#00ffff' }) {
       <Typography 
         variant="caption" 
         sx={{ 
-          color: '#888',
+          color: '#fff',
           fontFamily: '"VT323", "DungGeunMo", monospace',
           fontSize: '1rem',
         }}
@@ -100,7 +100,7 @@ function UserProfileCard({
             <Typography variant="h5" fontWeight="bold" gutterBottom>
               {user.username}
             </Typography>
-            <Typography variant="body2" color="text.secondary" gutterBottom>
+            <Typography variant="body2" sx={{ color: '#fff' }} gutterBottom>
               @{user.userId}
             </Typography>
             {user.statusMessage && (

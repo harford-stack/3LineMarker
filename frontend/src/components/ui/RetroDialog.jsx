@@ -226,8 +226,8 @@ export function RetroDialogProvider({ children }) {
               onClick={dialogState.onCancel}
               variant="outlined"
               sx={{
-                borderColor: '#888',
-                color: '#888',
+                borderColor: '#fff',
+                color: '#fff',
                 fontFamily: '"Press Start 2P", "Galmuri11", cursive',
                 fontSize: '0.55rem',
                 px: 3,

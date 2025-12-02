@@ -732,7 +732,7 @@ function App() {
                 <Typography 
                   variant="body1" 
                   sx={{ 
-                    color: '#aaa',
+                    color: '#fff',
                     textAlign: 'center',
                     maxWidth: 500,
                     lineHeight: 2,
@@ -808,7 +808,7 @@ function App() {
                 <Typography 
                   variant="caption" 
                   sx={{ 
-                    color: '#888',
+                    color: '#fff',
                     fontFamily: '"Press Start 2P", "Galmuri11", cursive',
                     fontSize: { xs: '0.7rem', sm: '0.9rem' },
                     textShadow: '0 0 10px rgba(255, 255, 255, 0.3)',
@@ -842,7 +842,7 @@ function App() {
         <Typography 
           variant="caption" 
           sx={{ 
-            color: '#666',
+            color: '#fff',
             fontFamily: '"VT323", "DungGeunMo", monospace',
             fontSize: '1rem',
           }}

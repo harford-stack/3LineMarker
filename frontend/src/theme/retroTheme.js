@@ -144,9 +144,9 @@ const retroTheme = createTheme({
           },
         },
         contained: {
-          borderColor: `${colors.white} ${colors.gray} ${colors.gray} ${colors.white}`,
+          borderColor: `${colors.white} ${colors.white} ${colors.white} ${colors.white}`,
           '&:hover': {
-            borderColor: `${colors.white} ${colors.gray} ${colors.gray} ${colors.white}`,
+            borderColor: `${colors.white} ${colors.white} ${colors.white} ${colors.white}`,
           },
         },
         outlined: {

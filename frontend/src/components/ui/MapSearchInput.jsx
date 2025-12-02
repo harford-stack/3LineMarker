@@ -164,7 +164,7 @@ function MapSearchInput({ onMarkerSelect, onUserSelect }) {
           >
             {!hasResults && !loading && query.trim().length >= 2 && (
               <Box sx={{ p: 3, textAlign: 'center' }}>
-                <Typography color="text.secondary">
+                <Typography sx={{ color: '#fff' }}>
                   검색 결과가 없습니다.
                 </Typography>
               </Box>
@@ -174,7 +174,7 @@ function MapSearchInput({ onMarkerSelect, onUserSelect }) {
             {results.markers.length > 0 && (
               <>
                 <Box sx={{ px: 2, py: 1, bgcolor: 'action.hover' }}>
-                  <Typography variant="caption" color="text.secondary" fontWeight={600}>
+                  <Typography variant="caption" sx={{ color: '#fff' }} fontWeight={600}>
                     마커 ({results.markers.length})
                   </Typography>
                 </Box>
@@ -208,7 +208,7 @@ function MapSearchInput({ onMarkerSelect, onUserSelect }) {
                         }
                         secondary={
                           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 0.5 }}>
-                            <Typography variant="caption" color="text.secondary">
+                            <Typography variant="caption" sx={{ color: '#fff' }}>
                               @{marker.username}
                             </Typography>
                             <Chip
@@ -231,7 +231,7 @@ function MapSearchInput({ onMarkerSelect, onUserSelect }) {
             {results.users.length > 0 && (
               <>
                 <Box sx={{ px: 2, py: 1, bgcolor: 'action.hover' }}>
-                  <Typography variant="caption" color="text.secondary" fontWeight={600}>
+                  <Typography variant="caption" sx={{ color: '#fff' }} fontWeight={600}>
                     사용자 ({results.users.length})
                   </Typography>
                 </Box>
@@ -263,7 +263,7 @@ function MapSearchInput({ onMarkerSelect, onUserSelect }) {
                         }
                         secondary={
                           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 0.5 }}>
-                            <Typography variant="caption" color="text.secondary">
+                            <Typography variant="caption" sx={{ color: '#fff' }}>
                               @{user.userId}
                             </Typography>
                             <Chip

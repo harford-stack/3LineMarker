@@ -637,7 +637,7 @@ function ChatPage() {
                       secondary={
                         <Typography
                           sx={{
-                            color: '#aaa',
+                            color: '#fff',
                             fontFamily: '"VT323", "DungGeunMo", monospace',
                             fontSize: '0.7rem',
                           }}
@@ -654,7 +654,7 @@ function ChatPage() {
             {!searching && searchQuery.trim() && searchResults.length === 0 && (
               <Typography
                 sx={{
-                  color: '#888',
+                  color: '#fff',
                   fontFamily: '"VT323", "DungGeunMo", monospace',
                   fontSize: '0.8rem',
                   textAlign: 'center',
@@ -675,7 +675,7 @@ function ChatPage() {
             </Box>
           ) : rooms.length === 0 ? (
             <Box sx={{ p: 3, textAlign: 'center' }}>
-              <Typography sx={{ color: '#888', fontFamily: '"VT323", "DungGeunMo", monospace' }}>
+              <Typography sx={{ color: '#fff', fontFamily: '"VT323", "DungGeunMo", monospace' }}>
                 채팅방이 없습니다.
               </Typography>
             </Box>
@@ -976,7 +976,7 @@ function ChatPage() {
           }}>
             <Typography
               sx={{
-                color: '#888',
+                color: '#fff',
                 fontFamily: '"VT323", "DungGeunMo", monospace',
                 fontSize: '1.5rem',
               }}

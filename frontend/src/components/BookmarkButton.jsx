@@ -106,7 +106,7 @@ function BookmarkButton({ markerId, initialIsBookmarked = false, size = 'medium'
         onClick={handleToggleBookmark}
         disabled={loading || String(markerId).startsWith('temp-')}
         sx={{
-          color: isBookmarked ? '#ffff00' : '#888',
+          color: isBookmarked ? '#ffff00' : '#fff',
           width: config.btnSize,
           height: config.btnSize,
           transition: 'all 0.2s ease',
