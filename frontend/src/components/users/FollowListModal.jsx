@@ -1,5 +1,5 @@
 // frontend/src/components/users/FollowListModal.jsx
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -30,13 +30,24 @@ function FollowListModal({ open, onClose, userId, type = 'followers' }) {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [totalCount, setTotalCount] = useState(0);
+  
+  // page의 최신 값을 참조하기 위한 ref
+  const pageRef = useRef(page);
+  
+  // page가 변경될 때마다 ref 업데이트
+  useEffect(() => {
+    pageRef.current = page;
+  }, [page]);
 
   const title = type === 'followers' ? '팔로워' : '팔로잉';
 
   // 사용자 목록 로드 함수 (useCallback으로 메모이제이션)
-  const loadUsers = useCallback(async (pageNum = page, reset = false) => {
-    if (loading) return;
-
+  // 주의: loading과 page는 의존성 배열에서 제외
+  // - loading: 함수 내부에서 체크만 하므로 포함 불필요 (무한 루프 방지)
+  // - page: 항상 명시적으로 pageNum을 전달하므로 포함 불필요
+  const loadUsers = useCallback(async (pageNum, reset = false) => {
+    // loading 상태는 함수 내부에서 체크하되, 의존성 배열에는 포함하지 않음
+    // (loading이 변경될 때마다 함수가 재생성되는 것을 방지)
     setLoading(true);
     try {
       const fetchFn = type === 'followers' ? getFollowers : getFollowing;
@@ -58,7 +69,7 @@ function FollowListModal({ open, onClose, userId, type = 'followers' }) {
     } finally {
       setLoading(false);
     }
-  }, [token, userId, type, loading, page]);
+  }, [token, userId, type]);
 
   useEffect(() => {
     if (open) {
@@ -74,8 +85,10 @@ function FollowListModal({ open, onClose, userId, type = 'followers' }) {
     navigate(`/users/${clickedUserId}`);
   };
 
+  // 더보기 버튼 핸들러
+  // pageRef를 사용해서 최신 page 값을 참조 (의존성 배열에서 page 제외)
   const handleLoadMore = () => {
-    loadUsers(page + 1);
+    loadUsers(pageRef.current + 1);
   };
 
   const getProfileImageUrl = (url) => {

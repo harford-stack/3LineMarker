@@ -12,6 +12,54 @@
 
 ---
 
+## 📸 스크린샷
+
+### 메인 페이지
+
+<div align="center">
+  <img src="./screenshot/3lm-mapPage.png" alt="지도 페이지" width="800"/>
+  <p><strong>지도 페이지</strong> - 지도 위에 마커를 생성하고 공유할 수 있는 메인 화면</p>
+</div>
+
+### 주요 기능
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center">
+        <img src="./screenshot/3lm-feedPage.png" alt="피드 페이지" width="400"/>
+        <p><strong>피드 페이지</strong></p>
+      </td>
+      <td align="center">
+        <img src="./screenshot/3lm-chatPage.png" alt="채팅 페이지" width="400"/>
+        <p><strong>실시간 채팅</strong></p>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <img src="./screenshot/3lm-myProfilePage.png" alt="내 프로필" width="400"/>
+        <p><strong>내 프로필</strong></p>
+      </td>
+      <td align="center">
+        <img src="./screenshot/3lm-userProfilePage.png" alt="사용자 프로필" width="400"/>
+        <p><strong>사용자 프로필</strong></p>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <img src="./screenshot/3lm-bookmarkPage.png" alt="북마크 페이지" width="400"/>
+        <p><strong>북마크 페이지</strong></p>
+      </td>
+      <td align="center">
+        <img src="./screenshot/3lm-followModal.PNG" alt="팔로우 모달" width="400"/>
+        <p><strong>팔로우 리스트</strong></p>
+      </td>
+    </tr>
+  </table>
+</div>
+
+---
+
 ## 💡 프로젝트 소개
 
 **3LineMarker**는 지도 기반으로 장소를 기록하고 공유하는 소셜 네트워크 서비스입니다.
@@ -254,6 +302,16 @@ REACT_APP_API_BASE_URL=http://localhost:3010
 - [개발일지](./docs/DAY1_개발일지.md) - 일자별 개발 과정
 - [스크린샷 가이드](./docs/스크린샷_가이드.md) - 포트폴리오용 캡처 가이드
 - [포트폴리오 요약본](./docs/포트폴리오_요약본.md) - 프로젝트 핵심 요약
+
+## 📸 전체 스크린샷
+
+| 페이지            | 스크린샷                                                                         |
+| ----------------- | -------------------------------------------------------------------------------- |
+| **로그인**        | <img src="./screenshot/3lm-loginPage.png" alt="로그인 페이지" width="300"/>      |
+| **회원가입**      | <img src="./screenshot/3lm-registerPage.png" alt="회원가입 페이지" width="300"/> |
+| **루트 페이지**   | <img src="./screenshot/3lm-rootPage.png" alt="루트 페이지" width="300"/>         |
+| **검색 드롭다운** | <img src="./screenshot/3lm-searchDropdown.PNG" alt="검색 드롭다운" width="300"/> |
+| **알림**          | <img src="./screenshot/3lm-alarm.png" alt="알림" width="300"/>                   |
 
 ---
 
