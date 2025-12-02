@@ -1,70 +1,280 @@
-# Getting Started with Create React App
+# 3LineMarker
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+> **"지도 위에 기록하는, 감성 소셜 네트워크"**
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 📌 프로젝트 주제
 
-### `npm start`
+**React를 활용한 지도 기반 SNS 사이트 구현**
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 💡 프로젝트 소개
 
-### `npm test`
+**3LineMarker**는 지도 기반 소셜 네트워크 서비스입니다.  
+사용자는 지도에 마커를 생성하고, 3줄의 텍스트로 장소를 기록하며, 다른 사용자들과 소통할 수 있습니다.  
+레트로 게임 테마의 독특한 UI/UX로 사용자에게 새로운 경험을 제공합니다.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## 🎯 기획 배경
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+| ❓ 기존 SNS의 한계          | ✅ 3LineMarker의 해결 방식    |
+| --------------------------- | ----------------------------- |
+| 텍스트 중심의 단조로운 공유 | 지도 기반 시각적 공유         |
+| 장소 정보의 비효율적 전달   | 3줄 텍스트로 간결한 정보 전달 |
+| 실시간 소통의 부재          | WebSocket 기반 실시간 채팅    |
+| 개인화된 콘텐츠 탐색 어려움 | 카테고리 필터링 및 검색 기능  |
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## ⏱️ 개발 기간
 
-### `npm run eject`
+**2025.11.25 ~ 2025.12.02 (8일)**
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+---
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 🛠 사용 기술
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+| 분류     | 기술                                           |
+| -------- | ---------------------------------------------- |
+| Frontend | React 19.2.0, Material-UI 7.3.5, Redux Toolkit |
+| Backend  | Node.js, Express 5.1.0                         |
+| Database | MySQL 8.0                                      |
+| 기타     | Leaflet, Socket.io, JWT, OpenWeatherMap API    |
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+---
 
-## Learn More
+## 📄 페이지별 주요 기능
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### 🗺 1. 지도 페이지 (메인)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- 지도 클릭으로 마커 생성
+- 카테고리별 필터링 (음식점, 카페, 관광지, 쇼핑, 기타)
+- 마커 클러스터링
+- 위젯 (시계, 날씨, 나침반, 레이더)
+- 실시간 검색 기능
 
-### Code Splitting
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### 📝 2. 마커 생성 및 관리
 
-### Analyzing the Bundle Size
+- 3줄 텍스트 입력 (line1, line2, line3)
+- 이미지 다중 업로드 및 미리보기
+- 카테고리 선택
+- 마커 수정 및 삭제
+- 마커 상세 정보 패널
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+---
 
-### Making a Progressive Web App
+### 📱 3. 피드 페이지
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- 팔로잉 피드 / 탐색 피드 탭 전환
+- 정렬 옵션 (최신순, 인기순)
+- 무한 스크롤
+- 마커 카드 형태의 피드 표시
 
-### Advanced Configuration
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### 👤 4. 프로필 페이지
 
-### Deployment
+- 내 프로필 / 다른 사용자 프로필
+- 프로필 수정 (닉네임, 상태 메시지, 프로필 이미지)
+- 팔로우/언팔로우 기능
+- 팔로워/팔로잉 목록 모달
+- 사용자별 마커 목록 (4열 그리드)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+---
 
-### `npm run build` fails to minify
+### 💬 5. 실시간 채팅
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- 일대일 채팅
+- WebSocket 기반 실시간 메시지 전송/수신
+- 채팅방 목록
+- 메시지 읽음 처리
+- 채팅 알림
+
+---
+
+### 🔔 6. 알림 시스템
+
+- 좋아요, 댓글, 팔로우, 채팅 알림
+- 알림 배지 표시 (헤더)
+- 알림 목록 조회 및 읽음 처리
+
+---
+
+### 🔍 7. 검색 및 필터
+
+- 마커 검색 (텍스트 기반)
+- 사용자 검색
+- 카테고리 필터링
+- 실시간 검색 결과 표시
+
+---
+
+### ❤️ 8. 소셜 기능
+
+- 좋아요/좋아요 취소
+- 댓글 작성/삭제 (무한 스크롤)
+- 북마크 추가/제거
+- 북마크 페이지
+
+---
+
+### 🔐 9. 로그인 / 회원가입
+
+- 회원가입 (아이디 중복 체크)
+- 로그인/로그아웃
+- 아이디/비밀번호 찾기
+- JWT 토큰 기반 인증
+
+---
+
+## 🎨 UI/UX 특징
+
+### 레트로 테마
+
+- 네온 색상 (녹색, 청록색, 마젠타)
+- 픽셀 폰트 (Press Start 2P, VT323, DungGeunMo)
+- 레트로 다이얼로그
+- 별 배경 애니메이션
+
+### 반응형 디자인
+
+- 모바일, 태블릿, 데스크톱 지원
+- CSS Grid 및 Flexbox 활용
+
+---
+
+## 🚀 시작하기
+
+### 필수 요구사항
+
+- Node.js (v18 이상)
+- MySQL (v8.0 이상)
+
+### 설치 및 실행
+
+```bash
+# 저장소 클론
+git clone https://github.com/your-username/3LineMarker.git
+cd 3LineMarker
+
+# Backend 설정
+cd backend
+npm install
+# .env 파일 생성 및 설정 (아래 참고)
+
+# Frontend 설정
+cd ../frontend
+npm install
+# .env 파일 생성 및 설정
+
+# 데이터베이스 설정
+# MySQL 데이터베이스 생성 후 migrations 폴더의 SQL 파일 실행
+
+# 서버 실행
+# Backend (포트 3010)
+cd backend
+npm start
+
+# Frontend (포트 3000)
+cd frontend
+npm start
+```
+
+### 환경 변수 설정
+
+**backend/.env**
+
+```env
+PORT=3010
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=your_password
+DB_NAME=3linemarker
+JWT_SECRET=your_jwt_secret_key
+FRONTEND_ORIGIN=http://localhost:3000
+OPENWEATHER_API_KEY=your_openweather_api_key
+```
+
+**frontend/.env**
+
+```env
+REACT_APP_API_BASE_URL=http://localhost:3010
+```
+
+---
+
+## 📁 프로젝트 구조
+
+```
+3LineMarker/
+├── backend/          # Backend 서버
+│   ├── src/
+│   │   ├── config/   # 설정 파일
+│   │   ├── controllers/  # 컨트롤러
+│   │   ├── routes/   # 라우터
+│   │   └── utils/    # 유틸리티
+│   └── migrations/   # DB 마이그레이션
+├── frontend/         # Frontend 클라이언트
+│   └── src/
+│       ├── components/  # 컴포넌트
+│       ├── pages/    # 페이지
+│       └── utils/    # 유틸리티
+└── docs/            # 문서
+```
+
+---
+
+## ✨ 주요 기능 요약
+
+| 기능           | 설명                             |
+| -------------- | -------------------------------- |
+| 지도 기반 마커 | Leaflet 지도에 마커 생성 및 관리 |
+| 실시간 채팅    | WebSocket 기반 일대일 채팅       |
+| 소셜 기능      | 좋아요, 댓글, 북마크, 팔로우     |
+| 알림 시스템    | 실시간 알림 및 배지 표시         |
+| 피드 시스템    | 팔로잉/탐색 피드, 무한 스크롤    |
+| 검색 기능      | 마커 및 사용자 검색              |
+| 지도 위젯      | 시계, 날씨, 나침반, 레이더       |
+
+---
+
+## 📚 상세 문서
+
+- [API 문서](./docs/API.md) - API 엔드포인트 상세 설명
+- [개발일지](./docs/개발일지.md) - 일자별 개발 과정
+- [스크린샷 가이드](./docs/스크린샷_가이드.md) - 포트폴리오용 캡처 가이드
+- [포트폴리오 요약본](./docs/포트폴리오_요약본.md) - 프로젝트 핵심 요약
+
+---
+
+## 🎯 프로젝트 성과
+
+- ✅ 핵심 기능 100% 구현
+- ✅ ESLint 경고 0개
+- ✅ 실시간 채팅 시스템 구축
+- ✅ 레트로 테마 UI/UX 완성
+
+---
+
+## 💡 배운 점
+
+- **React Hooks 최적화**: useCallback, useMemo, useRef의 적절한 활용
+- **실시간 통신**: WebSocket을 활용한 실시간 기능 구현
+- **상태 관리**: Redux Toolkit을 통한 전역 상태 관리
+- **성능 최적화**: 불필요한 리렌더링 방지 및 메모이제이션 전략
+
+---
+
+## 📝 라이선스
+
+이 프로젝트는 개인 프로젝트입니다.
+
+---
+
+**개발 기간**: 2025년 11월 25일 ~ 12월 02일  
+**버전**: 1.0.0
