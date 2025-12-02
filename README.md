@@ -56,6 +56,13 @@
 
 ### Frontend
 
+![React](https://img.shields.io/badge/React-19.2.0-61DAFB?logo=react&logoColor=white)
+![Material-UI](https://img.shields.io/badge/Material--UI-7.3.5-007FFF?logo=mui&logoColor=white)
+![Redux](https://img.shields.io/badge/Redux_Toolkit-2.11.0-764ABC?logo=redux&logoColor=white)
+![React Router](https://img.shields.io/badge/React_Router-7.9.6-CA4245?logo=react-router&logoColor=white)
+![Leaflet](https://img.shields.io/badge/Leaflet-1.9.4-199900?logo=leaflet&logoColor=white)
+![Socket.io](https://img.shields.io/badge/Socket.io--Client-4.8.1-010101?logo=socket.io&logoColor=white)
+
 - **React 19.2.0** - 최신 React 기능을 활용한 컴포넌트 기반 개발
 - **Material-UI 7.3.5** - 일관된 UI 컴포넌트 라이브러리
 - **Redux Toolkit 2.11.0** - 효율적인 전역 상태 관리
@@ -65,6 +72,13 @@
 - **Socket.io-client 4.8.1** - WebSocket 클라이언트
 
 ### Backend
+
+![Node.js](https://img.shields.io/badge/Node.js-339933?logo=node.js&logoColor=white)
+![Express](https://img.shields.io/badge/Express-5.1.0-000000?logo=express&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?logo=mysql&logoColor=white)
+![Socket.io](https://img.shields.io/badge/Socket.io-4.8.1-010101?logo=socket.io&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-9.0.2-000000?logo=jsonwebtokens&logoColor=white)
+![bcrypt](https://img.shields.io/badge/bcrypt-6.0.0-FF6B6B?logo=bcrypt&logoColor=white)
 
 - **Node.js** - 비동기 이벤트 기반 서버 런타임
 - **Express 5.1.0** - 간결한 웹 프레임워크
@@ -76,6 +90,8 @@
 - **Axios 1.13.2** - HTTP 클라이언트
 
 ### 외부 API
+
+![OpenWeatherMap](https://img.shields.io/badge/OpenWeatherMap-API-FF6B6B?logo=openweathermap&logoColor=white)
 
 - **OpenWeatherMap API** - 날씨 정보 제공
 
