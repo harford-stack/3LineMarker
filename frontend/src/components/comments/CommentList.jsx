@@ -1,5 +1,5 @@
 // frontend/src/components/comments/CommentList.jsx
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
@@ -108,10 +108,23 @@ function CommentList({ markerId, initialCommentCount = 0 }) {
   const [totalCount, setTotalCount] = useState(initialCommentCount);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
+  
+  // page의 최신 값을 참조하기 위한 ref
+  const pageRef = useRef(page);
+  
+  // page가 변경될 때마다 ref 업데이트
+  useEffect(() => {
+    pageRef.current = page;
+  }, [page]);
 
   // 댓글 로드 함수 (useCallback으로 메모이제이션)
-  const loadComments = useCallback(async (pageNum = page, reset = false) => {
-    if (loading || String(markerId).startsWith('temp-')) return;
+  // 주의: loading과 page는 의존성 배열에서 제외
+  // - loading: 함수 내부에서 체크만 하므로 포함 불필요 (무한 루프 방지)
+  // - page: 항상 명시적으로 pageNum을 전달하므로 포함 불필요
+  const loadComments = useCallback(async (pageNum, reset = false) => {
+    // loading 상태는 함수 내부에서 체크하되, 의존성 배열에는 포함하지 않음
+    // (loading이 변경될 때마다 함수가 재생성되는 것을 방지)
+    if (String(markerId).startsWith('temp-')) return;
 
     setLoading(true);
     try {
@@ -131,7 +144,7 @@ function CommentList({ markerId, initialCommentCount = 0 }) {
     } finally {
       setLoading(false);
     }
-  }, [token, markerId, loading, page]);
+  }, [token, markerId]);
 
   // 마커 ID가 변경되면 댓글 목록 초기화 및 재조회
   useEffect(() => {
@@ -163,8 +176,10 @@ function CommentList({ markerId, initialCommentCount = 0 }) {
     return showConfirm('댓글을 삭제하시겠습니까?', 'DELETE COMMENT');
   };
 
+  // 더보기 버튼 핸들러
+  // pageRef를 사용해서 최신 page 값을 참조 (의존성 배열에서 page 제외)
   const handleLoadMore = () => {
-    loadComments(page + 1);
+    loadComments(pageRef.current + 1);
   };
 
   // 임시 마커인 경우 댓글 입력만 표시

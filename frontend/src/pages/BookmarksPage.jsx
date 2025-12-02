@@ -243,6 +243,14 @@ function BookmarksPage() {
   // 무한 스크롤용
   const observerRef = useRef();
   const loadMoreRef = useRef();
+  
+  // page의 최신 값을 참조하기 위한 ref
+  const pageRef = useRef(page);
+  
+  // page가 변경될 때마다 ref 업데이트
+  useEffect(() => {
+    pageRef.current = page;
+  }, [page]);
 
   // 로그인 확인
   useEffect(() => {
@@ -252,7 +260,9 @@ function BookmarksPage() {
   }, [isAuthenticated, navigate]);
 
   // 북마크 로드 함수 (useCallback으로 메모이제이션)
-  const loadBookmarks = useCallback(async (pageNum = page, reset = false) => {
+  // 주의: page는 의존성 배열에서 제외
+  // - page: 항상 명시적으로 pageNum을 전달하므로 포함 불필요 (무한 루프 방지)
+  const loadBookmarks = useCallback(async (pageNum, reset = false) => {
     setLoading(true);
     try {
       const data = await getMyBookmarks(token, pageNum, 12);
@@ -271,7 +281,7 @@ function BookmarksPage() {
     } finally {
       setLoading(false);
     }
-  }, [token, page]);
+  }, [token]);
 
   // 북마크 로드
   useEffect(() => {
@@ -281,12 +291,13 @@ function BookmarksPage() {
   }, [isAuthenticated, loadBookmarks]);
 
   // 무한 스크롤 콜백
+  // pageRef를 사용해서 최신 page 값을 참조 (의존성 배열에서 page 제외)
   const handleObserver = useCallback((entries) => {
     const target = entries[0];
     if (target.isIntersecting && hasMore && !loading && bookmarks.length > 0) {
-      loadBookmarks(page + 1);
+      loadBookmarks(pageRef.current + 1);
     }
-  }, [hasMore, loading, page, bookmarks.length, loadBookmarks]);
+  }, [hasMore, loading, bookmarks.length, loadBookmarks]);
 
   // Intersection Observer 설정
   useEffect(() => {
