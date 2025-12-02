@@ -56,44 +56,28 @@
 
 ### Frontend
 
-![React](https://img.shields.io/badge/React-19.2.0-61DAFB?logo=react&logoColor=white)
-![Material-UI](https://img.shields.io/badge/Material--UI-7.3.5-007FFF?logo=mui&logoColor=white)
-![Redux](https://img.shields.io/badge/Redux_Toolkit-2.11.0-764ABC?logo=redux&logoColor=white)
-![React Router](https://img.shields.io/badge/React_Router-7.9.6-CA4245?logo=react-router&logoColor=white)
-![Leaflet](https://img.shields.io/badge/Leaflet-1.9.4-199900?logo=leaflet&logoColor=white)
-![Socket.io](https://img.shields.io/badge/Socket.io--Client-4.8.1-010101?logo=socket.io&logoColor=white)
-
-- **React 19.2.0** - 최신 React 기능을 활용한 컴포넌트 기반 개발
-- **Material-UI 7.3.5** - 일관된 UI 컴포넌트 라이브러리
-- **Redux Toolkit 2.11.0** - 효율적인 전역 상태 관리
-- **React Router 7.9.6** - 클라이언트 사이드 라우팅
-- **Leaflet 1.9.4** - 오픈소스 지도 라이브러리
-- **React-Leaflet 5.0.0** - React용 Leaflet 래퍼
-- **Socket.io-client 4.8.1** - WebSocket 클라이언트
+- ![React](https://img.shields.io/badge/React-19.2.0-61DAFB?logo=react&logoColor=white) **React 19.2.0** - 최신 React 기능을 활용한 컴포넌트 기반 개발
+- ![Material-UI](https://img.shields.io/badge/Material--UI-7.3.5-007FFF?logo=mui&logoColor=white) **Material-UI 7.3.5** - 일관된 UI 컴포넌트 라이브러리
+- ![Redux](https://img.shields.io/badge/Redux_Toolkit-2.11.0-764ABC?logo=redux&logoColor=white) **Redux Toolkit 2.11.0** - 효율적인 전역 상태 관리
+- ![React Router](https://img.shields.io/badge/React_Router-7.9.6-CA4245?logo=react-router&logoColor=white) **React Router 7.9.6** - 클라이언트 사이드 라우팅
+- ![Leaflet](https://img.shields.io/badge/Leaflet-1.9.4-199900?logo=leaflet&logoColor=white) **Leaflet 1.9.4** - 오픈소스 지도 라이브러리
+- ![React-Leaflet](https://img.shields.io/badge/React--Leaflet-5.0.0-199900?logo=leaflet&logoColor=white) **React-Leaflet 5.0.0** - React용 Leaflet 래퍼
+- ![Socket.io](https://img.shields.io/badge/Socket.io--Client-4.8.1-010101?logo=socket.io&logoColor=white) **Socket.io-client 4.8.1** - WebSocket 클라이언트
 
 ### Backend
 
-![Node.js](https://img.shields.io/badge/Node.js-339933?logo=node.js&logoColor=white)
-![Express](https://img.shields.io/badge/Express-5.1.0-000000?logo=express&logoColor=white)
-![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?logo=mysql&logoColor=white)
-![Socket.io](https://img.shields.io/badge/Socket.io-4.8.1-010101?logo=socket.io&logoColor=white)
-![JWT](https://img.shields.io/badge/JWT-9.0.2-000000?logo=jsonwebtokens&logoColor=white)
-![bcrypt](https://img.shields.io/badge/bcrypt-6.0.0-FF6B6B?logo=bcrypt&logoColor=white)
-
-- **Node.js** - 비동기 이벤트 기반 서버 런타임
-- **Express 5.1.0** - 간결한 웹 프레임워크
-- **MySQL 8.0** - 관계형 데이터베이스
-- **Socket.io 4.8.1** - WebSocket 서버
-- **JWT 9.0.2** - 토큰 기반 인증
-- **bcrypt 6.0.0** - 비밀번호 해싱 (saltRounds: 10)
-- **Multer 2.0.2** - 파일 업로드 처리
-- **Axios 1.13.2** - HTTP 클라이언트
+- ![Node.js](https://img.shields.io/badge/Node.js-339933?logo=node.js&logoColor=white) **Node.js** - 비동기 이벤트 기반 서버 런타임
+- ![Express](https://img.shields.io/badge/Express-5.1.0-000000?logo=express&logoColor=white) **Express 5.1.0** - 간결한 웹 프레임워크
+- ![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?logo=mysql&logoColor=white) **MySQL 8.0** - 관계형 데이터베이스
+- ![Socket.io](https://img.shields.io/badge/Socket.io-4.8.1-010101?logo=socket.io&logoColor=white) **Socket.io 4.8.1** - WebSocket 서버
+- ![JWT](https://img.shields.io/badge/JWT-9.0.2-000000?logo=jsonwebtokens&logoColor=white) **JWT 9.0.2** - 토큰 기반 인증
+- ![bcrypt](https://img.shields.io/badge/bcrypt-6.0.0-FF6B6B?logo=bcrypt&logoColor=white) **bcrypt 6.0.0** - 비밀번호 해싱 (saltRounds: 10)
+- ![Multer](https://img.shields.io/badge/Multer-2.0.2-000000?logo=multer&logoColor=white) **Multer 2.0.2** - 파일 업로드 처리
+- ![Axios](https://img.shields.io/badge/Axios-1.13.2-5A29E4?logo=axios&logoColor=white) **Axios 1.13.2** - HTTP 클라이언트
 
 ### 외부 API
 
-![OpenWeatherMap](https://img.shields.io/badge/OpenWeatherMap-API-FF6B6B?logo=openweathermap&logoColor=white)
-
-- **OpenWeatherMap API** - 날씨 정보 제공
+- ![OpenWeatherMap](https://img.shields.io/badge/OpenWeatherMap-API-FF6B6B?logo=openweathermap&logoColor=white) **OpenWeatherMap API** - 날씨 정보 제공
 
 ---
 
