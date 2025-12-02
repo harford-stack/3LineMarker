@@ -118,7 +118,7 @@ function FollowListModal({ open, onClose, userId, type = 'followers' }) {
       <DialogContent dividers sx={{ p: 0, maxHeight: 400 }}>
         {users.length === 0 && !loading ? (
           <Box sx={{ p: 4, textAlign: 'center' }}>
-            <Typography color="text.secondary">
+            <Typography sx={{ color: '#fff' }}>
               {type === 'followers' ? '팔로워가 없습니다.' : '팔로잉하는 사용자가 없습니다.'}
             </Typography>
           </Box>

@@ -239,7 +239,7 @@ function NotificationList() {
           </Box>
         ) : notifications.length === 0 ? (
           <Box sx={{ p: 4, textAlign: 'center' }}>
-            <Typography color="text.secondary">
+            <Typography sx={{ color: '#fff' }}>
               알림이 없습니다.
             </Typography>
           </Box>
@@ -282,7 +282,7 @@ function NotificationList() {
                     </Typography>
                   }
                   secondary={
-                    <Typography variant="caption" color="text.secondary">
+                    <Typography variant="caption" sx={{ color: '#fff' }}>
                       {formatTime(notification.createdAt)}
                       {notification.markerLine1 && ` · "${notification.markerLine1}"`}
                     </Typography>

@@ -151,7 +151,7 @@ function FeedCard({ marker, onUserClick, onMarkerClick, index }) {
           </Typography>
         }
         subheader={
-          <Typography variant="caption" sx={{ color: '#888' }}>
+          <Typography variant="caption" sx={{ color: '#fff' }}>
             ⏱ {formatTime(marker.createdAt)}
           </Typography>
         }
@@ -213,7 +213,7 @@ function FeedCard({ marker, onUserClick, onMarkerClick, index }) {
           <Typography 
             variant="body2" 
             sx={{ 
-              color: '#aaa',
+              color: '#fff',
               '&::before': { content: '"  "' },
             }}
           >
@@ -224,7 +224,7 @@ function FeedCard({ marker, onUserClick, onMarkerClick, index }) {
           <Typography 
             variant="body2" 
             sx={{ 
-              color: '#888',
+              color: '#fff',
               '&::before': { content: '"  "' },
             }}
           >
@@ -419,7 +419,7 @@ function FeedPage() {
             <RocketLaunchIcon sx={{ fontSize: '2rem' }} />
             FEED
           </Typography>
-          <Typography variant="body2" sx={{ color: '#888' }}>
+          <Typography variant="body2" sx={{ color: '#fff' }}>
             [ EXPLORE THE UNIVERSE OF MARKERS ]
           </Typography>
         </Box>
@@ -489,7 +489,7 @@ function FeedPage() {
             >
               ⚠ ACCESS DENIED ⚠
             </Typography>
-            <Typography variant="body2" sx={{ color: '#888', mb: 3 }}>
+            <Typography variant="body2" sx={{ color: '#fff', mb: 3 }}>
               로그인하고 팔로우한 사람들의 마커를 확인하세요!
             </Typography>
             <Button 
@@ -524,7 +524,7 @@ function FeedPage() {
             <Typography variant="body1" sx={{ color: '#ff00ff', mb: 2 }}>
               🚀 NO DATA FOUND 🚀
             </Typography>
-            <Typography variant="body2" sx={{ color: '#888' }}>
+            <Typography variant="body2" sx={{ color: '#fff' }}>
               {tab === 0 
                 ? '팔로우한 사람들의 마커가 없습니다.'
                 : '표시할 마커가 없습니다.'}
@@ -586,7 +586,7 @@ function FeedPage() {
                 <Typography 
                   variant="body2" 
                   sx={{ 
-                    color: '#888',
+                    color: '#fff',
                     fontFamily: '"Press Start 2P", "Galmuri11", cursive',
                     fontSize: '0.6rem',
                   }}
@@ -604,7 +604,7 @@ function FeedPage() {
             <Typography 
               variant="caption" 
               sx={{ 
-                color: '#666',
+                color: '#fff',
                 fontFamily: '"VT323", "DungGeunMo", monospace',
                 fontSize: '1rem',
               }}

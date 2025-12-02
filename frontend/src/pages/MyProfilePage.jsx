@@ -72,7 +72,7 @@ function StatItem({ label, value, onClick, color = '#00ffff' }) {
       <Typography 
         variant="caption" 
         sx={{ 
-          color: '#888',
+          color: '#fff',
           fontFamily: '"VT323", "DungGeunMo", monospace',
           fontSize: '1rem',
         }}
@@ -195,14 +195,14 @@ function MarkerCard({ marker, onClick, index }) {
                 size="small" 
                 sx={{
                   bgcolor: '#333',
-                  color: '#888',
+                  color: '#fff',
                   fontSize: '0.7rem',
                 }}
               />
             )}
           </Box>
           {marker.line2 && (
-            <Typography variant="body2" noWrap sx={{ color: '#888' }}>
+            <Typography variant="body2" noWrap sx={{ color: '#fff' }}>
               {marker.line2}
             </Typography>
           )}
@@ -532,7 +532,7 @@ function MyProfilePage() {
                     bgcolor: 'rgba(0, 255, 0, 0.05)',
                     border: '1px solid #333',
                   }}>
-                    <Typography variant="body1" sx={{ color: '#aaa' }}>
+                    <Typography variant="body1" sx={{ color: '#fff' }}>
                       "{user.statusMessage}"
                     </Typography>
                   </Box>
@@ -641,7 +641,7 @@ function MyProfilePage() {
             <Typography variant="body1" sx={{ color: '#00ff00', mb: 2 }}>
               🚀 NO MARKERS YET
             </Typography>
-            <Typography variant="body2" sx={{ color: '#888', mb: 3 }}>
+            <Typography variant="body2" sx={{ color: '#fff', mb: 3 }}>
               지도에서 첫 마커를 찍어보세요!
             </Typography>
             <Button 
@@ -776,7 +776,7 @@ function MyProfilePage() {
           <DialogActions sx={{ p: 2, borderTop: '2px dashed #333' }}>
             <Button 
               onClick={() => setEditModalOpen(false)}
-              sx={{ color: '#888' }}
+              sx={{ color: '#fff' }}
             >
               CANCEL
             </Button>

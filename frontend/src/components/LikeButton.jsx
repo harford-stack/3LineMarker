@@ -111,7 +111,7 @@ function LikeButton({ markerId, initialLikeCount = 0, initialIsLiked = false, si
         onClick={handleToggleLike}
         disabled={loading || String(markerId).startsWith('temp-')}
         sx={{
-          color: isLiked ? '#ff0040' : '#888',
+          color: isLiked ? '#ff0040' : '#fff',
           width: config.btnSize,
           height: config.btnSize,
           transition: 'all 0.2s ease',
@@ -133,7 +133,7 @@ function LikeButton({ markerId, initialLikeCount = 0, initialIsLiked = false, si
       {showCount && (
         <Typography
           sx={{
-            color: isLiked ? '#ff0040' : '#888',
+            color: isLiked ? '#ff0040' : '#fff',
             fontSize: config.fontSize,
             fontFamily: '"VT323", "DungGeunMo", monospace',
             fontWeight: 'bold',

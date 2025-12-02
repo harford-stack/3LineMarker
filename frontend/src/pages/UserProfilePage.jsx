@@ -139,14 +139,14 @@ function MarkerCard({ marker, onClick, index }) {
                 size="small" 
                 sx={{
                   bgcolor: '#333',
-                  color: '#888',
+                  color: '#fff',
                   fontSize: '0.7rem',
                 }}
               />
             )}
           </Box>
           {marker.line2 && (
-            <Typography variant="body2" noWrap sx={{ color: '#888' }}>
+            <Typography variant="body2" noWrap sx={{ color: '#fff' }}>
               {marker.line2}
             </Typography>
           )}
@@ -328,7 +328,7 @@ function UserProfilePage() {
             startIcon={<ArrowBackIcon />} 
             onClick={() => navigate(-1)}
             sx={{
-              color: '#888',
+              color: '#fff',
               border: '2px solid #333',
               '&:hover': {
                 borderColor: '#00ff00',
@@ -361,7 +361,7 @@ function UserProfilePage() {
             startIcon={<ArrowBackIcon />} 
             onClick={() => navigate(-1)}
             sx={{
-              color: '#888',
+              color: '#fff',
               border: '2px solid #333',
               '&:hover': {
                 borderColor: '#00ffff',

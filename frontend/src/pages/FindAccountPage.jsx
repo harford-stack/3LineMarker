@@ -28,7 +28,7 @@ const textFieldSx = {
     },
   },
   '& .MuiInputLabel-root': {
-    color: '#888',
+    color: '#fff',
     fontFamily: '"VT323", "DungGeunMo", monospace',
   },
 };
@@ -203,7 +203,7 @@ function FindAccountPage() {
           startIcon={<ArrowBackIcon />}
           onClick={() => navigate('/login')}
           sx={{ 
-            color: '#888', 
+            color: '#fff', 
             mb: 2,
             '&:hover': { color: '#00ff00' },
           }}
@@ -231,7 +231,7 @@ function FindAccountPage() {
           sx={{ 
             mb: 3,
             '& .MuiTab-root': {
-              color: '#666',
+              color: '#fff',
               fontFamily: '"Press Start 2P", "Galmuri11", cursive',
               fontSize: '0.5rem',
             },
@@ -252,7 +252,7 @@ function FindAccountPage() {
           <Box>
             {!foundId ? (
               <Box component="form" onSubmit={handleFindId}>
-                <Typography variant="body2" sx={{ color: '#888', mb: 2, textAlign: 'center' }}>
+                <Typography variant="body2" sx={{ color: '#fff', mb: 2, textAlign: 'center' }}>
                   가입 시 등록한 이메일을 입력하세요
                 </Typography>
                 
@@ -298,12 +298,12 @@ function FindAccountPage() {
                   아이디를 찾았습니다!
                 </Typography>
                 <Box sx={{ p: 3, border: '3px solid #00ff00', bgcolor: 'rgba(0,255,0,0.1)', mb: 3 }}>
-                  <Typography variant="body2" sx={{ color: '#888', mb: 1 }}>YOUR ID</Typography>
+                  <Typography variant="body2" sx={{ color: '#fff', mb: 1 }}>YOUR ID</Typography>
                   <Typography variant="h5" sx={{ color: '#00ff00', fontFamily: '"Press Start 2P", "Galmuri11", cursive', fontSize: '1rem' }}>
                     {foundId.userId}
                   </Typography>
                   {foundId.username && (
-                    <Typography variant="body2" sx={{ color: '#888', mt: 1 }}>
+                    <Typography variant="body2" sx={{ color: '#fff', mt: 1 }}>
                       닉네임: {foundId.username}
                     </Typography>
                   )}
@@ -335,7 +335,7 @@ function FindAccountPage() {
                 <Step key={label}>
                   <StepLabel 
                     sx={{ 
-                      '& .MuiStepLabel-label': { color: '#888', fontFamily: '"VT323", "DungGeunMo", monospace' },
+                      '& .MuiStepLabel-label': { color: '#fff', fontFamily: '"VT323", "DungGeunMo", monospace' },
                       '& .Mui-active .MuiStepLabel-label': { color: '#00ffff' },
                       '& .Mui-completed .MuiStepLabel-label': { color: '#00ff00' },
                     }}
@@ -349,7 +349,7 @@ function FindAccountPage() {
             {/* Step 0: 정보 입력 */}
             {resetStep === 0 && (
               <Box component="form" onSubmit={handleRequestReset}>
-                <Typography variant="body2" sx={{ color: '#888', mb: 2, textAlign: 'center' }}>
+                <Typography variant="body2" sx={{ color: '#fff', mb: 2, textAlign: 'center' }}>
                   가입 시 등록한 아이디와 이메일을 입력하세요
                 </Typography>
                 
@@ -450,7 +450,7 @@ function FindAccountPage() {
                   variant="text"
                   fullWidth
                   onClick={() => setResetStep(0)}
-                  sx={{ mt: 1, color: '#888' }}
+                  sx={{ mt: 1, color: '#fff' }}
                 >
                   뒤로
                 </Button>
@@ -464,7 +464,7 @@ function FindAccountPage() {
                 <Typography variant="h6" sx={{ color: '#00ff00', mb: 2 }}>
                   비밀번호가 변경되었습니다!
                 </Typography>
-                <Typography variant="body2" sx={{ color: '#888', mb: 3 }}>
+                <Typography variant="body2" sx={{ color: '#fff', mb: 3 }}>
                   새 비밀번호로 로그인해주세요.
                 </Typography>
                 <Button
