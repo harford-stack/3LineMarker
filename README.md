@@ -10,6 +10,11 @@
 ![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?logo=mysql)
 ![Socket.io](https://img.shields.io/badge/Socket.io-4.8.1-010101?logo=socket.io)
 
+<div align="center">
+  <img src="./screenshot/3lm-rootPage.png" alt="지도 페이지" width="800"/>
+  <p><strong>지도 페이지</strong> - 지도 위에 마커를 생성하고 공유할 수 있는 메인 화면</p>
+</div>
+
 ---
 
 ## 📸 스크린샷
