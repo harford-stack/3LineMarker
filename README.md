@@ -5,6 +5,8 @@
 레트로 게임 테마의 지도 기반 소셜 네트워크 서비스입니다.  
 3줄의 텍스트로 장소를 기록하고, 지도 위에서 마커를 공유하며, 실시간으로 소통할 수 있습니다.
 
+![메인 화면](./screenshot/3lm-rootPage.png)
+
 ![React](https://img.shields.io/badge/React-19.2.0-61DAFB?logo=react)
 ![Node.js](https://img.shields.io/badge/Node.js-Express-339933?logo=node.js)
 ![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?logo=mysql)
@@ -98,6 +100,23 @@
 - **마커 클러스터링**: 많은 마커의 성능 최적화
 - **이미지 업로드**: Multer를 활용한 파일 업로드 및 미리보기
 
+<details>
+<summary>📸 스크린샷 보기</summary>
+
+#### 지도 페이지
+
+![지도 페이지](./screenshot/3lm-mapPage.png)
+
+#### 마커 상세 정보
+
+![마커 정보](./screenshot/3lm-markerInfo.PNG)
+
+#### 검색 기능
+
+![검색 드롭다운](./screenshot/3lm-searchDropdown.PNG)
+
+</details>
+
 ### 👥 사용자 인증 및 프로필
 
 - **JWT 토큰 기반 인증**: 안전한 사용자 인증 시스템
@@ -105,6 +124,27 @@
 - **회원가입/로그인**: 아이디 중복 체크 포함
 - **프로필 관리**: 닉네임, 상태 메시지, 프로필 이미지 수정
 - **팔로우 시스템**: 팔로우/언팔로우 및 팔로워/팔로잉 목록
+
+<details>
+<summary>📸 스크린샷 보기</summary>
+
+#### 로그인 페이지
+
+![로그인 페이지](./screenshot/3lm-loginPage.png)
+
+#### 회원가입 페이지
+
+![회원가입 페이지](./screenshot/3lm-registerPage.png)
+
+#### 아이디 찾기
+
+![아이디 찾기](./screenshot/3lm-findIdpage.PNG)
+
+#### 비밀번호 찾기
+
+![비밀번호 찾기](./screenshot/3lm-findPasswordPage.PNG)
+
+</details>
 
 ### 💬 소셜 기능
 
@@ -114,6 +154,19 @@
 - **피드 시스템**: 팔로잉 피드와 탐색 피드 (최신순/인기순 정렬)
 - **검색 기능**: 마커 및 사용자 검색 (디바운싱 적용)
 
+<details>
+<summary>📸 스크린샷 보기</summary>
+
+#### 피드 페이지
+
+![피드 페이지](./screenshot/3lm-feedPage.png)
+
+#### 북마크 페이지
+
+![북마크 페이지](./screenshot/3lm-bookmarksPage.png)
+
+</details>
+
 ### 💬 실시간 채팅
 
 - **WebSocket 기반 통신**: Socket.io를 활용한 실시간 메시지 전송/수신
@@ -121,11 +174,29 @@
 - **채팅방 관리**: 채팅방 목록 및 메시지 읽음 처리
 - **채팅 알림**: 실시간 알림 배지 표시
 
+<details>
+<summary>📸 스크린샷 보기</summary>
+
+#### 채팅 페이지
+
+![채팅 페이지](./screenshot/3lm-chatPage.png)
+
+</details>
+
 ### 🔔 알림 시스템
 
 - **다양한 알림 타입**: 좋아요, 댓글, 팔로우, 채팅 알림
 - **실시간 알림 업데이트**: 30초 간격 폴링
 - **알림 배지**: 헤더에 읽지 않은 알림 수 표시
+
+<details>
+<summary>📸 스크린샷 보기</summary>
+
+#### 알림 목록
+
+![알림](./screenshot/3lm-alarm.PNG)
+
+</details>
 
 ### 🎨 지도 위젯
 
