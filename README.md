@@ -11,7 +11,7 @@
 ![Socket.io](https://img.shields.io/badge/Socket.io-4.8.1-010101?logo=socket.io)
 
 <p align="center">
-  <img src="./screenshot/3lm-rootPage3.png" width="50%" />
+  <img src="./screenshot/3lm-rootPage3.png" width="49%" />
   <img src="./screenshot/3lm-rootPage1.png" width="48%" />
 </p>
 
@@ -146,7 +146,7 @@
 #### 팔로우 모달 & 프로필 페이지
 
 <p align="center">
-  <img src="./screenshot/3lm-followModal.PNG" height="400" />&nbsp;&nbsp;&nbsp;&nbsp;<img src="./screenshot/3lm-myProfilePage1.png" height="400" />
+  <img src="./screenshot/3lm-followModal.PNG" height="350" />&nbsp;&nbsp;&nbsp;&nbsp;<img src="./screenshot/3lm-myProfilePage1.png" height="350" />
 </p>
 
 </details>
