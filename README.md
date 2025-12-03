@@ -1,16 +1,20 @@
 # 🎮 3LineMarker
 
-> **"지도 위에 기록하는, 감성 소셜 네트워크"**
+> **"지도 위에 기록하는, 탐험 소셜 네트워크"**
 
 레트로 게임 테마의 지도 기반 소셜 네트워크 서비스입니다.  
 3줄의 텍스트로 장소를 기록하고, 지도 위에서 마커를 공유하며, 실시간으로 소통할 수 있습니다.
-
-![메인 화면](./screenshot/3lm-rootPage.png)
 
 ![React](https://img.shields.io/badge/React-19.2.0-61DAFB?logo=react)
 ![Node.js](https://img.shields.io/badge/Node.js-Express-339933?logo=node.js)
 ![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?logo=mysql)
 ![Socket.io](https://img.shields.io/badge/Socket.io-4.8.1-010101?logo=socket.io)
+
+<p align="center">
+  <img src="./screenshot/3lm-rootPage1.png" width="32%" />
+  <img src="./screenshot/3lm-rootPage2.png" width="32%" />
+  <img src="./screenshot/3lm-rootPage3.png" width="32%" />
+</p>
 
 ---
 
@@ -107,13 +111,12 @@
 
 ![지도 페이지](./screenshot/3lm-mapPage.png)
 
-#### 마커 상세 정보
+#### 마커 상세 정보 & 검색 기능
 
-![마커 정보](./screenshot/3lm-markerInfo.PNG)
-
-#### 검색 기능
-
-![검색 드롭다운](./screenshot/3lm-searchDropdown.PNG)
+<p align="center">
+  <img src="./screenshot/3lm-markerInfo.PNG" height="400" />
+  <img src="./screenshot/3lm-searchDropdown.PNG" height="400" />
+</p>
 
 </details>
 
@@ -128,21 +131,19 @@
 <details>
 <summary>📸 스크린샷 보기</summary>
 
-#### 로그인 페이지
+#### 로그인 & 회원가입
 
-![로그인 페이지](./screenshot/3lm-loginPage.png)
+<p align="center">
+  <img src="./screenshot/3lm-loginPage1.png" height="500" />
+  <img src="./screenshot/3lm-registerPage1.png" height="500" />
+</p>
 
-#### 회원가입 페이지
+#### 아이디 찾기 & 비밀번호 찾기
 
-![회원가입 페이지](./screenshot/3lm-registerPage.png)
-
-#### 아이디 찾기
-
-![아이디 찾기](./screenshot/3lm-findIdpage.PNG)
-
-#### 비밀번호 찾기
-
-![비밀번호 찾기](./screenshot/3lm-findPasswordPage.PNG)
+<p align="center">
+  <img src="./screenshot/3lm-findIdpage.PNG" height="500" />
+  <img src="./screenshot/3lm-findPasswordPage.PNG" height="500" />
+</p>
 
 </details>
 
@@ -151,19 +152,18 @@
 - **좋아요 시스템**: Optimistic UI 업데이트로 즉각적인 반응
 - **댓글 기능**: 무한 스크롤을 통한 효율적인 댓글 관리
 - **북마크 기능**: 관심 있는 마커 저장 및 관리
-- **피드 시스템**: 팔로잉 피드와 탐색 피드 (최신순/인기순 정렬)
+- **피드 시스템**: 무한 스크롤 / 팔로잉 피드와 탐색 피드 (최신순/인기순 정렬)
 - **검색 기능**: 마커 및 사용자 검색 (디바운싱 적용)
 
 <details>
 <summary>📸 스크린샷 보기</summary>
 
-#### 피드 페이지
+#### 피드 페이지 & 북마크 페이지
 
-![피드 페이지](./screenshot/3lm-feedPage.png)
-
-#### 북마크 페이지
-
-![북마크 페이지](./screenshot/3lm-bookmarksPage.png)
+<p align="center">
+  <img src="./screenshot/3lm-feedPage1.png" height="500" />
+  <img src="./screenshot/3lm-bookmarksPage.png" height="500" />
+</p>
 
 </details>
 
