@@ -113,7 +113,7 @@
 #### 마커 상세 정보 & 검색 기능
 
 <p align="center">
-  <img src="./screenshot/3lm-markerInfo.PNG" height="400" style="margin-right: 20px;" />
+  <img src="./screenshot/3lm-markerInfo.PNG" height="400" />&nbsp;&nbsp;&nbsp;&nbsp;
   <img src="./screenshot/3lm-searchDropdown.PNG" height="400" />
 </p>
 
@@ -133,15 +133,20 @@
 #### 로그인 & 회원가입
 
 <p align="center">
-  <img src="./screenshot/3lm-loginPage1.png" height="500" style="margin-right: 20px;" />
+  <img src="./screenshot/3lm-loginPage1.png" height="500" />&nbsp;&nbsp;&nbsp;&nbsp;
   <img src="./screenshot/3lm-registerPage1.png" height="500" />
 </p>
 
 #### 아이디 찾기 & 비밀번호 찾기
 
 <p align="center">
-  <img src="./screenshot/3lm-findIdpage.PNG" height="500" style="margin-right: 20px; display: inline-block;" />
-  <img src="./screenshot/3lm-findPasswordPage.PNG" height="500" style="display: inline-block;" />
+  <img src="./screenshot/3lm-findIdpage.PNG" height="400" />&nbsp;&nbsp;&nbsp;&nbsp;<img src="./screenshot/3lm-findPasswordPage.PNG" height="400" />
+</p>
+
+#### 팔로우 모달 & 프로필 페이지
+
+<p align="center">
+  <img src="./screenshot/3lm-followModal.PNG" height="400" />&nbsp;&nbsp;&nbsp;&nbsp;<img src="./screenshot/3lm-myProfilePage.png" height="400" />
 </p>
 
 </details>
@@ -160,7 +165,7 @@
 #### 피드 페이지 & 북마크 페이지
 
 <p align="center">
-  <img src="./screenshot/3lm-feedPage1.png" height="500" style="margin-right: 20px;" />
+  <img src="./screenshot/3lm-feedPage1.png" height="500" />&nbsp;&nbsp;&nbsp;&nbsp;
   <img src="./screenshot/3lm-bookmarksPage.png" height="500" />
 </p>
 
