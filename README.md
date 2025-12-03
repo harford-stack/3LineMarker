@@ -146,7 +146,7 @@
 #### 팔로우 모달 & 프로필 페이지
 
 <p align="center">
-  <img src="./screenshot/3lm-followModal.PNG" height="350" />&nbsp;&nbsp;&nbsp;&nbsp;<img src="./screenshot/3lm-myProfilePage1.png" height="350" />
+  <img src="./screenshot/3lm-followModal.PNG" height="330" />&nbsp;&nbsp;&nbsp;&nbsp;<img src="./screenshot/3lm-myProfilePage1.png" height="330" />
 </p>
 
 </details>
