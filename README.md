@@ -11,9 +11,8 @@
 ![Socket.io](https://img.shields.io/badge/Socket.io-4.8.1-010101?logo=socket.io)
 
 <p align="center">
-  <img src="./screenshot/3lm-rootPage1.png" width="32%" />
-  <img src="./screenshot/3lm-rootPage2.png" width="32%" />
-  <img src="./screenshot/3lm-rootPage3.png" width="32%" />
+  <img src="./screenshot/3lm-rootPage3.png" width="48%" />
+  <img src="./screenshot/3lm-rootPage1.png" width="48%" />
 </p>
 
 ---
@@ -114,7 +113,7 @@
 #### 마커 상세 정보 & 검색 기능
 
 <p align="center">
-  <img src="./screenshot/3lm-markerInfo.PNG" height="400" />
+  <img src="./screenshot/3lm-markerInfo.PNG" height="400" style="margin-right: 20px;" />
   <img src="./screenshot/3lm-searchDropdown.PNG" height="400" />
 </p>
 
@@ -134,15 +133,15 @@
 #### 로그인 & 회원가입
 
 <p align="center">
-  <img src="./screenshot/3lm-loginPage1.png" height="500" />
+  <img src="./screenshot/3lm-loginPage1.png" height="500" style="margin-right: 20px;" />
   <img src="./screenshot/3lm-registerPage1.png" height="500" />
 </p>
 
 #### 아이디 찾기 & 비밀번호 찾기
 
 <p align="center">
-  <img src="./screenshot/3lm-findIdpage.PNG" height="500" />
-  <img src="./screenshot/3lm-findPasswordPage.PNG" height="500" />
+  <img src="./screenshot/3lm-findIdpage.PNG" height="500" style="margin-right: 20px; display: inline-block;" />
+  <img src="./screenshot/3lm-findPasswordPage.PNG" height="500" style="display: inline-block;" />
 </p>
 
 </details>
@@ -161,7 +160,7 @@
 #### 피드 페이지 & 북마크 페이지
 
 <p align="center">
-  <img src="./screenshot/3lm-feedPage1.png" height="500" />
+  <img src="./screenshot/3lm-feedPage1.png" height="500" style="margin-right: 20px;" />
   <img src="./screenshot/3lm-bookmarksPage.png" height="500" />
 </p>
 
@@ -323,14 +322,13 @@ REACT_APP_API_BASE_URL=http://localhost:3010
 
 - [API 문서](./docs/API.md) - API 엔드포인트 상세 설명
 - [개발일지](./docs/DAY1_개발일지.md) - 일자별 개발 과정
-- [스크린샷 가이드](./docs/스크린샷_가이드.md) - 포트폴리오용 캡처 가이드
 - [포트폴리오 요약본](./docs/포트폴리오_요약본.md) - 프로젝트 핵심 요약
 
 ---
 
 ## 🎯 프로젝트 성과
 
-- ✅ 핵심 기능 100% 구현
+- ✅ 목표한 핵심 기능 100% 구현
 - ✅ ESLint 경고 0개
 - ✅ 실시간 채팅 시스템 구축 (WebSocket)
 - ✅ 레트로 테마 UI/UX 완성
