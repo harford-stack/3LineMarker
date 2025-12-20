@@ -344,7 +344,3 @@ backend/src/
 - [Multer 공식 문서](https://github.com/expressjs/multer)
 
 ---
-
-**작성일**: 2025년 11월 26일  
-**작성자**: [작성자명]
-
