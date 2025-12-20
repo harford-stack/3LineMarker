@@ -385,7 +385,3 @@ backend/src/
 - [WebSocket API](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket)
 
 ---
-
-**작성일**: 2025년 11월 30일  
-**작성자**: [작성자명]
-
