@@ -327,7 +327,7 @@ REACT_APP_API_BASE_URL=http://localhost:3010
 
 - [API 문서](./docs/API.md) - API 엔드포인트 상세 설명
 - [개발일지](./docs/DAY1_개발일지.md) - 일자별 개발 과정
-- [트러블 슈팅](./docs/트러블슈팅.md) - 주요 이슈 개선 및 해결
+- [트러블 슈팅](./docs/트러블 슈팅.md) - 주요 이슈 개선 및 해결
 
 ---
 
@@ -345,16 +345,12 @@ REACT_APP_API_BASE_URL=http://localhost:3010
 ## 💡 배운 점
 
 - **React Hooks 최적화**: useCallback, useMemo, useRef의 적절한 활용으로 성능 최적화
-- **실시간 통신**: WebSocket을 활용한 실시간 기능 구현 및 이벤트 기반 아키텍처 이해
+- **실시간 통신**: WebSocket을 활용한 실시간 기능 구현
 - **상태 관리**: Redux Toolkit을 통한 전역 상태 관리 및 로컬/전역 상태 구분
 - **보안**: JWT 토큰 기반 인증과 bcrypt를 통한 비밀번호 해싱
 - **성능 최적화**: 불필요한 리렌더링 방지 및 메모이제이션 전략
 
 ---
-
-## 📝 라이선스
-
-이 프로젝트는 개인 프로젝트입니다.
 
 ---
 
