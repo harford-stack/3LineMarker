@@ -324,7 +324,3 @@ backend/src/
 - [Material-UI 컴포넌트](https://mui.com/components/)
 
 ---
-
-**작성일**: 2025년 12월 1일  
-**작성자**: [작성자명]
-
