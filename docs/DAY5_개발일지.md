@@ -373,7 +373,3 @@ backend/src/
 - [React Hooks 최적화](https://react.dev/reference/react/useCallback)
 
 ---
-
-**작성일**: 2025년 11월 29일  
-**작성자**: [작성자명]
-
