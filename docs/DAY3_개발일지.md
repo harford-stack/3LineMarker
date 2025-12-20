@@ -353,7 +353,3 @@ backend/src/
 - [Intersection Observer API](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API)
 
 ---
-
-**작성일**: 2025년 11월 27일  
-**작성자**: [작성자명]
-
