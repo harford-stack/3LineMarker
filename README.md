@@ -327,7 +327,7 @@ REACT_APP_API_BASE_URL=http://localhost:3010
 
 - [API 문서](./docs/API.md) - API 엔드포인트 상세 설명
 - [개발일지](./docs/DAY1_개발일지.md) - 일자별 개발 과정
-- [포트폴리오 요약본](./docs/포트폴리오_요약본.md) - 프로젝트 핵심 요약
+- [트러블 슈팅](./docs/트러블슈팅.md) - 주요 이슈 개선 및 해결
 
 ---
 
